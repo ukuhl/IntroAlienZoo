@@ -1,0 +1,3 @@
+ceml
+Flask==1.1.2
+Flask-SocketIO==4.3.1
