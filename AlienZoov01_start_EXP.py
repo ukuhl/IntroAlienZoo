@@ -1,3 +1,4 @@
+import os
 from flask import Flask, redirect, send_from_directory, render_template
 from flask_socketio import SocketIO, emit
 from joblib import dump, load
@@ -47,6 +48,10 @@ app = Flask(__name__,
 # this should be unique
 app.config[ 'SECRET_KEY' ] = 'i38dfjvnskdsndjvkbjnkdfkfbn34673'
 socketio = SocketIO( app )
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/')
 def index():
