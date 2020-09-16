@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AlienZoo v0.1</title>
+</head>
+
+<body>
+    <script src="js/api.js"></script>
+    <!--
+    FÜR ULRIKE!
+    <script src="js/gameUI.js"></script>
+    -->
+    <script type="text/javascript">
+        var api = new AlienZooApi();
+        api.gameStart().then( async (success) => {
+            if(success == false) {
+                throw "Error while staring the game"
+            }
+            console.log(api.userId);
+            console.log(api.controlGroup);
+    
+            const newShubData = await api.computeNewShubNo(4, 1, 1, 0, 0, 2);
+            if (newShubData == undefined) {
+                throw "Error while computing new shub number"
+            }
+            console.log(newShubData);
+        })
+        .catch((error) => {
+            console.log("Smth. went wrong :(");
+            console.log(error);
+        });
+    </script>
+</body>
+
+</html>
