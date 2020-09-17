@@ -23,12 +23,13 @@ class AlienZooApi {
         });
     }
 
-    computeNewShubNo(numShubs, clickCountVar1, clickCountVar2, clickCountVar3, clickCountVar4, clickCountVar5) {
-        //var1: clickCountVar1, var2: clickCountVar2, var3: clickCountVar3, var4: clickCountVar4, var5: clickCountVar5, oN: oldNumber, tC: trialCount, bC: blockCount, subID: subID
+    computeNewShubNo(numShubs, trialCount, blockCount, clickCountVar1, clickCountVar2, clickCountVar3, clickCountVar4, clickCountVar5) {
         return new Promise(resolve => {
             const data = {
                         "userId": this.userId,
                         "numShubs": numShubs,
+                        "trialCount": trialCount,
+                        "blockCount": blockCount,
                         "inputVars": {
                             "var1": clickCountVar1,
                             "var2": clickCountVar2,

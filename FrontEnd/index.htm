@@ -21,7 +21,10 @@
             console.log(api.userId);
             console.log(api.controlGroup);
     
-            const newShubData = await api.computeNewShubNo(4, 1, 1, 0, 0, 2);
+            var numShubs = 4;
+            var trialCount = 42;
+            var blockCount = 1;
+            const newShubData = await api.computeNewShubNo(numShubs, trialCount, blockCount, 1, 1, 0, 0, 2);
             if (newShubData == undefined) {
                 throw "Error while computing new shub number"
             }

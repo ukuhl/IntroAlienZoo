@@ -14,6 +14,7 @@ class DataMgr():
 
     def __init_database(self):
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS users (userId TEXT NOT NULL, controlGroup INT NOT NULL)")
+        self.db.cursor().execute("CREATE TABLE IF NOT EXISTS logs (userId TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, data TEXT NOT NULL)")
         self.db.commit()
 
     def add_new_user(self, user_id, control_group):
@@ -37,5 +38,12 @@ class DataMgr():
             print(ex)
             return None
 
-    def log_user_stuff(self):
-        pass
+    def log_user_stuff(self, user_id, data):
+        try:
+            self.db.cursor().execute("INSERT INTO logs (userId, data) VALUES(%s,%s)", (user_id, data))
+            self.db.commit()
+            
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
