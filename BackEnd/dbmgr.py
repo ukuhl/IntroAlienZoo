@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-import sqlite3
+import mysql.connector
+
+
+user_name = "user"
+user_pw = "userpw123456"
+database = "alienzoo"
 
 
 class DataMgr():
-    def __init__(self, db_file="storage.sqlite"):
-        self.db = sqlite3.connect(db_file)
+    def __init__(self):
+        self.db = mysql.connector.connect(host="localhost", user=user_name, password=user_pw, database=database)
         self.__init_database()
 
     def __init_database(self):
@@ -13,7 +18,7 @@ class DataMgr():
 
     def add_new_user(self, user_id, control_group):
         try:
-            self.db.cursor().execute("INSERT INTO users (userId, controlGroup) VALUES(?,?)", (user_id, int(control_group)))
+            self.db.cursor().execute("INSERT INTO users (userId, controlGroup) VALUES(%s,%s)", (user_id, int(control_group)))
             self.db.commit()
             
             return True
@@ -24,7 +29,7 @@ class DataMgr():
     def get_user_by_userId(self, user_id):
         try:
             cur = self.db.cursor()
-            cur.execute("SELECT controlGroup FROM users WHERE userId=?", (user_id,))
+            cur.execute("SELECT controlGroup FROM users WHERE userId=%s", (user_id,))
             result = cur.fetchone()
             
             return {"userId": user_id, "controlGroup": bool(result[0])}

@@ -1,3 +1,4 @@
+mysql-connector-python==8.0.21
 tornado==6.0.4
 jax==0.1.76
 jaxlib==0.1.55
