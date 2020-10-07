@@ -27,7 +27,7 @@ class GameStartHandler(BasisRequestHandler):
         user_id = self.__generate_unique_identifier()
 
         # Randomly assign user to control or experimental group
-        control_group = False#bool(random.getrandbits(1))
+        control_group = bool(random.getrandbits(1))
 
         # Add it to the database
         if self.datamgr.add_new_user(user_id, control_group) is False:

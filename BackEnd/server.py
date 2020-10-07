@@ -5,7 +5,7 @@ import os
 from tornado.ioloop import IOLoop
 import tornado.web
 
-from models import load_model_from_file, Model
+from models import load_model_from_file, Model, build_model
 from dbmgr import DataMgr
 
 from handler.gameStartHandler import GameStartHandler
@@ -18,7 +18,8 @@ port = 8888
 class WebServer(tornado.web.Application):
     def __init__(self):
         self.datamgr = DataMgr()
-        self.model = load_model_from_file()
+        #self.model = load_model_from_file()
+        self.model = build_model()
 
         handlers = [
             (r'/', tornado.web.RedirectHandler, dict(url=r"/index.htm")),

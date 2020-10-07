@@ -88,7 +88,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
 
         # Compute a prediction using the model
         x = np.array([input_vars["var1"], input_vars["var2"], input_vars["var3"], input_vars["var4"], input_vars["var5"]], dtype=float).reshape(1, -1)
-        pred = self.model(x).detach().numpy()
+        pred = self.model.predict(x)#self.model(x).detach().numpy()
 
         # Compute new number of shubs
         SNnew = int(np.floor(cur_num_shubs * pred))    # new number = old number * GR prediction)
