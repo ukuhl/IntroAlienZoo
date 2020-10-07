@@ -2,8 +2,8 @@
 import mysql.connector
 
 
-user_name = "user"
-user_pw = "userpw123456"
+user_name = "user_alienzoo"
+user_pw = "useralienzoopw123456"
 database = "alienzoo"
 
 
