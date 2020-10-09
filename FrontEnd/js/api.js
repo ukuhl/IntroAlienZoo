@@ -12,7 +12,6 @@ class AlienZooApi {
             .then(jsonData => {
                 this.userId = jsonData.userId;
                 this.controlGroup = jsonData.controlGroup;
-
                 resolve(true);
             })
             .catch((error) => {
@@ -67,4 +66,5 @@ class AlienZooApi {
             });
         });
     }
+
 };

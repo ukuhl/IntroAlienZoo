@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <title>AlienZoo v0.1</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
 </head>
 
 <body>
     <script src="js/api.js"></script>
     <!--
     FÜR ULRIKE!
-    <script src="js/gameUI.js"></script>
     -->
+    <script type="module" src="js/gameUI.js"></script>
+    <!--
     <script type="text/javascript">
         var api = new AlienZooApi();
         api.gameStart().then( async (success) => {
@@ -20,7 +23,7 @@
             }
             console.log(api.userId);
             console.log(api.controlGroup);
-    
+
             var numShubs = 4;
             var trialCount = 42;
             var blockCount = 1;
@@ -35,6 +38,7 @@
             console.log(error);
         });
     </script>
+    -->
 </body>
 
 </html>
