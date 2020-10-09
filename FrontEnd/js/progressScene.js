@@ -77,7 +77,7 @@ class ProgressScene extends Phaser.Scene {
 		// ********************
 		// NOW, new Shub Data would need to be computed here, but
 		// function of api of not available...
-		//const newShubData = await tmp.computeNewShubNo(this.varObj.newNumber, this.varObj.trialCount, this.varObj.blockCount, this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5);
+		//const newShubData = await this.varObj.computeNewShubNo(this.varObj.newNumber, this.varObj.trialCount, this.varObj.blockCount, this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5);
 		const newShubData = {
 			"newNumShubs": 10,
 			"counterfactualCountVars": [1., 1., 0., 0., 2.],
