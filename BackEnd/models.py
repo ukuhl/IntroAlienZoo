@@ -185,10 +185,13 @@ def compute_counterfactual_of_model(model, x, y_pred, features_whitelist = [0, 1
     regularization = lambda z: np.linalg.norm(x - z, ord=1)
     counterfactuals = score_adjustments(x, path_of_x, leafs, regularization)
 
-    counterfactuals = [apply_adjustment(x, cf[2]) for cf in counterfactuals]
+    counterfactuals = [np.round(apply_adjustment(x, cf[2])) for cf in counterfactuals]
+
+    # Filter our all invalid counterfactuals - rounding might result in invalid counterfactuals!
+    counterfactuals = list(filter(lambda cf: model.predict([cf]) > y_pred, counterfactuals))
 
     # Choose a counterfactual -> simply take the first one (closest)  # TODO: Or choose the one with the largest or larger prediction?
-    x_cf = None if len(counterfactuals) == 0 else counterfactuals[0]
+    x_cf = [None for _ in range(x.shape[0])] if len(counterfactuals) == 0 else counterfactuals[0]
 
     return x_cf
 
