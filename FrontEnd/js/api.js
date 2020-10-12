@@ -46,18 +46,18 @@ class AlienZooApi {
                 body: JSON.stringify(data)
             }).then(r => r.json())
             .then(jsonData => {
-                if(this.controlGroup == true) {
+                /*if(this.controlGroup == true) {
                     resolve({
                         "newNumShubs": jsonData.newNumShubs
                     });
                 }
-                else {
-                    resolve({
-                        "newNumShubs": jsonData.newNumShubs,
-                        "counterfactualCountVars": jsonData.counterfactualCountVars,
-                        "diffCountVars": jsonData.diffCountVars
-                    });
-                }
+                else {*/
+                resolve({
+                    "newNumShubs": jsonData.newNumShubs,
+                    "counterfactualCountVars": jsonData.counterfactualCountVars,
+                    "diffCountVars": jsonData.diffCountVars
+                });
+                //}
             })
             .catch((error) => {
                 console.error(error);

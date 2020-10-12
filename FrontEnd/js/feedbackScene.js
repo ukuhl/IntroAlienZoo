@@ -5,11 +5,11 @@ class FeedbackScene extends Phaser.Scene {
 
 	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
-		super({key : 'feedbackScene'});
+		super({ key: 'feedbackScene' });
 		this.varObj = varObj
 	}
 
-	init() {}
+	init() { }
 
 	preload() {
 		this.load.spritesheet('shub', 'static/shub_spritesheet.png', { frameWidth: 50, frameHeight: 47 });
@@ -28,7 +28,7 @@ class FeedbackScene extends Phaser.Scene {
 
 	create() {
 
-		if (this.varObj.api.controlGroup){
+		if (this.varObj.api.controlGroup) {
 			// 1st round:
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'In round 1, you selected:', { fontSize: '18px', color: '#000000' });
 			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.075, 'plant1').setScale(0.1);
@@ -218,15 +218,15 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Your result would have been better if you had selected:', { fontSize: '18px', color: '#000000' });
 
 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, 'x ' + this.varObj.cf_array[2][0], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][0]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, 'x ' + this.varObj.cf_array[2][1], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][1]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, 'x ' + this.varObj.cf_array[2][2], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][2]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, 'x ' + this.varObj.cf_array[2][3], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][3]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, 'x ' + this.varObj.cf_array[2][4], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][4]}`, { fontSize: '18px', color: '#000000' });
 			}
 
 			// 3rd round:
@@ -258,15 +258,15 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Your result would have been better if you had selected:', { fontSize: '18px', color: '#000000' });
 
 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, 'x ' + this.varObj.cf_array[3][0], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][0]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, 'x ' + this.varObj.cf_array[3][1], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][1]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, 'x ' + this.varObj.cf_array[3][2], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][2]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, 'x ' + this.varObj.cf_array[3][3], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][3]}`, { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, 'x ' + this.varObj.cf_array[3][4], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][4]}`, { fontSize: '18px', color: '#000000' });
 			}
 		}
 
@@ -306,7 +306,7 @@ class FeedbackScene extends Phaser.Scene {
 
 	}
 
-	update() {}
+	update() { }
 
 }
 

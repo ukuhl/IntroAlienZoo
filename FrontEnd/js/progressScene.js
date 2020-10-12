@@ -4,11 +4,11 @@ class ProgressScene extends Phaser.Scene {
 
 	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
-		super({key : 'progressScene'});
+		super({ key: 'progressScene' });
 		this.varObj = varObj
 	}
 
-	init() {}
+	init() { }
 
 	preload() {
 		this.load.spritesheet('shub', 'static/shub_spritesheet.png', { frameWidth: 50, frameHeight: 47 });
@@ -26,91 +26,91 @@ class ProgressScene extends Phaser.Scene {
 	}
 
 	create() {
-	  // clean slate:
-    this.children.removeAll();
+		// clean slate:
+		this.children.removeAll();
 
-    this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, 'Feeding in progress...', { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, 'Feeding in progress...', { fontSize: '20px', color: '#000000' });
 
-    // add overview of current choice:
-    this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.175, 'plant1').setScale(0.15);
-    this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar1, { fontSize: '20px', color: '#000000' });
-    this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.175, 'plant2').setScale(0.15);
-    this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar2, { fontSize: '20px', color: '#000000' });
-    this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.175, 'plant3').setScale(0.15);
-    this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar3, { fontSize: '20px', color: '#000000' });
-    this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.175, 'plant4').setScale(0.15);
-    this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar4, { fontSize: '20px', color: '#000000' });
-    this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.175, 'plant5').setScale(0.15);
-    this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar5, { fontSize: '20px', color: '#000000' });
+		// add overview of current choice:
+		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.175, 'plant1').setScale(0.15);
+		this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar1, { fontSize: '20px', color: '#000000' });
+		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.175, 'plant2').setScale(0.15);
+		this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar2, { fontSize: '20px', color: '#000000' });
+		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.175, 'plant3').setScale(0.15);
+		this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar3, { fontSize: '20px', color: '#000000' });
+		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.175, 'plant4').setScale(0.15);
+		this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar4, { fontSize: '20px', color: '#000000' });
+		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.175, 'plant5').setScale(0.15);
+		this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar5, { fontSize: '20px', color: '#000000' });
 
-    // add three shubs as 'loading animation'
-    var progShubs = {
-      key: 'progMove',
-      frames: this.anims.generateFrameNumbers('shub', { start: 0, end: 9, first: Phaser.Math.Between(0, 9) }),
-      frameRate: 10,
-      repeat: -1,
-      repeatDelay: 10
-    };
+		// add three shubs as 'loading animation'
+		var progShubs = {
+			key: 'progMove',
+			frames: this.anims.generateFrameNumbers('shub', { start: 0, end: 9, first: Phaser.Math.Between(0, 9) }),
+			frameRate: 10,
+			repeat: -1,
+			repeatDelay: 10
+		};
 
-    // create animation
-    this.anims.create(progShubs);
+		// create animation
+		this.anims.create(progShubs);
 
-    // add three shubs
-    var progShub1 = this.add.sprite(window.innerWidth * 0.40, window.innerHeight * 0.5, 'shub', 0);
-    var progShub2 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.5, 'shub', 0);
-    var progShub3 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.5, 'shub', 0);
+		// add three shubs
+		var progShub1 = this.add.sprite(window.innerWidth * 0.40, window.innerHeight * 0.5, 'shub', 0);
+		var progShub2 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.5, 'shub', 0);
+		var progShub3 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.5, 'shub', 0);
 
-    // scale them
-    progShub1.displayWidth = 45;
-    progShub2.displayWidth = 45;
-    progShub3.displayWidth = 45;
+		// scale them
+		progShub1.displayWidth = 45;
+		progShub2.displayWidth = 45;
+		progShub3.displayWidth = 45;
 
-    progShub1.scaleY = progShub1.scaleX;
-    progShub2.scaleY = progShub2.scaleX;
-    progShub3.scaleY = progShub3.scaleX;
+		progShub1.scaleY = progShub1.scaleX;
+		progShub2.scaleY = progShub2.scaleX;
+		progShub3.scaleY = progShub3.scaleX;
 
-    // animate them
-    progShub1.anims.delayedPlay(0, 'progMove', 0);
-    progShub2.anims.delayedPlay(0, 'progMove', 0);
-    progShub3.anims.delayedPlay(0, 'progMove', 0);
+		// animate them
+		progShub1.anims.delayedPlay(0, 'progMove', 0);
+		progShub2.anims.delayedPlay(0, 'progMove', 0);
+		progShub3.anims.delayedPlay(0, 'progMove', 0);
 
 		// ********************
 		// NOW, new Shub Data would need to be computed here, but
 		// function of api of not available...
 		//const newShubData = await this.varObj.computeNewShubNo(this.varObj.newNumber, this.varObj.trialCount, this.varObj.blockCount, this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5);
-		const newShubData = {
+		/*const newShubData = {
 			"newNumShubs": 10,
 			"counterfactualCountVars": [1., 1., 0., 0., 2.],
 			"diffCountVars": [0., 0., 0., 0., 0.]
-		}
+		}*/
 		// ********************
+		this.varObj.api.computeNewShubNo(this.varObj.newNumber, this.varObj.trialCount, this.varObj.blockCount, this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5).then((newShubData) => {
+			if (newShubData == undefined) {
+				throw "Error while computing new shub number"
+			}
+	
+			var idx;
+			if (this.varObj.trialCount % 3 == 0) {
+				idx = 3
+			} else {
+				idx = this.varObj.trialCount % 3
+			}
+			// assign info to arrays for later feedback Scene
+			this.varObj.in_array[idx] = [this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5]
+			this.varObj.cf_array[idx] = [newShubData.counterfactualCountVars.var1, newShubData.counterfactualCountVars.var2, newShubData.counterfactualCountVars.var3, newShubData.counterfactualCountVars.var4, newShubData.counterfactualCountVars.var5];
+			this.varObj.shubOldNo[idx] = this.varObj.oldNumber;
+			this.varObj.shubNewNo[idx] = newShubData.newNumShubs;
+			this.varObj.newNumber = newShubData.newNumShubs;
+	
+			// switch to stable Scene again
+			this.scene.remove('stableScene', stableScene);
+			var stableScene = new StableScene(this.varObj);
+			this.scene.add('stableScene', stableScene);
+			this.scene.start('stableScene');
+		});
+	}
 
-		if (newShubData == undefined) {
-			throw "Error while computing new shub number"
-		}
-
-		var idx;
-		if (this.varObj.trialCount % 3 == 0) {
-			idx = 3
-		} else {
-			idx = this.varObj.trialCount % 3
-		}
-		// assign info to arrays for later feedback Scene
-		this.varObj.in_array[idx] = [this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5]
-		this.varObj.cf_array[idx] = [newShubData.counterfactualCountVars[0], newShubData.counterfactualCountVars[1], newShubData.counterfactualCountVars[2], newShubData.counterfactualCountVars[3], newShubData.counterfactualCountVars[4]];
-		this.varObj.shubOldNo[idx] = this.varObj.oldNumber;
-		this.varObj.shubNewNo[idx] = newShubData.newNumShubs;
-		this.varObj.newNumber = newShubData.newNumShubs;
-
-		// switch to stable Scene again
-		this.scene.remove('stableScene', stableScene);
-		var stableScene = new StableScene(this.varObj);
-		this.scene.add('stableScene', stableScene);
-		this.scene.start('stableScene');
-
-    }
-
-	update() {}
+	update() { }
 
 }
 
