@@ -116,13 +116,14 @@ class PredictNewShubNoHandler(BasisRequestHandler):
             }
         }
         #if control_group is False:
-        log_data["counterfactualCountVars"] = {
-                "var1": x_cf[0],
-                "var2": x_cf[1],
-                "var3": x_cf[2],
-                "var4": x_cf[3],
-                "var5": x_cf[4]
-            }
+        if x_cf is not None:
+            log_data["counterfactualCountVars"] = {
+                    "var1": x_cf[0],
+                    "var2": x_cf[1],
+                    "var3": x_cf[2],
+                    "var4": x_cf[3],
+                    "var5": x_cf[4]
+                }
 
         if self.datamgr.log_user_stuff(user_id, json.dumps(log_data)) == False:
             self.send_custom_error(500, "Database error")
@@ -132,21 +133,25 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         #if control_group is True:
         #   self.write(json.dumps({"newNumShubs": SNnew}))
         #else:
-        self.write(json.dumps({
-            "newNumShubs": SNnew,
-            "counterfactualCountVars": {
+        results = {
+            "newNumShubs": SNnew
+        }
+        if x_cf is not None:
+            results["counterfactualCountVars"] = {
                 "var1": x_cf[0],
                 "var2": x_cf[1],
                 "var3": x_cf[2],
                 "var4": x_cf[3],
                 "var5": x_cf[4]
-            },
-            "diffCountVars": {
+            }
+            results["diffCountVars"] = {
                 "var1": x_cf[0] - x[0, 0],
                 "var2": x_cf[1] - x[0, 1],
                 "var3": x_cf[2] - x[0, 2],
                 "var4": x_cf[3] - x[0, 3],
                 "var5": x_cf[4] - x[0, 4]
-            }}))
+            }
+
+        self.write(json.dumps(results))
 
         self.finish()

@@ -191,7 +191,7 @@ def compute_counterfactual_of_model(model, x, y_pred, features_whitelist = [0, 1
     counterfactuals = list(filter(lambda cf: model.predict([cf]) > y_pred, counterfactuals))
 
     # Choose a counterfactual -> simply take the first one (closest)  # TODO: Or choose the one with the largest or larger prediction?
-    x_cf = [None for _ in range(x.shape[0])] if len(counterfactuals) == 0 else counterfactuals[0]
+    x_cf = None if len(counterfactuals) == 0 else counterfactuals[0]
 
     return x_cf
 
