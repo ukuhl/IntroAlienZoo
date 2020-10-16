@@ -4,41 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <title>AlienZoo v0.1</title>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.js" integrity="sha384-RkqUcFVZ0OfVzKHoOH5QIFagsMh/keq6DUmwn5J6EBtemIHlFQx2kqMSE5CvLn9f" crossorigin="anonymous"></script>
+    <!--<script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js" integrity="sha384-LRKf0y4WnOq8fKhrs/394bI+8JOCrBBOTWjFhHfS6DsmKq2Ki96Npd15PIdSLpYu" crossorigin="anonymous"></script>-->
 </head>
 
 <body>
     <script src="js/api.js"></script>
-    <!--
-    FÜR ULRIKE!
-    -->
     <script type="module" src="js/gameUI.js"></script>
-    <!--
-    <script type="text/javascript">
-        var api = new AlienZooApi();
-        api.gameStart().then( async (success) => {
-            if(success == false) {
-                throw "Error while staring the game"
-            }
-            console.log(api.userId);
-            console.log(api.controlGroup);
-
-            var numShubs = 4;
-            var trialCount = 42;
-            var blockCount = 1;
-            const newShubData = await api.computeNewShubNo(numShubs, trialCount, blockCount, 1, 1, 0, 0, 2);
-            if (newShubData == undefined) {
-                throw "Error while computing new shub number"
-            }
-            console.log(newShubData);
-        })
-        .catch((error) => {
-            console.log("Smth. went wrong :(");
-            console.log(error);
-        });
-    </script>
-    -->
 </body>
 
 </html>
