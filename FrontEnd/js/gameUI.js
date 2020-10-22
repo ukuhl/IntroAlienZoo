@@ -1,6 +1,7 @@
 "use strict";
 
 import StartScene from './startScene.js';
+import InfoScene from './infoScene.js';
 
 // generate new Api instance
 var api = new AlienZooApi();
@@ -102,10 +103,10 @@ api.gameStart().then( async (success) => {
       "shubNewNo" : []
     }
 
-    // define start scene with current data, and start the scene
-    var startScene = new StartScene(varObj);
-    game.scene.add('startScene', startScene);
-    game.scene.start('startScene');
+    // define info scene with current data, and start the scene
+    var infoScene = new InfoScene(varObj);
+    game.scene.add('infoScene', infoScene);
+    game.scene.start('infoScene');
 
     // auxilliary function to shuffle the plants-array right at the start
     function shuffle(array) {
