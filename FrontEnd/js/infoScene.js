@@ -72,7 +72,7 @@ class InfoScene extends Phaser.Scene {
 			.on('pointerdown', () => this.scene.start('startScene'));
 
 		//var textAgree = this.add.text(-55, -20, 'I agree to participate in this study.', { fontFamily: 'Arial', fontSize: '14px', color: '#000000' }).setOrigin(0);
-		var textAgree = this.add.text(-60, -15, 'I agree to participate.', { fontFamily: 'Arial', fontSize: '14px', color: '#000000' }).setOrigin(0);
+		var textAgree = this.add.text(-85, -15, 'I agree to participate.', { fontSize: '14px', color: '#000000' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.85, [buttonAgree, textAgree])
 
 	}

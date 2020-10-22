@@ -78,7 +78,7 @@ class StartScene extends Phaser.Scene {
 
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, textBlock2, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, textBlock3, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.600, textBlock3, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
 
 		// instatiate and add new stable scene with current data
 		var stableScene = undefined;
@@ -93,7 +93,8 @@ class StartScene extends Phaser.Scene {
 			.on('pointerdown', () => this.scene.start('stableScene'));
 
 		var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
-		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.70, [buttonStart, textStart])
+		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.75, [buttonStart, textStart])
+
 	}
 
 	update() {}

@@ -21,7 +21,7 @@ class DataMgr():
         try:
             self.db.cursor().execute("INSERT INTO users (userId, controlGroup) VALUES(%s,%s)", (user_id, int(control_group)))
             self.db.commit()
-            
+
             return True
         except Exception as ex:
             print(ex)
@@ -32,7 +32,7 @@ class DataMgr():
             cur = self.db.cursor()
             cur.execute("SELECT controlGroup FROM users WHERE userId=%s", (user_id,))
             result = cur.fetchone()
-            
+
             return {"userId": user_id, "controlGroup": bool(result[0])}
         except Exception as ex:
             print(ex)
@@ -42,7 +42,7 @@ class DataMgr():
         try:
             self.db.cursor().execute("INSERT INTO logs (userId, data) VALUES(%s,%s)", (user_id, data))
             self.db.commit()
-            
+
             return True
         except Exception as ex:
             print(ex)

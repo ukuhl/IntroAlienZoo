@@ -1,5 +1,5 @@
 import StableScene from './stableScene.js';
-import EndScene from './endScene.js';
+import QuestionnaireScene1 from './questionnaireScene1.js';
 
 class FeedbackScene extends Phaser.Scene {
 
@@ -290,18 +290,19 @@ class FeedbackScene extends Phaser.Scene {
 		} else {
 
 			// instatiate and add new end scene with current data
-			var endScene = undefined;
+			var questionnaireScene1 = undefined;
 
 			// add button to request feedback
 			var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
 				.setInteractive()
-				.on('pointerdown', () => endScene = new EndScene(this.varObj))
-				.on('pointerdown', () => this.scene.remove('endScene', endScene))
-				.on('pointerdown', () => this.scene.add('endScene', endScene))
-				.on('pointerdown', () => this.scene.start('endScene'));
+				.on('pointerdown', () => questionnaireScene1 = new QuestionnaireScene1(this.varObj))
+				.on('pointerdown', () => this.scene.remove('questionnaireScene1', questionnaireScene1))
+				.on('pointerdown', () => this.scene.add('questionnaireScene1', questionnaireScene1))
+				.on('pointerdown', () => this.scene.start('questionnaireScene1'));
 
 			var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#000000' })
 			var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue])
+
 		}
 
 	}
