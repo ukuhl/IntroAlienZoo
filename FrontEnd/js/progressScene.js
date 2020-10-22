@@ -74,39 +74,34 @@ class ProgressScene extends Phaser.Scene {
 		progShub2.anims.delayedPlay(0, 'progMove', 0);
 		progShub3.anims.delayedPlay(0, 'progMove', 0);
 
-		// ********************
-		// NOW, new Shub Data would need to be computed here, but
-		// function of api of not available...
-		//const newShubData = await this.varObj.computeNewShubNo(this.varObj.newNumber, this.varObj.trialCount, this.varObj.blockCount, this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5);
-		/*const newShubData = {
-			"newNumShubs": 10,
-			"counterfactualCountVars": [1., 1., 0., 0., 2.],
-			"diffCountVars": [0., 0., 0., 0., 0.]
-		}*/
-		// ********************
+		// compute new Shub no, based on user input
 		this.varObj.api.computeNewShubNo(this.varObj.newNumber, this.varObj.trialCount, this.varObj.blockCount, this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5).then((newShubData) => {
 			if (newShubData == undefined) {
 				throw "Error while computing new shub number"
 			}
-	
+
 			var idx;
 			if (this.varObj.trialCount % 3 == 0) {
 				idx = 3
 			} else {
 				idx = this.varObj.trialCount % 3
 			}
+
 			// assign info to arrays for later feedback Scene
 			this.varObj.in_array[idx] = [this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5]
 			this.varObj.cf_array[idx] = [newShubData.counterfactualCountVars.var1, newShubData.counterfactualCountVars.var2, newShubData.counterfactualCountVars.var3, newShubData.counterfactualCountVars.var4, newShubData.counterfactualCountVars.var5];
 			this.varObj.shubOldNo[idx] = this.varObj.oldNumber;
 			this.varObj.shubNewNo[idx] = newShubData.newNumShubs;
 			this.varObj.newNumber = newShubData.newNumShubs;
-	
+
 			// switch to stable Scene again
 			this.scene.remove('stableScene', stableScene);
 			var stableScene = new StableScene(this.varObj);
 			this.scene.add('stableScene', stableScene);
-			this.scene.start('stableScene');
+			this.time.delayedCall(3000, () => {
+				this.scene.start('stableScene')
+			})
+			//this.scene.start('stableScene');
 		});
 	}
 
