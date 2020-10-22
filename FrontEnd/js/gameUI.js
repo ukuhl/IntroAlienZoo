@@ -1,6 +1,5 @@
 "use strict";
 
-import StartScene from './startScene.js';
 import InfoScene from './infoScene.js';
 
 // generate new Api instance
