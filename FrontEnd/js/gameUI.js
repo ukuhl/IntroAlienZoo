@@ -20,11 +20,12 @@ api.gameStart().then( async (success) => {
       type: Phaser.AUTO,
           scale: {
             mode: Phaser.Scale.FIT,
+            parent: "AlienZooGame",
             autoCenter: Phaser.Scale.CENTER_BOTH
           },
           backgroundColor: '#ffffff',
-          width: window.innerWidth,
-          height: window.innerHeight,
+          width: window.innerWidth, //* window.devicePixelRatio
+          height: window.innerHeight, //* window.devicePixelRatio
           physics: {
             default: 'arcade',
             arcade: {

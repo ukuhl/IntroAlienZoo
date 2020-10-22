@@ -48,23 +48,27 @@ class StartScene extends Phaser.Scene {
 			var textBlock3 = [
 				"After three rounds, you will get a summary of your past choices.",
 				"Also, there will be feedback on what other users tried at that point in time.",
-				"If you are ready to start, hit the start button below.",
+				"During the game, please do not resize our window or use the back button of your browser.",
+				"If you are ready to start, hit the start button.",
 			];
+
 		} else {
 			var textBlock3 = [
 				"After three rounds, you will get a summary of your past choices.",
 				"Also, there will be feedback on what choice would have led to a better result.",
-				"If you are ready to start, hit the start button below.",
+				"During the game, please do not resize our window or use the back button of your browser.",
+				"If you are ready to start, hit the start button.",
+
 			];
 		}
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, textBlock1, { fontSize: '18px', color: '#000000', align: 'left'});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, textBlock1, { fontSize: '17px', color: '#000000', align: 'left'});
 
 		this.add.sprite(window.innerWidth * 0.25, window.innerHeight * 0.175, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(1.5);
 		this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.175, 'shub', 5, { frameWidth: 50, frameHeight: 47 }).setScale(1.5);
 		this.add.sprite(window.innerWidth * 0.75, window.innerHeight * 0.175, 'shub', 8, { frameWidth: 50, frameHeight: 48 }).setScale(1.5);
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.250, 'For feeding, you can select from 5 different plants:', { fontSize: '18px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.250, 'For feeding, you can select from 5 different plants:', { fontSize: '17px', color: '#000000' });
 
 		this.add.image(window.innerWidth * 0.20, window.innerHeight * 0.350, 'plant1').setScale(0.15);
 		this.add.image(window.innerWidth * 0.35, window.innerHeight * 0.350, 'plant2').setScale(0.15);
@@ -72,24 +76,24 @@ class StartScene extends Phaser.Scene {
 		this.add.image(window.innerWidth * 0.65, window.innerHeight * 0.350, 'plant4').setScale(0.15);
 		this.add.image(window.innerWidth * 0.80, window.innerHeight * 0.350, 'plant5').setScale(0.15);
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, textBlock2, { fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, textBlock2, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, textBlock3, { fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, textBlock3, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
 
 		// instatiate and add new stable scene with current data
 		var stableScene = undefined;
 		//this.scene.add('stableScene', stableScene);
 
 		// add button to start game and switch to fullscreen
-		var buttonStart = this.add.image(0, 0, 'buttonFeed').setScale(0.75)
+		var buttonStart = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 			.setInteractive()
 			.on('pointerdown', () => this.scale.startFullscreen())
 			.on('pointerdown', () => stableScene = new StableScene(this.varObj))
 			.on('pointerdown', () => this.scene.add('stableScene', stableScene))
 			.on('pointerdown', () => this.scene.start('stableScene'));
 
-		var textStart = this.add.text(-55, -20, 'Start!', { fontSize: '30px', color: '#000000' }).setOrigin(0);
-		var buttonContainer = this.add.container(window.innerWidth * 0.5, window.innerHeight * 0.80, [buttonStart, textStart])
+		var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.70, [buttonStart, textStart])
 	}
 
 	update() {}

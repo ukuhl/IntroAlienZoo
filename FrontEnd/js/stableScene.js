@@ -48,7 +48,7 @@ class StableScene extends Phaser.Scene {
 
 		// *** Upper content of window ***
 		if (this.varObj.trialCount == 1) {
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'Welcome to your first run!', { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'This is your first run!', { fontSize: '20px', color: '#000000' });
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Please make your first selection with the buttons on the right.', { fontSize: '20px', color: '#000000' });
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.125, 'Submit by hitting the button on the bottom right.', { fontSize: '20px', color: '#000000' });
 		} else {
@@ -173,15 +173,15 @@ class StableScene extends Phaser.Scene {
 			// instatiate and add new progress scene with current data
 			var progressScene = undefined;
 			// add button to submit new input - change scene when pressed!
-			const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
+			const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 				.setInteractive()
 				.on('pointerdown', () => progressScene = new ProgressScene(this.varObj))
 				.on('pointerdown', () => this.scene.remove('progressScene', progressScene))
 				.on('pointerdown', () => this.scene.add('progressScene', progressScene))
 				.on('pointerdown', () => this.scene.start('progressScene'));
 
-			var textFeed = this.add.text(-95, -20, 'Feeding time!', { fontSize: '25px', color: '#000000' });
-			var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight - (buttonFeed.height), [buttonFeed, textFeed]);
+			var textFeed = this.add.text(-75, -15, 'Feeding time!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+			var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
 
 		}
 
