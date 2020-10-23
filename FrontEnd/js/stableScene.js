@@ -32,7 +32,14 @@ class StableScene extends Phaser.Scene {
 	create() {
 
 		// increase trial count
-		this.varObj.trialCount++;
+		if (this.varObj.trialCount == 0) {
+			this.varObj.trialCount++;
+		} else if ( this.varObj.trialCount % 3 == 0 && ! this.varObj.feedback_flag ) {
+			this.varObj.feedback_flag=true;
+		} else {
+			this.varObj.trialCount++;
+			this.varObj.feedback_flag=false;
+		}
 
 		// *** define variable values for a clean run ***
 		let oldVar1 = this.varObj.clickCountVar1;
@@ -71,8 +78,9 @@ class StableScene extends Phaser.Scene {
 		this.varObj.oldNumber = this.varObj.newNumber;
 
 		// if three trails are done, get feedback and start a new block
-		if (this.varObj.trialCount % 4 == 0) {
-			this.varObj.blockCount++;
+		//if (this.varObj.trialCount % 4 == 0) {
+		if ( this.varObj.feedback_flag ) {
+			//this.varObj.blockCount++;
 			// instatiate and add new progress scene with current data
 			var feedbackScene = undefined;
 			// add button to submit new input - change scene when pressed!

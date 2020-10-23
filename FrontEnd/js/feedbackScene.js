@@ -27,7 +27,7 @@ class FeedbackScene extends Phaser.Scene {
 	}
 
 	create() {
-
+		
 		if (this.varObj.api.controlGroup) {
 			// 1st round:
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'In round 1, you selected:', { fontSize: '18px', color: '#000000' });
@@ -269,6 +269,9 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][4]}`, { fontSize: '18px', color: '#000000' });
 			}
 		}
+
+		// after each round of feedback, increase blockCount by one
+		this.varObj.blockCount++;
 
 		// depending on block number:
 		if (this.varObj.blockCount < 6) {

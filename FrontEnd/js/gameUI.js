@@ -102,7 +102,8 @@ api.gameStart().then( async (success) => {
       "cf_array" : [],
       "rand_array" : [],
       "shubOldNo" : [],
-      "shubNewNo" : []
+      "shubNewNo" : [],
+      "feedback_flag" : false,
     }
 
     // define info scene with current data, and start the scene
