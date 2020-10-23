@@ -4,6 +4,58 @@ class AlienZooApi {
     userId = undefined;
     controlGroup = undefined;
 
+    log_questionnaire(questionId, checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6) {
+        const data = {
+            "userId": this.userId,
+            "questionId": questionId,
+            "checkboxValues": [checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6]
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/questionnaireAnswer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
+    log_time(eventId, timeElapsed) {
+        const data = {
+            "userId": this.userId,
+            "eventId": eventId,
+            "timeElapsed": timeElapsed
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/elapsedTime", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
     gameStart() {
         return new Promise(resolve => {
             fetch("/api/gameStart", {

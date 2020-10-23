@@ -15,6 +15,8 @@ class DataMgr():
     def __init_database(self):
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS users (userId TEXT NOT NULL, controlGroup INT NOT NULL)")
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS logs (userId TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, data TEXT NOT NULL)")
+        self.db.cursor().execute("CREATE TABLE IF NOT EXISTS questionnaire_logs (userId TEXT NOT NULL, questionId INT NOT NULL, var1 INT NOT NULL, var2 INT NOT NULL, var3 INT NOT NULL, var4 INT NOT NULL, var5 INT NOT NULL, var6 INT NOT NULL)");
+        self.db.cursor().execute("CREATE TABLE IF NOT EXISTS elapsedtime_logs (userId TEXT NOT NULL, eventId INT NOT NULL, timeElapsed INT NOT NULL)")
         self.db.commit()
 
     def add_new_user(self, user_id, control_group):
@@ -37,6 +39,27 @@ class DataMgr():
         except Exception as ex:
             print(ex)
             return None
+
+    def log_questionnaire_answers(self, user_id, question_id, checkbox_values):
+        try:
+            self.db.cursor().execute("INSERT INTO questionnaire_logs (userId, questionId, var1, var2, var3, var4, var5, var6) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",
+                                    (user_id, question_id, checkbox_values[0], checkbox_values[1], checkbox_values[2], checkbox_values[3], checkbox_values[4], checkbox_values[5]))
+            self.db.commit()
+
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
+
+    def log_elapsed_time(self, user_id, event_id, time_elapsed):
+        try:
+            self.db.cursor().execute("INSERT INTO elapsedtime_logs (userId, eventId, timeElapsed) VALUES(%s,%s,%s)", (user_id, event_id, time_elapsed))
+            self.db.commit()
+
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
 
     def log_user_stuff(self, user_id, data):
         try:

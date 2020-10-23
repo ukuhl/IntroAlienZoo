@@ -10,6 +10,8 @@ from dbmgr import DataMgr
 
 from handler.gameStartHandler import GameStartHandler
 from handler.predictNewShubNoHandler import PredictNewShubNoHandler
+from handler.logElapsedTimes import LogElapsedTimesHandler
+from handler.logQuestionnaire import LogQuestionnaireHandler
 
 
 port = 8888
@@ -28,7 +30,9 @@ class WebServer(tornado.web.Application):
             (r'/(favicon\.ico)', tornado.web.StaticFileHandler, {'path': '../FrontEnd/static'}),
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': '../FrontEnd/static'}),
             (r'/api/gameStart', GameStartHandler, dict(datamgr=self.datamgr)),
-            (r'/api/predictNewShubNo', PredictNewShubNoHandler, dict(model=self.model, datamgr=self.datamgr))
+            (r'/api/predictNewShubNo', PredictNewShubNoHandler, dict(model=self.model, datamgr=self.datamgr)),
+            (r'/api/log/questionnaireAnswer', LogQuestionnaireHandler, dict(datamgr=self.datamgr)),
+            (r'/api/log/elapsedTime', LogElapsedTimesHandler, dict(datamgr=self.datamgr))
         ]
 
         tornado.web.Application.__init__(self, handlers)
