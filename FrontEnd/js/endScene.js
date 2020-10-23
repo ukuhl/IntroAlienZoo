@@ -10,8 +10,6 @@ class EndScene extends Phaser.Scene {
 
 	preload() {
 		// load button images
-		//this.load.image('checkboxEmpty', 'static/CheckBoxEmpty.png');
-		//this.load.image('checkboxClicked', 'static/CheckBoxClicked.png');
 		this.load.spritesheet('checkbox', 'static/CheckBoxSprites.png', { frameWidth: 51, frameHeight: 50 });
 		this.load.image('UBIE', 'static/UBF-logo.png');
 		this.load.image('ITSML', 'static/ITS_ML_logo.png');
@@ -20,11 +18,8 @@ class EndScene extends Phaser.Scene {
 
 	create() {
 
-		this.add.image(window.innerWidth * 0.1, window.innerHeight * 0.1, 'UBIE').setScale(0.15); //.setScale(0.15)
-		this.add.image(window.innerWidth * 0.8, window.innerHeight * 0.1, 'ITSML').setScale(0.15); // .setScale(0.15)
-
-		// clean slate:
-    this.children.removeAll();
+		this.add.image(window.innerWidth * 0.1, window.innerHeight * 0.1, 'UBIE').setScale(0.15);
+		this.add.image(window.innerWidth * 0.8, window.innerHeight * 0.1, 'ITSML').setScale(0.15);
 
 		var qIntro = [
 			'You have completed the study.',
