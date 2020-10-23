@@ -74,6 +74,7 @@ api.gameStart().then( async (success) => {
     // arrays for storing user input / counterfactual information for later feedback
     let in_array = [];
     let cf_array = [];
+    let rand_array = [];
     let diff_array = [];
     let shubOldNo = [];
     let shubNewNo = [];
@@ -99,6 +100,7 @@ api.gameStart().then( async (success) => {
       "minFeedingNo": minFeedingNo,
       "in_array" : [],
       "cf_array" : [],
+      "rand_array" : [],
       "shubOldNo" : [],
       "shubNewNo" : []
     }

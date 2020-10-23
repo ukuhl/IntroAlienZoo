@@ -58,15 +58,15 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.175, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
 
 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.2250, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.2250, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][0], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.2250, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.2250, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][1], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.2250, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.2250, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][2], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.2250, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.2250, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][3], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.2250, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.2250, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][4], { fontSize: '18px', color: '#000000' });
 			}
 
 			// 2nd round:
@@ -98,15 +98,15 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
 
 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
 			}
 
 			// 3rd round:
@@ -138,15 +138,15 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
 
 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
 				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, 'x ' + Phaser.Math.Between(0, 6), { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
 			}
 		} else {
 			// 1st round:

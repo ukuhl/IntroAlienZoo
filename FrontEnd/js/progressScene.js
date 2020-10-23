@@ -88,8 +88,9 @@ class ProgressScene extends Phaser.Scene {
 			}
 
 			// assign info to arrays for later feedback Scene
-			this.varObj.in_array[idx] = [this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5]
+			this.varObj.in_array[idx] = [this.varObj.clickCountVar1, this.varObj.clickCountVar2, this.varObj.clickCountVar3, this.varObj.clickCountVar4, this.varObj.clickCountVar5];
 			this.varObj.cf_array[idx] = [newShubData.counterfactualCountVars.var1, newShubData.counterfactualCountVars.var2, newShubData.counterfactualCountVars.var3, newShubData.counterfactualCountVars.var4, newShubData.counterfactualCountVars.var5];
+			this.varObj.rand_array[idx] = [Phaser.Math.Between(0, 6), Phaser.Math.Between(0, 6), Phaser.Math.Between(0, 6), Phaser.Math.Between(0, 6), Phaser.Math.Between(0, 6)];
 			this.varObj.shubOldNo[idx] = this.varObj.oldNumber;
 			this.varObj.shubNewNo[idx] = newShubData.newNumShubs;
 			this.varObj.newNumber = newShubData.newNumShubs;
