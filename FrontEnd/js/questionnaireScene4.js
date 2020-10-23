@@ -589,7 +589,8 @@ class QuestionnaireScene4 extends Phaser.Scene {
 			.on('pointerdown', () => endScene = new EndScene(this.varObj))
 			.on('pointerdown', () => this.scene.remove('endScene', endScene))
 			.on('pointerdown', () => this.scene.add('endScene', endScene))
-			.on('pointerdown', () => this.scene.start('endScene'));
+			.on('pointerdown', () => this.scene.start('endScene'))
+			.on('pointerdown', () => this.scale.stopFullscreen());
 
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#000000' })
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
