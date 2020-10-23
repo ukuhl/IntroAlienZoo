@@ -99,7 +99,7 @@ class ProgressScene extends Phaser.Scene {
 			this.scene.remove('stableScene', stableScene);
 			var stableScene = new StableScene(this.varObj);
 			this.scene.add('stableScene', stableScene);
-			this.time.delayedCall(3, () => {
+			this.time.delayedCall(3000, () => {
 				this.scene.start('stableScene')
 			})
 			//this.scene.start('stableScene');
