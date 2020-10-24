@@ -125,8 +125,8 @@ class PredictNewShubNoHandler(BasisRequestHandler):
                     "var5": x_cf[4]
                 }
 
-        if self.datamgr.log_user_stuff(user_id, json.dumps(log_data)) == False:
-            self.send_custom_error(500, "Database error")
+        if self.datamgr.log_user_stuff(user_id, json.dumps(log_data)) is False:
+            self.send_custom_error(500, "Internal server error")
             return
 
         # Send result back to client

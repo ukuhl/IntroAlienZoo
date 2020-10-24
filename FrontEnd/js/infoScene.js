@@ -83,7 +83,7 @@ class InfoScene extends Phaser.Scene {
 
 	logTime() {
 		var time = new Date().getTime() - this.startTime;
-		this.varObj.api.log_time(0, time);
+		this.varObj.api.logTime(0, time);
 	}
 
 	update() {}

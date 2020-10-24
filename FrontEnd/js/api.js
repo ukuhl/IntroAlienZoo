@@ -4,7 +4,34 @@ class AlienZooApi {
     userId = undefined;
     controlGroup = undefined;
 
-    log_questionnaire(questionId, checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6) {
+    logRandomFeedback(trialCount, blockCount, randFeedbackIndices) {
+        const data = {
+            "userId": this.userId,
+            "trialCount": trialCount,
+            "blockCount": blockCount,
+            "randFeedbackIndices": randFeedbackIndices
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/randomFeedback", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
+    logQuestionnaire(questionId, checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6) {
         const data = {
             "userId": this.userId,
             "questionId": questionId,
@@ -30,7 +57,7 @@ class AlienZooApi {
         });
     }
 
-    log_time(eventId, timeElapsed) {
+    logTime(eventId, timeElapsed) {
         const data = {
             "userId": this.userId,
             "eventId": eventId,
