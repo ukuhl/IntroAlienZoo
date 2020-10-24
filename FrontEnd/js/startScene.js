@@ -5,6 +5,7 @@ class StartScene extends Phaser.Scene {
 	constructor(varObj) {
 		super({key : 'startScene'});
 		this.varObj = varObj;
+		this.startTime = undefined;
 	}
 
 	init() {}
@@ -29,6 +30,8 @@ class StartScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.startTime = new Date().getTime();
+
 		// set the start screen:
 
 		var textBlock1 = [
@@ -87,6 +90,7 @@ class StartScene extends Phaser.Scene {
 		// add button to start game and switch to fullscreen
 		var buttonStart = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 			.setInteractive()
+			.on('pointerdown', () => this.logTime())
 			.on('pointerdown', () => this.scale.startFullscreen())
 			.on('pointerdown', () => stableScene = new StableScene(this.varObj))
 			.on('pointerdown', () => this.scene.add('stableScene', stableScene))
@@ -95,6 +99,11 @@ class StartScene extends Phaser.Scene {
 		var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.75, [buttonStart, textStart])
 
+	}
+
+	logTime() {
+		var time = new Date().getTime() - this.startTime;
+		this.varObj.api.log_time(2, time);
 	}
 
 	update() {}

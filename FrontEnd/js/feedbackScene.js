@@ -7,6 +7,7 @@ class FeedbackScene extends Phaser.Scene {
 	constructor(varObj) {
 		super({ key: 'feedbackScene' });
 		this.varObj = varObj
+		this.startTime = undefined;
 	}
 
 	init() { }
@@ -27,7 +28,8 @@ class FeedbackScene extends Phaser.Scene {
 	}
 
 	create() {
-		
+		this.startTime = new Date().getTime();
+
 		if (this.varObj.api.controlGroup) {
 			// 1st round:
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'In round 1, you selected:', { fontSize: '18px', color: '#000000' });
@@ -282,6 +284,7 @@ class FeedbackScene extends Phaser.Scene {
 			// add button to request feedback
 			var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
 				.setInteractive()
+				.on('pointerdown', () => this.logTime())
 				.on('pointerdown', () => stableScene = new StableScene(this.varObj))
 				.on('pointerdown', () => this.scene.remove('stableScene', stableScene))
 				.on('pointerdown', () => this.scene.add('stableScene', stableScene))
@@ -298,6 +301,7 @@ class FeedbackScene extends Phaser.Scene {
 			// add button to request feedback
 			var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
 				.setInteractive()
+				.on('pointerdown', () => this.logTime())
 				.on('pointerdown', () => questionnaireScene1 = new QuestionnaireScene1(this.varObj))
 				.on('pointerdown', () => this.scene.remove('questionnaireScene1', questionnaireScene1))
 				.on('pointerdown', () => this.scene.add('questionnaireScene1', questionnaireScene1))
@@ -308,6 +312,11 @@ class FeedbackScene extends Phaser.Scene {
 
 		}
 
+	}
+
+	logTime() {
+		var time = new Date().getTime() - this.startTime;
+		this.varObj.api.log_time(5, time);
 	}
 
 	update() { }

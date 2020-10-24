@@ -6,6 +6,7 @@ class StableScene extends Phaser.Scene {
 	constructor(varObj) {
 		super({ key: 'stableScene' });
 		this.varObj = varObj;
+		this.startTime = undefined;
 	}
 
 	init() { }
@@ -30,6 +31,7 @@ class StableScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.startTime = new Date().getTime();
 
 		// increase trial count
 		if (this.varObj.trialCount == 0) {
@@ -86,6 +88,7 @@ class StableScene extends Phaser.Scene {
 			// add button to submit new input - change scene when pressed!
 			const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
 				.setInteractive()
+				.on('pointerdown', () => this.logTimeFeedback())
 				.on('pointerdown', () => feedbackScene = new FeedbackScene(this.varObj))
 				.on('pointerdown', () => this.scene.remove('feedbackScene', feedbackScene))
 				.on('pointerdown', () => this.scene.add('feedbackScene', feedbackScene))
@@ -183,6 +186,7 @@ class StableScene extends Phaser.Scene {
 			// add button to submit new input - change scene when pressed!
 			const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 				.setInteractive()
+				.on('pointerdown', () => this.logTimeFeed())
 				.on('pointerdown', () => progressScene = new ProgressScene(this.varObj))
 				.on('pointerdown', () => this.scene.remove('progressScene', progressScene))
 				.on('pointerdown', () => this.scene.add('progressScene', progressScene))
@@ -232,6 +236,16 @@ class StableScene extends Phaser.Scene {
 				thisShub.anims.reverse();
 			}
 		}
+	}
+
+	logTimeFeed() {
+		var time = new Date().getTime() - this.startTime;
+		this.varObj.api.log_time(3, time);
+	}
+
+	logTimeFeedback() {
+		var time = new Date().getTime() - this.startTime;
+		this.varObj.api.log_time(4, time);
 	}
 
 	update() { }

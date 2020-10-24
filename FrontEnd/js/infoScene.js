@@ -5,6 +5,7 @@ class InfoScene extends Phaser.Scene {
 	constructor(varObj) {
 		super({key : 'infoScene'});
 		this.varObj = varObj;
+		this.startTime = undefined;
 	}
 
 	init() {}
@@ -19,6 +20,8 @@ class InfoScene extends Phaser.Scene {
 	}
 
 	create() {
+
+		this.startTime = new Date().getTime();
 
 		this.add.image(window.innerWidth * 0.1, window.innerHeight * 0.1, 'UBIE').setScale(0.15); //.setScale(0.15)
 		this.add.image(window.innerWidth * 0.8, window.innerHeight * 0.1, 'ITSML').setScale(0.15); // .setScale(0.15)
@@ -66,6 +69,7 @@ class InfoScene extends Phaser.Scene {
 		// add button to start game and switch to fullscreen
 		var buttonAgree = this.add.image(0, 0, 'buttonAgree').setScale(0.5)
 			.setInteractive()
+			.on('pointerdown', () => this.logTime())
 			.on('pointerdown', () => this.scale.startFullscreen())
 			.on('pointerdown', () => startScene = new StartScene(this.varObj))
 			.on('pointerdown', () => this.scene.add('startScene', startScene))
@@ -75,6 +79,11 @@ class InfoScene extends Phaser.Scene {
 		var textAgree = this.add.text(-85, -15, 'I agree to participate.', { fontSize: '14px', color: '#000000' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.85, [buttonAgree, textAgree])
 
+	}
+
+	logTime() {
+		var time = new Date().getTime() - this.startTime;
+		this.varObj.api.log_time(0, time);
 	}
 
 	update() {}
