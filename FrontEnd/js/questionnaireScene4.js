@@ -4,8 +4,15 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
-		super({key : 'questionnaireScene4'});
-		this.varObj = varObj
+		super({ key: 'questionnaireScene4' });
+		this.varObj = varObj;
+
+		this.item9Var1Checked = false;
+		this.item9Var2Checked = false;
+		this.item9Var3Checked = false;
+		this.item9Var4Checked = false;
+		this.item9Var5Checked = false;
+		this.item9Var6Checked = false;
 	}
 
 	init() { }
@@ -18,14 +25,6 @@ class QuestionnaireScene4 extends Phaser.Scene {
 	}
 
 	create() {
-
-		var item9Var1Checked = false;
-		var item9Var2Checked = false;
-		var item9Var3Checked = false;
-		var item9Var4Checked = false;
-		var item9Var5Checked = false;
-		var item9Var6Checked = false;
-
 		/*
 		var item10Var1Checked = false;
 		var item10Var2Checked = false;
@@ -43,7 +42,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		*/
 
 		// clean slate:
-    this.children.removeAll();
+		this.children.removeAll();
 
 		var qIntro = [
 			'To complete the study, please answer the following 9 questions.',
@@ -53,11 +52,11 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		if(this.varObj.api.controlGroup) {
+		if (this.varObj.api.controlGroup) {
 			var item9 = [
 				"9. I received the feedback based on what other users tried at that point in time in the game in a timely and efficient manner."
 			];
-		} else {
+		} else {
 			var item9 = [
 				"9. I received the feedback on what choice would have led to a better result in a timely and efficient manner."
 			];
@@ -72,18 +71,18 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var item9Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.25).setInteractive();
 
 		item9Sprite1.on('pointerdown', function (pointer) {
-			if (item9Var1Checked) {
+			if (this.item9Var1Checked) {
 				item9Sprite1.setFrame(0);
-				item9Var1Checked = false;
+				this.item9Var1Checked = false;
 			} else {
 				item9Sprite1.setFrame(1);
-				item9Var1Checked = true;
+				this.item9Var1Checked = true;
 
-				item9Var2Checked = false;
-				item9Var3Checked = false;
-				item9Var4Checked = false;
-				item9Var5Checked = false;
-				item9Var6Checked = false;
+				this.item9Var2Checked = false;
+				this.item9Var3Checked = false;
+				this.item9Var4Checked = false;
+				this.item9Var5Checked = false;
+				this.item9Var6Checked = false;
 				item9Sprite2.setFrame(0);
 				item9Sprite3.setFrame(0);
 				item9Sprite4.setFrame(0);
@@ -91,7 +90,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 				item9Sprite6.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
 		// option 2
 		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.2, 'Disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
@@ -99,18 +98,18 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var item9Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.25).setInteractive();
 
 		item9Sprite2.on('pointerdown', function (pointer) {
-			if (item9Var2Checked) {
+			if (this.item9Var2Checked) {
 				item9Sprite2.setFrame(0);
-				item9Var2Checked = false;
+				this.item9Var2Checked = false;
 			} else {
 				item9Sprite2.setFrame(1);
-				item9Var2Checked = true;
+				this.item9Var2Checked = true;
 
-				item9Var1Checked = false;
-				item9Var3Checked = false;
-				item9Var4Checked = false;
-				item9Var5Checked = false;
-				item9Var6Checked = false;
+				this.item9Var1Checked = false;
+				this.item9Var3Checked = false;
+				this.item9Var4Checked = false;
+				this.item9Var5Checked = false;
+				this.item9Var6Checked = false;
 				item9Sprite1.setFrame(0);
 				item9Sprite3.setFrame(0);
 				item9Sprite4.setFrame(0);
@@ -118,7 +117,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 				item9Sprite6.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
 		// option 3
 		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.2, 'Neutral', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
@@ -126,18 +125,18 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var item9Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.25).setInteractive();
 
 		item9Sprite3.on('pointerdown', function (pointer) {
-			if (item9Var3Checked) {
+			if (this.item9Var3Checked) {
 				item9Sprite3.setFrame(0);
-				item9Var3Checked = false;
+				this.item9Var3Checked = false;
 			} else {
 				item9Sprite3.setFrame(1);
-				item9Var3Checked = true;
+				this.item9Var3Checked = true;
 
-				item9Var1Checked = false;
-				item9Var2Checked = false;
-				item9Var4Checked = false;
-				item9Var5Checked = false;
-				item9Var6Checked = false;
+				this.item9Var1Checked = false;
+				this.item9Var2Checked = false;
+				this.item9Var4Checked = false;
+				this.item9Var5Checked = false;
+				this.item9Var6Checked = false;
 				item9Sprite1.setFrame(0);
 				item9Sprite2.setFrame(0);
 				item9Sprite4.setFrame(0);
@@ -145,7 +144,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 				item9Sprite6.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
 		// option 4
 		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.2, 'Agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
@@ -153,18 +152,18 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var item9Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.25).setInteractive();
 
 		item9Sprite4.on('pointerdown', function (pointer) {
-			if (item9Var4Checked) {
+			if (this.item9Var4Checked) {
 				item9Sprite4.setFrame(0);
-				item9Var4Checked = false;
+				this.item9Var4Checked = false;
 			} else {
 				item9Sprite4.setFrame(1);
-				item9Var4Checked = true;
+				this.item9Var4Checked = true;
 
-				item9Var1Checked = false;
-				item9Var2Checked = false;
-				item9Var3Checked = false;
-				item9Var5Checked = false;
-				item9Var6Checked = false;
+				this.item9Var1Checked = false;
+				this.item9Var2Checked = false;
+				this.item9Var3Checked = false;
+				this.item9Var5Checked = false;
+				this.item9Var6Checked = false;
 				item9Sprite1.setFrame(0);
 				item9Sprite2.setFrame(0);
 				item9Sprite3.setFrame(0);
@@ -172,7 +171,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 				item9Sprite6.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
 		// option 5
 		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.2, 'Strongly agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
@@ -180,18 +179,18 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var item9Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.25).setInteractive();
 
 		item9Sprite5.on('pointerdown', function (pointer) {
-			if (item9Var5Checked) {
+			if (this.item9Var5Checked) {
 				item9Sprite5.setFrame(0);
-				item9Var5Checked = false;
+				this.item9Var5Checked = false;
 			} else {
 				item9Sprite5.setFrame(1);
-				item9Var5Checked = true;
+				this.item9Var5Checked = true;
 
-				item9Var1Checked = false;
-				item9Var2Checked = false;
-				item9Var3Checked = false;
-				item9Var4Checked = false;
-				item9Var6Checked = false;
+				this.item9Var1Checked = false;
+				this.item9Var2Checked = false;
+				this.item9Var3Checked = false;
+				this.item9Var4Checked = false;
+				this.item9Var6Checked = false;
 				item9Sprite1.setFrame(0);
 				item9Sprite2.setFrame(0);
 				item9Sprite3.setFrame(0);
@@ -199,7 +198,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 				item9Sprite6.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
 		// Don't know
 		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.2, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
@@ -207,18 +206,18 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var item9Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.25).setInteractive();
 
 		item9Sprite6.on('pointerdown', function (pointer) {
-			if (item9Var6Checked) {
+			if (this.item9Var6Checked) {
 				item9Sprite6.setFrame(0);
-				item9Var6Checked = false;
+				this.item9Var6Checked = false;
 			} else {
 				item9Sprite6.setFrame(1);
-				item9Var6Checked = true;
+				this.item9Var6Checked = true;
 
-				item9Var1Checked = false;
-				item9Var2Checked = false;
-				item9Var3Checked = false;
-				item9Var4Checked = false;
-				item9Var5Checked = false;
+				this.item9Var1Checked = false;
+				this.item9Var2Checked = false;
+				this.item9Var3Checked = false;
+				this.item9Var4Checked = false;
+				this.item9Var5Checked = false;
 				item9Sprite1.setFrame(0);
 				item9Sprite2.setFrame(0);
 				item9Sprite3.setFrame(0);
@@ -226,16 +225,16 @@ class QuestionnaireScene4 extends Phaser.Scene {
 				item9Sprite5.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
-		if(this.varObj.api.controlGroup) {
-		  var item10 = [
-		    "7. I did not find inconsistencies in the feedback based on what other users tried at that point in time in the game."
-		  ];
-		} else {
-		  var item10 = [
-		    "7. I did not find inconsistencies in the feedback on what choice would have led to a better result."
-		  ];
+		if (this.varObj.api.controlGroup) {
+			var item10 = [
+				"7. I did not find inconsistencies in the feedback based on what other users tried at that point in time in the game."
+			];
+		} else {
+			var item10 = [
+				"7. I did not find inconsistencies in the feedback on what choice would have led to a better result."
+			];
 		}
 
 		/*
@@ -249,22 +248,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item10Sprite1.on('pointerdown', function (pointer) {
 		  if (item10Var1Checked) {
-		    item10Sprite1.setFrame(0);
-		    item10Var1Checked = false;
+			item10Sprite1.setFrame(0);
+			item10Var1Checked = false;
 		  } else {
-		    item10Sprite1.setFrame(1);
-		    item10Var1Checked = true;
+			item10Sprite1.setFrame(1);
+			item10Var1Checked = true;
 
-		    item10Var2Checked = false;
-		    item10Var3Checked = false;
-		    item10Var4Checked = false;
-		    item10Var5Checked = false;
-		    item10Var6Checked = false;
-		    item10Sprite2.setFrame(0);
-		    item10Sprite3.setFrame(0);
-		    item10Sprite4.setFrame(0);
-		    item10Sprite5.setFrame(0);
-		    item10Sprite6.setFrame(0);
+			item10Var2Checked = false;
+			item10Var3Checked = false;
+			item10Var4Checked = false;
+			item10Var5Checked = false;
+			item10Var6Checked = false;
+			item10Sprite2.setFrame(0);
+			item10Sprite3.setFrame(0);
+			item10Sprite4.setFrame(0);
+			item10Sprite5.setFrame(0);
+			item10Sprite6.setFrame(0);
 
 		  }
 		});
@@ -276,22 +275,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item10Sprite2.on('pointerdown', function (pointer) {
 		  if (item10Var2Checked) {
-		    item10Sprite2.setFrame(0);
-		    item10Var2Checked = false;
+			item10Sprite2.setFrame(0);
+			item10Var2Checked = false;
 		  } else {
-		    item10Sprite2.setFrame(1);
-		    item10Var2Checked = true;
+			item10Sprite2.setFrame(1);
+			item10Var2Checked = true;
 
-		    item10Var1Checked = false;
-		    item10Var3Checked = false;
-		    item10Var4Checked = false;
-		    item10Var5Checked = false;
-		    item10Var6Checked = false;
-		    item10Sprite1.setFrame(0);
-		    item10Sprite3.setFrame(0);
-		    item10Sprite4.setFrame(0);
-		    item10Sprite5.setFrame(0);
-		    item10Sprite6.setFrame(0);
+			item10Var1Checked = false;
+			item10Var3Checked = false;
+			item10Var4Checked = false;
+			item10Var5Checked = false;
+			item10Var6Checked = false;
+			item10Sprite1.setFrame(0);
+			item10Sprite3.setFrame(0);
+			item10Sprite4.setFrame(0);
+			item10Sprite5.setFrame(0);
+			item10Sprite6.setFrame(0);
 
 		  }
 		});
@@ -303,22 +302,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item10Sprite3.on('pointerdown', function (pointer) {
 		  if (item10Var3Checked) {
-		    item10Sprite3.setFrame(0);
-		    item10Var3Checked = false;
+			item10Sprite3.setFrame(0);
+			item10Var3Checked = false;
 		  } else {
-		    item10Sprite3.setFrame(1);
-		    item10Var3Checked = true;
+			item10Sprite3.setFrame(1);
+			item10Var3Checked = true;
 
-		    item10Var1Checked = false;
-		    item10Var2Checked = false;
-		    item10Var4Checked = false;
-		    item10Var5Checked = false;
-		    item10Var6Checked = false;
-		    item10Sprite1.setFrame(0);
-		    item10Sprite2.setFrame(0);
-		    item10Sprite4.setFrame(0);
-		    item10Sprite5.setFrame(0);
-		    item10Sprite6.setFrame(0);
+			item10Var1Checked = false;
+			item10Var2Checked = false;
+			item10Var4Checked = false;
+			item10Var5Checked = false;
+			item10Var6Checked = false;
+			item10Sprite1.setFrame(0);
+			item10Sprite2.setFrame(0);
+			item10Sprite4.setFrame(0);
+			item10Sprite5.setFrame(0);
+			item10Sprite6.setFrame(0);
 
 		  }
 		});
@@ -330,22 +329,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item10Sprite4.on('pointerdown', function (pointer) {
 		  if (item10Var4Checked) {
-		    item10Sprite4.setFrame(0);
-		    item10Var4Checked = false;
+			item10Sprite4.setFrame(0);
+			item10Var4Checked = false;
 		  } else {
-		    item10Sprite4.setFrame(1);
-		    item10Var4Checked = true;
+			item10Sprite4.setFrame(1);
+			item10Var4Checked = true;
 
-		    item10Var1Checked = false;
-		    item10Var2Checked = false;
-		    item10Var3Checked = false;
-		    item10Var5Checked = false;
-		    item10Var6Checked = false;
-		    item10Sprite1.setFrame(0);
-		    item10Sprite2.setFrame(0);
-		    item10Sprite3.setFrame(0);
-		    item10Sprite5.setFrame(0);
-		    item10Sprite6.setFrame(0);
+			item10Var1Checked = false;
+			item10Var2Checked = false;
+			item10Var3Checked = false;
+			item10Var5Checked = false;
+			item10Var6Checked = false;
+			item10Sprite1.setFrame(0);
+			item10Sprite2.setFrame(0);
+			item10Sprite3.setFrame(0);
+			item10Sprite5.setFrame(0);
+			item10Sprite6.setFrame(0);
 
 		  }
 		});
@@ -357,22 +356,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item10Sprite5.on('pointerdown', function (pointer) {
 		  if (item10Var5Checked) {
-		    item10Sprite5.setFrame(0);
-		    item10Var5Checked = false;
+			item10Sprite5.setFrame(0);
+			item10Var5Checked = false;
 		  } else {
-		    item10Sprite5.setFrame(1);
-		    item10Var5Checked = true;
+			item10Sprite5.setFrame(1);
+			item10Var5Checked = true;
 
-		    item10Var1Checked = false;
-		    item10Var2Checked = false;
-		    item10Var3Checked = false;
-		    item10Var4Checked = false;
-		    item10Var6Checked = false;
-		    item10Sprite1.setFrame(0);
-		    item10Sprite2.setFrame(0);
-		    item10Sprite3.setFrame(0);
-		    item10Sprite4.setFrame(0);
-		    item10Sprite6.setFrame(0);
+			item10Var1Checked = false;
+			item10Var2Checked = false;
+			item10Var3Checked = false;
+			item10Var4Checked = false;
+			item10Var6Checked = false;
+			item10Sprite1.setFrame(0);
+			item10Sprite2.setFrame(0);
+			item10Sprite3.setFrame(0);
+			item10Sprite4.setFrame(0);
+			item10Sprite6.setFrame(0);
 
 		  }
 		});
@@ -384,33 +383,33 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item10Sprite6.on('pointerdown', function (pointer) {
 		  if (item10Var6Checked) {
-		    item10Sprite6.setFrame(0);
-		    item10Var6Checked = false;
+			item10Sprite6.setFrame(0);
+			item10Var6Checked = false;
 		  } else {
-		    item10Sprite6.setFrame(1);
-		    item10Var6Checked = true;
+			item10Sprite6.setFrame(1);
+			item10Var6Checked = true;
 
-		    item10Var1Checked = false;
-		    item10Var2Checked = false;
-		    item10Var3Checked = false;
-		    item10Var4Checked = false;
-		    item10Var5Checked = false;
-		    item10Sprite1.setFrame(0);
-		    item10Sprite2.setFrame(0);
-		    item10Sprite3.setFrame(0);
-		    item10Sprite4.setFrame(0);
-		    item10Sprite5.setFrame(0);
+			item10Var1Checked = false;
+			item10Var2Checked = false;
+			item10Var3Checked = false;
+			item10Var4Checked = false;
+			item10Var5Checked = false;
+			item10Sprite1.setFrame(0);
+			item10Sprite2.setFrame(0);
+			item10Sprite3.setFrame(0);
+			item10Sprite4.setFrame(0);
+			item10Sprite5.setFrame(0);
 
 		  }
 		});
 
 		if(this.varObj.api.controlGroup) {
 		  var item11 = [
-		    "8. I think most people would learn to work with the feedback based on what other users tried at that point in time in the game very quickly."
+			"8. I think most people would learn to work with the feedback based on what other users tried at that point in time in the game very quickly."
 		  ];
 		} else {
 		  var item11 = [
-		    "8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
+			"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
 		  ];
 		}
 
@@ -424,22 +423,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item11Sprite1.on('pointerdown', function (pointer) {
 		  if (item11Var1Checked) {
-		    item11Sprite1.setFrame(0);
-		    item11Var1Checked = false;
+			item11Sprite1.setFrame(0);
+			item11Var1Checked = false;
 		  } else {
-		    item11Sprite1.setFrame(1);
-		    item11Var1Checked = true;
+			item11Sprite1.setFrame(1);
+			item11Var1Checked = true;
 
-		    item11Var2Checked = false;
-		    item11Var3Checked = false;
-		    item11Var4Checked = false;
-		    item11Var5Checked = false;
-		    item11Var6Checked = false;
-		    item11Sprite2.setFrame(0);
-		    item11Sprite3.setFrame(0);
-		    item11Sprite4.setFrame(0);
-		    item11Sprite5.setFrame(0);
-		    item11Sprite6.setFrame(0);
+			item11Var2Checked = false;
+			item11Var3Checked = false;
+			item11Var4Checked = false;
+			item11Var5Checked = false;
+			item11Var6Checked = false;
+			item11Sprite2.setFrame(0);
+			item11Sprite3.setFrame(0);
+			item11Sprite4.setFrame(0);
+			item11Sprite5.setFrame(0);
+			item11Sprite6.setFrame(0);
 
 		  }
 		});
@@ -451,22 +450,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item11Sprite2.on('pointerdown', function (pointer) {
 		  if (item11Var2Checked) {
-		    item11Sprite2.setFrame(0);
-		    item11Var2Checked = false;
+			item11Sprite2.setFrame(0);
+			item11Var2Checked = false;
 		  } else {
-		    item11Sprite2.setFrame(1);
-		    item11Var2Checked = true;
+			item11Sprite2.setFrame(1);
+			item11Var2Checked = true;
 
-		    item11Var1Checked = false;
-		    item11Var3Checked = false;
-		    item11Var4Checked = false;
-		    item11Var5Checked = false;
-		    item11Var6Checked = false;
-		    item11Sprite1.setFrame(0);
-		    item11Sprite3.setFrame(0);
-		    item11Sprite4.setFrame(0);
-		    item11Sprite5.setFrame(0);
-		    item11Sprite6.setFrame(0);
+			item11Var1Checked = false;
+			item11Var3Checked = false;
+			item11Var4Checked = false;
+			item11Var5Checked = false;
+			item11Var6Checked = false;
+			item11Sprite1.setFrame(0);
+			item11Sprite3.setFrame(0);
+			item11Sprite4.setFrame(0);
+			item11Sprite5.setFrame(0);
+			item11Sprite6.setFrame(0);
 
 		  }
 		});
@@ -478,22 +477,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item11Sprite3.on('pointerdown', function (pointer) {
 		  if (item11Var3Checked) {
-		    item11Sprite3.setFrame(0);
-		    item11Var3Checked = false;
+			item11Sprite3.setFrame(0);
+			item11Var3Checked = false;
 		  } else {
-		    item11Sprite3.setFrame(1);
-		    item11Var3Checked = true;
+			item11Sprite3.setFrame(1);
+			item11Var3Checked = true;
 
-		    item11Var1Checked = false;
-		    item11Var2Checked = false;
-		    item11Var4Checked = false;
-		    item11Var5Checked = false;
-		    item11Var6Checked = false;
-		    item11Sprite1.setFrame(0);
-		    item11Sprite2.setFrame(0);
-		    item11Sprite4.setFrame(0);
-		    item11Sprite5.setFrame(0);
-		    item11Sprite6.setFrame(0);
+			item11Var1Checked = false;
+			item11Var2Checked = false;
+			item11Var4Checked = false;
+			item11Var5Checked = false;
+			item11Var6Checked = false;
+			item11Sprite1.setFrame(0);
+			item11Sprite2.setFrame(0);
+			item11Sprite4.setFrame(0);
+			item11Sprite5.setFrame(0);
+			item11Sprite6.setFrame(0);
 
 		  }
 		});
@@ -505,22 +504,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item11Sprite4.on('pointerdown', function (pointer) {
 		  if (item11Var4Checked) {
-		    item11Sprite4.setFrame(0);
-		    item11Var4Checked = false;
+			item11Sprite4.setFrame(0);
+			item11Var4Checked = false;
 		  } else {
-		    item11Sprite4.setFrame(1);
-		    item11Var4Checked = true;
+			item11Sprite4.setFrame(1);
+			item11Var4Checked = true;
 
-		    item11Var1Checked = false;
-		    item11Var2Checked = false;
-		    item11Var3Checked = false;
-		    item11Var5Checked = false;
-		    item11Var6Checked = false;
-		    item11Sprite1.setFrame(0);
-		    item11Sprite2.setFrame(0);
-		    item11Sprite3.setFrame(0);
-		    item11Sprite5.setFrame(0);
-		    item11Sprite6.setFrame(0);
+			item11Var1Checked = false;
+			item11Var2Checked = false;
+			item11Var3Checked = false;
+			item11Var5Checked = false;
+			item11Var6Checked = false;
+			item11Sprite1.setFrame(0);
+			item11Sprite2.setFrame(0);
+			item11Sprite3.setFrame(0);
+			item11Sprite5.setFrame(0);
+			item11Sprite6.setFrame(0);
 
 		  }
 		});
@@ -532,22 +531,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item11Sprite5.on('pointerdown', function (pointer) {
 		  if (item11Var5Checked) {
-		    item11Sprite5.setFrame(0);
-		    item11Var5Checked = false;
+			item11Sprite5.setFrame(0);
+			item11Var5Checked = false;
 		  } else {
-		    item11Sprite5.setFrame(1);
-		    item11Var5Checked = true;
+			item11Sprite5.setFrame(1);
+			item11Var5Checked = true;
 
-		    item11Var1Checked = false;
-		    item11Var2Checked = false;
-		    item11Var3Checked = false;
-		    item11Var4Checked = false;
-		    item11Var6Checked = false;
-		    item11Sprite1.setFrame(0);
-		    item11Sprite2.setFrame(0);
-		    item11Sprite3.setFrame(0);
-		    item11Sprite4.setFrame(0);
-		    item11Sprite6.setFrame(0);
+			item11Var1Checked = false;
+			item11Var2Checked = false;
+			item11Var3Checked = false;
+			item11Var4Checked = false;
+			item11Var6Checked = false;
+			item11Sprite1.setFrame(0);
+			item11Sprite2.setFrame(0);
+			item11Sprite3.setFrame(0);
+			item11Sprite4.setFrame(0);
+			item11Sprite6.setFrame(0);
 
 		  }
 		});
@@ -559,22 +558,22 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 		item11Sprite6.on('pointerdown', function (pointer) {
 		  if (item11Var6Checked) {
-		    item11Sprite6.setFrame(0);
-		    item11Var6Checked = false;
+			item11Sprite6.setFrame(0);
+			item11Var6Checked = false;
 		  } else {
-		    item11Sprite6.setFrame(1);
-		    item11Var6Checked = true;
+			item11Sprite6.setFrame(1);
+			item11Var6Checked = true;
 
-		    item11Var1Checked = false;
-		    item11Var2Checked = false;
-		    item11Var3Checked = false;
-		    item11Var4Checked = false;
-		    item11Var5Checked = false;
-		    item11Sprite1.setFrame(0);
-		    item11Sprite2.setFrame(0);
-		    item11Sprite3.setFrame(0);
-		    item11Sprite4.setFrame(0);
-		    item11Sprite5.setFrame(0);
+			item11Var1Checked = false;
+			item11Var2Checked = false;
+			item11Var3Checked = false;
+			item11Var4Checked = false;
+			item11Var5Checked = false;
+			item11Sprite1.setFrame(0);
+			item11Sprite2.setFrame(0);
+			item11Sprite3.setFrame(0);
+			item11Sprite4.setFrame(0);
+			item11Sprite5.setFrame(0);
 
 		  }
 		});
@@ -586,6 +585,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		// add button to request feedback
 		var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 			.setInteractive()
+			.on('pointerdown', () => this.logAnswers())
 			.on('pointerdown', () => endScene = new EndScene(this.varObj))
 			.on('pointerdown', () => this.scene.remove('endScene', endScene))
 			.on('pointerdown', () => this.scene.add('endScene', endScene))
@@ -595,6 +595,10 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#000000' })
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
 
+	}
+
+	logAnswers() {
+		this.varObj.api.logQuestionnaire(8, this.item9Var1Checked, this.item9Var2Checked, this.item9Var3Checked, this.item9Var4Checked, this.item9Var5Checked, this.item9Var6Checked);
 	}
 
 	update() { }

@@ -43,7 +43,7 @@ class DataMgr():
     def log_questionnaire_answers(self, user_id, question_id, checkbox_values):
         try:
             self.db.cursor().execute("INSERT INTO questionnaire_logs (userId, questionId, var1, var2, var3, var4, var5, var6) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",
-                                    (user_id, question_id, checkbox_values[0], checkbox_values[1], checkbox_values[2], checkbox_values[3], checkbox_values[4], checkbox_values[5]))
+                                    (user_id, question_id, int(checkbox_values[0]), int(checkbox_values[1]), int(checkbox_values[2]), int(checkbox_values[3]), int(checkbox_values[4]), int(checkbox_values[5])))
             self.db.commit()
 
             return True
