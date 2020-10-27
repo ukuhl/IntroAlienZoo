@@ -581,11 +581,7 @@ class QuestionnaireScene2 extends Phaser.Scene {
 		// add button to request feedback
 		var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 			.setInteractive()
-			.on('pointerdown', () => this.logAnswers())
-			.on('pointerdown', () => questionnaireScene3 = new QuestionnaireScene3(this.varObj))
-			.on('pointerdown', () => this.scene.remove('questionnaireScene3', questionnaireScene3))
-			.on('pointerdown', () => this.scene.add('questionnaireScene3', questionnaireScene3))
-			.on('pointerdown', () => this.scene.start('questionnaireScene3'));
+			.on('pointerdown', () => this.onBtnContinue());
 
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#000000' })
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
@@ -596,6 +592,22 @@ class QuestionnaireScene2 extends Phaser.Scene {
 		this.varObj.api.logQuestionnaire(2, this.item3Var1Checked, this.item3Var2Checked, this.item3Var3Checked, this.item3Var4Checked, this.item3Var5Checked, this.item3Var6Checked);
 		this.varObj.api.logQuestionnaire(3, this.item4Var1Checked, this.item4Var2Checked, this.item4Var3Checked, this.item4Var4Checked, this.item4Var5Checked, this.item4Var6Checked);
 		this.varObj.api.logQuestionnaire(4, this.item5Var1Checked, this.item5Var2Checked, this.item5Var3Checked, this.item5Var4Checked, this.item5Var5Checked, this.item5Var6Checked);
+	}
+
+	onBtnContinue() {
+		if ([this.item3Var1Checked, this.item3Var2Checked, this.item3Var3Checked, this.item3Var4Checked, this.item3Var5Checked, this.item3Var6Checked].every(a => a == false) ||
+			[this.item4Var1Checked, this.item4Var2Checked, this.item4Var3Checked, this.item4Var4Checked, this.item4Var5Checked, this.item4Var6Checked].every(a => a == false) ||
+			[this.item5Var1Checked, this.item5Var2Checked, this.item5Var3Checked, this.item5Var4Checked, this.item5Var5Checked, this.item5Var6Checked].every(a => a == false)) {
+			alert("Please answer all questions!");
+		}
+		else {
+			this.logAnswers();
+
+			var questionnaireScene3 = new QuestionnaireScene3(this.varObj);
+			this.scene.remove('questionnaireScene3', questionnaireScene3);
+			this.scene.add('questionnaireScene3', questionnaireScene3);
+			this.scene.start('questionnaireScene3');
+		}
 	}
 
 	update() { }
