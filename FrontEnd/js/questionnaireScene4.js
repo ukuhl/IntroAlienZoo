@@ -585,12 +585,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		// add button to request feedback
 		var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 			.setInteractive()
-			.on('pointerdown', () => this.logAnswers())
-			.on('pointerdown', () => endScene = new EndScene(this.varObj))
-			.on('pointerdown', () => this.scene.remove('endScene', endScene))
-			.on('pointerdown', () => this.scene.add('endScene', endScene))
-			.on('pointerdown', () => this.scene.start('endScene'))
-			.on('pointerdown', () => this.scale.stopFullscreen());
+			.on('pointerdown', () => this.onBtnContinue());
 
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#000000' })
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
@@ -599,6 +594,21 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 	logAnswers() {
 		this.varObj.api.logQuestionnaire(8, this.item9Var1Checked, this.item9Var2Checked, this.item9Var3Checked, this.item9Var4Checked, this.item9Var5Checked, this.item9Var6Checked);
+	}
+
+	onBtnContinue() {
+		if ([this.item9Var1Checked, this.item9Var2Checked, this.item9Var3Checked, this.item9Var4Checked, this.item9Var5Checked, this.item9Var6Checked].every(a => a == false)) {
+			alert("Please answer all questions!");
+		}
+		else {
+			this.logAnswers();
+
+			var endScene = new EndScene(this.varObj);
+			this.scene.remove('endScene', endScene);
+			this.scene.add('endScene', endScene);
+			this.scene.start('endScene');
+			this.scale.stopFullscreen();
+		}
 	}
 
 	update() { }

@@ -324,11 +324,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// add button to request feedback
 		var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
 			.setInteractive()
-			.on('pointerdown', () => this.logAnswers())
-			.on('pointerdown', () => questionnaireScene2 = new QuestionnaireScene2(this.varObj))
-			.on('pointerdown', () => this.scene.remove('questionnaireScene2', questionnaireScene2))
-			.on('pointerdown', () => this.scene.add('questionnaireScene2', questionnaireScene2))
-			.on('pointerdown', () => this.scene.start('questionnaireScene2'));
+			.on('pointerdown', () => this.onBtnContinue());
 
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#000000' })
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
@@ -339,6 +335,21 @@ class QuestionnaireScene1 extends Phaser.Scene {
 	logAnswers() {
 		this.varObj.api.logQuestionnaire(0, this.item1Var1Checked, this.item1Var2Checked, this.item1Var3Checked, this.item1Var4Checked, this.item1Var5Checked, this.item1Var6Checked);
 		this.varObj.api.logQuestionnaire(1, this.item2Var1Checked, this.item2Var2Checked, this.item2Var3Checked, this.item2Var4Checked, this.item2Var5Checked, this.item2Var6Checked);
+	}
+
+	onBtnContinue() {
+		if ([this.item1Var1Checked, this.item1Var2Checked, this.item1Var3Checked, this.item1Var4Checked, this.item1Var5Checked, this.item1Var6Checked].every(a => a == false) ||
+			[this.item2Var1Checked, this.item2Var2Checked, this.item2Var3Checked, this.item2Var4Checked, this.item2Var5Checked, this.item2Var6Checked].every(a => a == false)) {
+			alert("Please answer all questions!");
+		}
+		else {
+			this.logAnswers();
+
+			var questionnaireScene2 = new QuestionnaireScene2(this.varObj);
+			this.scene.remove('questionnaireScene2', questionnaireScene2);
+			this.scene.add('questionnaireScene2', questionnaireScene2);
+			this.scene.start('questionnaireScene2');
+		}
 	}
 
 	update() { }
