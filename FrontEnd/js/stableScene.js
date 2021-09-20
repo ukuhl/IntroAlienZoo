@@ -1,5 +1,6 @@
 import ProgressScene from './progressScene.js';
 import FeedbackScene from './feedbackScene.js';
+import AttentionScene from './attentionScene.js';
 
 class StableScene extends Phaser.Scene {
 
@@ -181,19 +182,40 @@ class StableScene extends Phaser.Scene {
 				.on('pointerdown', () => this.clickCountTextVar5.setText(`${Math.max(--this.varObj.clickCountVar5, this.varObj.minFeedingNo)}`))
 				.on('pointerdown', () => this.varObj.clickCountVar5 = Math.max(this.varObj.clickCountVar5, this.varObj.minFeedingNo));
 
-			// instatiate and add new progress scene with current data
-			var progressScene = undefined;
-			// add button to submit new input - change scene when pressed!
-			const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
-				.setInteractive()
-				.on('pointerdown', () => this.logTimeFeed())
-				.on('pointerdown', () => progressScene = new ProgressScene(this.varObj))
-				.on('pointerdown', () => this.scene.remove('progressScene', progressScene))
-				.on('pointerdown', () => this.scene.add('progressScene', progressScene))
-				.on('pointerdown', () => this.scene.start('progressScene'));
+      // enter attention scene after trial 5 and trial 11
+			if ( this.varObj.trialCount == 5 || this.varObj.trialCount == 11 ) {
 
-			var textFeed = this.add.text(-75, -15, 'Feeding time!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
-			var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
+				// instatiate and add new progress scene with current data
+				var attentionScene = undefined;
+				// add button to submit new input - change scene when pressed!
+				const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
+					.setInteractive()
+					.on('pointerdown', () => this.logTimeFeed())
+					.on('pointerdown', () => attentionScene = new AttentionScene(this.varObj))
+					.on('pointerdown', () => this.scene.remove('attentionScene', attentionScene))
+					.on('pointerdown', () => this.scene.add('attentionScene', attentionScene))
+					.on('pointerdown', () => this.scene.start('attentionScene'));
+
+				var textFeed = this.add.text(-75, -15, 'Feeding time!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+				var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
+
+			} else {
+
+				// instatiate and add new progress scene with current data
+				var progressScene = undefined;
+				// add button to submit new input - change scene when pressed!
+				const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
+					.setInteractive()
+					.on('pointerdown', () => this.logTimeFeed())
+					.on('pointerdown', () => progressScene = new ProgressScene(this.varObj))
+					.on('pointerdown', () => this.scene.remove('progressScene', progressScene))
+					.on('pointerdown', () => this.scene.add('progressScene', progressScene))
+					.on('pointerdown', () => this.scene.start('progressScene'));
+
+				var textFeed = this.add.text(-75, -15, 'Feeding time!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+				var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
+
+		  }
 
 		}
 

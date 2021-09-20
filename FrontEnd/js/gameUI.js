@@ -20,8 +20,12 @@ api.gameStart().then( async (success) => {
       type: Phaser.AUTO,
           scale: {
             mode: Phaser.Scale.FIT,
-            parent: "AlienZooGame",
-            autoCenter: Phaser.Scale.CENTER_BOTH
+            parent: "app",
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            fullscreenTarget: document.getElementById("app"),
+          },
+          dom: {
+              createContainer: true
           },
           backgroundColor: '#ffffff',
           width: window.innerWidth, //* window.devicePixelRatio
@@ -34,6 +38,8 @@ api.gameStart().then( async (success) => {
             }
           }
         };
+
+
 
     // configure phaser game
     var game = new Phaser.Game(config);
