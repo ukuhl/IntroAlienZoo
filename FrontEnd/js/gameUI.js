@@ -71,6 +71,8 @@ api.gameStart().then( async (success) => {
     // trial and block counters
     let trialCount = 0;
     let blockCount = 1;
+    let maxBlockCount = 6;
+    let numTrialsPerBlock = 3;  // ATTENTION: Must be less or equal than 3!
     // arrays for storing user input / counterfactual information for later feedback
     let in_array = [];
     let cf_array = [];
@@ -89,6 +91,8 @@ api.gameStart().then( async (success) => {
       "plants": plants,
       "trialCount": trialCount,
       "blockCount": blockCount,
+      "maxBlockCount": maxBlockCount,
+      "numTrialsPerBlock": numTrialsPerBlock,
       "clickCountVar1": clickCountVar1,
       "clickCountVar2": clickCountVar2,
       "clickCountVar3": clickCountVar3,

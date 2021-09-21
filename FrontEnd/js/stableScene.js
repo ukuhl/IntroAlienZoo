@@ -36,7 +36,7 @@ class StableScene extends Phaser.Scene {
 		// increase trial count
 		if (this.varObj.trialCount == 0) {
 			this.varObj.trialCount++;
-		} else if ( this.varObj.trialCount % 3 == 0 && ! this.varObj.feedback_flag ) {
+		} else if ( this.varObj.trialCount % this.varObj.numTrialsPerBlock == 0 && ! this.varObj.feedback_flag ) {
 			this.varObj.feedback_flag=true;
 		} else {
 			this.varObj.trialCount++;
