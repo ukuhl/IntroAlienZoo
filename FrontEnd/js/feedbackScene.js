@@ -72,83 +72,87 @@ class FeedbackScene extends Phaser.Scene {
 			}
 
 			// 2nd round:
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.300, 'In round 2, you selected:', { fontSize: '18px', color: '#000000' });
+			if(this.varObj.numTrialsPerBlock >= 2) {
+				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.300, 'In round 2, you selected:', { fontSize: '18px', color: '#000000' });
 
-			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.35, 'plant1').setScale(0.1);
-			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.35, 'plant2').setScale(0.1);
-			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.35, 'plant3').setScale(0.1);
-			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.35, 'plant4').setScale(0.1);
-			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.35, 'plant5').setScale(0.1);
-			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.35, 'plant1').setScale(0.1);
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.35, 'plant2').setScale(0.1);
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.35, 'plant3').setScale(0.1);
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.35, 'plant4').setScale(0.1);
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.35, 'plant5').setScale(0.1);
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.400, 'Result:', { fontSize: '18px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.400, 'Before:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.400, 'x ' + this.varObj.shubOldNo[2], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.400, 'Result:', { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.400, 'Before:', { fontSize: '18px', color: '#000000' });
+				this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+				this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.400, 'x ' + this.varObj.shubOldNo[2], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.400, 'After:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.400, 'After:', { fontSize: '18px', color: '#000000' });
+				this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+				this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontSize: '18px', color: '#000000' });
 
-			if (this.varObj.cf_array[2][0] == -1000) {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
-			} else {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
+				if (this.varObj.cf_array[2][0] == -1000) {
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
+				} else {
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
 
-				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
-			}
+					this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
+					this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
+					this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
+					this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
+					this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
+					this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
+				}
 
-			// 3rd round:
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, 'In round 3, you selected:', { fontSize: '18px', color: '#000000' });
+				// 3rd round:
+				if(this.varObj.numTrialsPerBlock == 3) {
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, 'In round 3, you selected:', { fontSize: '18px', color: '#000000' });
 
-			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.625, 'plant1').setScale(0.1);
-			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.625, 'plant2').setScale(0.1);
-			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.625, 'plant3').setScale(0.1);
-			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.625, 'plant4').setScale(0.1);
-			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.625, 'plant5').setScale(0.1);
-			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.625, 'plant1').setScale(0.1);
+					this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.625, 'plant2').setScale(0.1);
+					this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.625, 'plant3').setScale(0.1);
+					this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.625, 'plant4').setScale(0.1);
+					this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.625, 'plant5').setScale(0.1);
+					this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6750, 'Result:', { fontSize: '18px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6750, 'Before:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.6750, 'x ' + this.varObj.shubOldNo[3], { fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6750, 'Result:', { fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6750, 'Before:', { fontSize: '18px', color: '#000000' });
+					this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+					this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.6750, 'x ' + this.varObj.shubOldNo[3], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6750, 'After:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6750, 'After:', { fontSize: '18px', color: '#000000' });
+					this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+					this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontSize: '18px', color: '#000000' });
 
-			if (this.varObj.cf_array[3][0] == -1000) {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
-			} else {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
+					if (this.varObj.cf_array[3][0] == -1000) {
+						this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
+					} else {
+						this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Plants other users selected this at this point in time:', { fontSize: '18px', color: '#000000' });
 
-				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
+						this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
+						this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
+						this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
+						this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
+						this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
+					}
+				}
 			}
 		} else {
 			// 1st round:
@@ -192,83 +196,87 @@ class FeedbackScene extends Phaser.Scene {
 			}
 
 			// 2nd round:
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.300, 'In round 2, you selected:', { fontSize: '18px', color: '#000000' });
+			if(this.varObj.numTrialsPerBlock >= 2) {
+				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.300, 'In round 2, you selected:', { fontSize: '18px', color: '#000000' });
 
-			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.35, 'plant1').setScale(0.1);
-			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.35, 'plant2').setScale(0.1);
-			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.35, 'plant3').setScale(0.1);
-			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.35, 'plant4').setScale(0.1);
-			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.35, 'plant5').setScale(0.1);
-			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.35, 'plant1').setScale(0.1);
+				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][0], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.35, 'plant2').setScale(0.1);
+				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][1], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.35, 'plant3').setScale(0.1);
+				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][2], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.35, 'plant4').setScale(0.1);
+				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][3], { fontSize: '18px', color: '#000000' });
+				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.35, 'plant5').setScale(0.1);
+				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][4], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.400, 'Result:', { fontSize: '18px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.400, 'Before:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.400, 'x ' + this.varObj.shubOldNo[2], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.400, 'Result:', { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.400, 'Before:', { fontSize: '18px', color: '#000000' });
+				this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+				this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.400, 'x ' + this.varObj.shubOldNo[2], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.400, 'After:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.400, 'After:', { fontSize: '18px', color: '#000000' });
+				this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+				this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontSize: '18px', color: '#000000' });
 
-			if (this.varObj.cf_array[2][0] == -1000) {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
-			} else {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Your result would have been better if you had selected:', { fontSize: '18px', color: '#000000' });
+				if (this.varObj.cf_array[2][0] == -1000) {
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
+				} else {
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Your result would have been better if you had selected:', { fontSize: '18px', color: '#000000' });
 
-				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][0]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][1]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][2]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][3]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][4]}`, { fontSize: '18px', color: '#000000' });
-			}
+					this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
+					this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][0]}`, { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
+					this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][1]}`, { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
+					this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][2]}`, { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
+					this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][3]}`, { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
+					this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][4]}`, { fontSize: '18px', color: '#000000' });
+				}
 
-			// 3rd round:
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, 'In round 3, you selected:', { fontSize: '18px', color: '#000000' });
+				// 3rd round:
+				if(this.varObj.numTrialsPerBlock == 3) {
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, 'In round 3, you selected:', { fontSize: '18px', color: '#000000' });
 
-			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.625, 'plant1').setScale(0.1);
-			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.625, 'plant2').setScale(0.1);
-			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.625, 'plant3').setScale(0.1);
-			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.625, 'plant4').setScale(0.1);
-			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
-			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.625, 'plant5').setScale(0.1);
-			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.625, 'plant1').setScale(0.1);
+					this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][0], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.625, 'plant2').setScale(0.1);
+					this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][1], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.625, 'plant3').setScale(0.1);
+					this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][2], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.625, 'plant4').setScale(0.1);
+					this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][3], { fontSize: '18px', color: '#000000' });
+					this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.625, 'plant5').setScale(0.1);
+					this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][4], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6750, 'Result:', { fontSize: '18px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6750, 'Before:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.6750, 'x ' + this.varObj.shubOldNo[3], { fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6750, 'Result:', { fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6750, 'Before:', { fontSize: '18px', color: '#000000' });
+					this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+					this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.6750, 'x ' + this.varObj.shubOldNo[3], { fontSize: '18px', color: '#000000' });
 
-			this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6750, 'After:', { fontSize: '18px', color: '#000000' });
-			this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6750, 'After:', { fontSize: '18px', color: '#000000' });
+					this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
+					this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontSize: '18px', color: '#000000' });
 
-			if (this.varObj.cf_array[3][0] == -1000) {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
-			} else {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Your result would have been better if you had selected:', { fontSize: '18px', color: '#000000' });
+					if (this.varObj.cf_array[3][0] == -1000) {
+						this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontSize: '18px', color: '#000000' });
+					} else {
+						this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Your result would have been better if you had selected:', { fontSize: '18px', color: '#000000' });
 
-				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
-				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][0]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
-				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][1]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
-				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][2]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
-				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][3]}`, { fontSize: '18px', color: '#000000' });
-				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
-				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][4]}`, { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
+						this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][0]}`, { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
+						this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][1]}`, { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
+						this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][2]}`, { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
+						this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][3]}`, { fontSize: '18px', color: '#000000' });
+						this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
+						this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][4]}`, { fontSize: '18px', color: '#000000' });
+					}
+				}
 			}
 		}
 
@@ -276,7 +284,7 @@ class FeedbackScene extends Phaser.Scene {
 		this.varObj.blockCount++;
 
 		// depending on block number:
-		if (this.varObj.blockCount < 6) {
+		if (this.varObj.blockCount < this.varObj.maxBlockCount) {
 
 			// instatiate and add new stable scene with current data
 			var stableScene = undefined;
