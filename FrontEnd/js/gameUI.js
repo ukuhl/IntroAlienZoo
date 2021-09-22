@@ -70,6 +70,7 @@ api.gameStart().then( async (success) => {
     // button to start the Game
     var buttonStart;
     var buttonContinue;
+    var btnContinueShowDelay = 10000; // Button "Continue" becomes visible after 10 seconds (= 10000ms)
     // button to get feedback
     var buttonFeedback;
     // button to get feedback
@@ -95,6 +96,7 @@ api.gameStart().then( async (success) => {
     const varObj = {
       "api": api,
       "plants": plants,
+      "btnContinueShowDelay": btnContinueShowDelay,
       "trialCount": trialCount,
       "blockCount": blockCount,
       "maxBlockCount": maxBlockCount,

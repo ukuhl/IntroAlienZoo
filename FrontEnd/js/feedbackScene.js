@@ -285,39 +285,39 @@ class FeedbackScene extends Phaser.Scene {
 
 		// depending on block number:
 		if (this.varObj.blockCount < this.varObj.maxBlockCount) {
+			setTimeout(function() {
+				// instatiate and add new stable scene with current data
+				var stableScene = undefined;
 
-			// instatiate and add new stable scene with current data
-			var stableScene = undefined;
+				// add button to request feedback
+				var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
+					.setInteractive()
+					.on('pointerdown', () => this.logTime())
+					.on('pointerdown', () => stableScene = new StableScene(this.varObj))
+					.on('pointerdown', () => this.scene.remove('stableScene', stableScene))
+					.on('pointerdown', () => this.scene.add('stableScene', stableScene))
+					.on('pointerdown', () => this.scene.start('stableScene'));
 
-			// add button to request feedback
-			var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
-				.setInteractive()
-				.on('pointerdown', () => this.logTime())
-				.on('pointerdown', () => stableScene = new StableScene(this.varObj))
-				.on('pointerdown', () => this.scene.remove('stableScene', stableScene))
-				.on('pointerdown', () => this.scene.add('stableScene', stableScene))
-				.on('pointerdown', () => this.scene.start('stableScene'));
-
-			var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#000000' })
-			var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue])
-
+				var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#000000' });
+				this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue]);
+			}.bind(this), this.varObj.btnContinueShowDelay);
 		} else {
+			setTimeout(function() {
+				// instatiate and add new end scene with current data
+				var questionnaireScene1 = undefined;
 
-			// instatiate and add new end scene with current data
-			var questionnaireScene1 = undefined;
+				// add button to request feedback
+				var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
+					.setInteractive()
+					.on('pointerdown', () => this.logTime())
+					.on('pointerdown', () => questionnaireScene1 = new QuestionnaireScene1(this.varObj))
+					.on('pointerdown', () => this.scene.remove('questionnaireScene1', questionnaireScene1))
+					.on('pointerdown', () => this.scene.add('questionnaireScene1', questionnaireScene1))
+					.on('pointerdown', () => this.scene.start('questionnaireScene1'));
 
-			// add button to request feedback
-			var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
-				.setInteractive()
-				.on('pointerdown', () => this.logTime())
-				.on('pointerdown', () => questionnaireScene1 = new QuestionnaireScene1(this.varObj))
-				.on('pointerdown', () => this.scene.remove('questionnaireScene1', questionnaireScene1))
-				.on('pointerdown', () => this.scene.add('questionnaireScene1', questionnaireScene1))
-				.on('pointerdown', () => this.scene.start('questionnaireScene1'));
-
-			var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#000000' })
-			var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue])
-
+				var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#000000' });
+				this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue]);
+			}.bind(this), this.varObj.btnContinueShowDelay);
 		}
 
 	}
