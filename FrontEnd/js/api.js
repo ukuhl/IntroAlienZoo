@@ -83,6 +83,31 @@ class AlienZooApi {
         });
     }
 
+    logAttention(userPrediction) {
+        const data = {
+            "userId": this.userId,
+            "userPrediction": userPrediction
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/attention", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
     gameStart() {
         return new Promise(resolve => {
             fetch("/api/gameStart", {
