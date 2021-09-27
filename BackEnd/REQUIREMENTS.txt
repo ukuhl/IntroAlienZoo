@@ -1,4 +1,4 @@
 pandas==1.1.2
 mysql-connector-python==8.0.21
 tornado==6.0.4
-ceml==0.5.0
+ceml==0.6.1
