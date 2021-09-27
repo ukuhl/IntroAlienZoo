@@ -37,8 +37,9 @@ def load_model_from_file(file_path='modelsStuff/PyTorchNetDataSet1_Regression_50
     return torch.load(file_path)
 
 # Fit model
-def build_model(file_path="modelsStuff/AlienZooDataSet1.csv"):
+def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
     import pandas as pd
+    import random
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error, r2_score
@@ -52,7 +53,15 @@ def build_model(file_path="modelsStuff/AlienZooDataSet1.csv"):
     print(X.shape)
     print(y.shape)
 
+    # Remove some samples to create "holes" in data space - otherwise every point in data space would be a plausible instance!
+    # Random subsampling
+    idx = range(0, X.shape[0])
+    idx = random.sample(idx, int((X.shape[0] / 300) * 1))
+    X, y = X[idx, :], y[idx]
+
     # Split into training and test set
+    print(X.shape)
+    print(y.shape)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
     # Fit model
@@ -64,7 +73,39 @@ def build_model(file_path="modelsStuff/AlienZooDataSet1.csv"):
     print(f"R^2: {r2_score(y_test, y_pred)}")
     print(f"MSE: {mean_squared_error(y_test, y_pred)}")
     
-    return model
+    """
+    # TEMP ONLY
+    print("Testing and comparing counterfactuals....")
+    differences = []
+    cf_pairs = []
+    for i in range(100):
+        #x_test = np.array([0, 1, 1, 0, 0])
+        x_test = np.array([random.randint(0,6) for _ in range(5)])
+        y_test_pred = model.predict([x_test])
+        #print(x_test, y_test_pred)
+
+        xcf1 = compute_counterfactual_of_model(model, x_test, y_test_pred, plausible=False)
+        xcf2 = compute_counterfactual_of_model(model, x_test, y_test_pred, plausible=True, X_train=X_train, y_train=y_train)
+        if xcf1[0] == -1000 or xcf2[0] == -1000:
+            print("No counterfactual found!")
+            continue
+
+        cf_pairs.append((xcf1,xcf2))
+        num_diff = np.sum(xcf1 != xcf2)
+        #print(xcf1, xcf2)
+        differences.append(num_diff)
+
+    #print(xcf1, model.predict([xcf1]))
+    #print(xcf2, model.predict([xcf2]))
+
+    print(cf_pairs)
+    print(differences)
+    print(np.mean(differences), np.median(differences), np.var(differences), np.std(differences))
+
+    ###################################
+    """
+
+    return {"model": model, "X_train": X_train, "y_train": y_train}
 
 
 # Compute counterfactual
@@ -166,34 +207,49 @@ def score_adjustments(x_orig, x_orig_path, leafs_path, dist):
 
     return r
 
-def compute_counterfactual_of_model(model, x, y_pred, features_whitelist = [0, 1, 2, 3, 4]):
+def compute_counterfactual_of_model(model, x, y_pred, plausible=False, X_train=None, y_train=None, features_whitelist = [0, 1, 2, 3, 4]):
     x = x.flatten()
 
-    # Enumerate all leafs
-    leafs = get_leafs_from_tree(model.tree_, classifier=False)
-    
-    # Filter leafs for better predictions
-    leafs = list(filter(lambda z: z[-1][2] > y_pred, leafs))
+    if plausible is True:
+        # Counterfactual: Selection from the training data
+        y_train_pred = model.predict(X_train)
+        idx = y_pred < y_train_pred#y_train
+        y_train_cfs = y_train_pred[idx]#y_train[idx]
+        X_train_cfs = X_train[idx,:]
+        if X_train_cfs.shape[0] == 0:   # No counterfactual
+            return [-1000 for _ in range(x.shape[0])]
+        i = np.argmin(np.apply_along_axis(lambda z: np.linalg.norm(x - z, ord=1), 1, X_train_cfs))
+        xcf = [int(X_train_cfs[i, j]) for j in range(x.shape[0])]
+        ycf = y_train_cfs[i]
+        costcf = np.linalg.norm(xcf - x, ord=1)
 
-    # Sort by prediction
-    #leafs.sort(key=lambda z: z[-1][2])
+        return xcf
+    else:
+        # Enumerate all leafs
+        leafs = get_leafs_from_tree(model.tree_, classifier=False)
+        
+        # Filter leafs for better predictions
+        leafs = list(filter(lambda z: z[-1][2] > y_pred, leafs))
 
-    # Compute path of sample
-    path_of_x = list(model.decision_path([x]).indices)
+        # Sort by prediction
+        #leafs.sort(key=lambda z: z[-1][2])
 
-    # Score and sort all counterfactuals of the sample
-    regularization = lambda z: np.linalg.norm(x - z, ord=1)
-    counterfactuals = score_adjustments(x, path_of_x, leafs, regularization)
+        # Compute path of sample
+        path_of_x = list(model.decision_path([x]).indices)
 
-    counterfactuals = [np.round(apply_adjustment(x, cf[2])) for cf in counterfactuals]
+        # Score and sort all counterfactuals of the sample
+        regularization = lambda z: np.linalg.norm(x - z, ord=1)
+        counterfactuals = score_adjustments(x, path_of_x, leafs, regularization)
 
-    # Filter our all invalid counterfactuals - rounding might result in invalid counterfactuals!
-    counterfactuals = list(filter(lambda cf: model.predict([cf]) > y_pred, counterfactuals))
+        counterfactuals = [np.round(apply_adjustment(x, cf[2])) for cf in counterfactuals]
 
-    # Choose a counterfactual -> simply take the first one (closest)  # TODO: Or choose the one with the largest or larger prediction?
-    x_cf = [-1000 for _ in range(x.shape[0])] if len(counterfactuals) == 0 else counterfactuals[0]
+        # Filter our all invalid counterfactuals - rounding might result in invalid counterfactuals!
+        counterfactuals = list(filter(lambda cf: model.predict([cf]) > y_pred, counterfactuals))
 
-    return x_cf
+        # Choose a counterfactual -> simply take the first one (closest)  # TODO: Or choose the one with the largest or larger prediction?
+        x_cf = [-1000 for _ in range(x.shape[0])] if len(counterfactuals) == 0 else counterfactuals[0]
+
+        return x_cf
 
     """
     # initialize counterfactual variable (tmp and final) with nans for now

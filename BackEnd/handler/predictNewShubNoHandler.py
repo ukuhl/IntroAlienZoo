@@ -29,8 +29,8 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         except Exception as ex:
             pass
 
-    def __compute_counterfactual(self, x, y_pred):
-        return compute_counterfactual_of_model(self.model, x, y_pred)
+    def __compute_counterfactual(self, x, y_pred, plausible=True):
+        return compute_counterfactual_of_model(self.model["model"], x, y_pred, plausible=plausible, X_train=self.model["X_train"], y_train=self.model["y_train"])
 
     def __parse_request_body(self):
         if self.args is None:
@@ -88,7 +88,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
 
         # Compute a prediction using the model
         x = np.array([input_vars["var1"], input_vars["var2"], input_vars["var3"], input_vars["var4"], input_vars["var5"]], dtype=float).reshape(1, -1)
-        pred = self.model.predict(x)#self.model(x).detach().numpy()
+        pred = self.model["model"].predict(x)#self.model(x).detach().numpy()
 
         # Compute new number of shubs
         SNnew = int(np.floor(cur_num_shubs * pred))    # new number = old number * GR prediction)
@@ -96,10 +96,12 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         if SNnew < 2:
             SNnew = 2
 
-        # Compute a counterfactual explanation if the user is in the experimental group
+        # Compute a plausible counterfactual explanation if the user is in the experimental group and a closest counterfactual explanatons otherwise
         x_cf = None
-        #if control_group is not True:
-        x_cf = self.__compute_counterfactual(x, pred)
+        if control_group is not True:
+            x_cf = self.__compute_counterfactual(x, pred, plausible=True)
+        else:
+            x_cf = self.__compute_counterfactual(x, pred)
         
         # Log everything!
         log_data = {
