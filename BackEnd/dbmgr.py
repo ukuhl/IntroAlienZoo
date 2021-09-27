@@ -2,9 +2,9 @@
 import mysql.connector
 
 
-user_name = "user_alienzoo"
+database = "alienzoo"   # CREATE DATABASE alienzoo;
+user_name = "user_alienzoo"  # CREATE USER 'user_alienzoo'@'localhost' IDENTIFIED BY 'useralienzoopw123456'; GRANT ALL PRIVILEGES ON alienzoo. * TO 'user_alienzoo'@'localhost';
 user_pw = "useralienzoopw123456"
-database = "alienzoo"
 
 
 class DataMgr():
