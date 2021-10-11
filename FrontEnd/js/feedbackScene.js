@@ -324,7 +324,7 @@ class FeedbackScene extends Phaser.Scene {
 
 	logTime() {
 		var time = new Date().getTime() - this.startTime;
-		this.varObj.api.logTime(5, time);
+		this.varObj.api.logTime(5, time, this.varObj.blockCount, this.varObj.trialCount);
 	}
 
 	update() { }

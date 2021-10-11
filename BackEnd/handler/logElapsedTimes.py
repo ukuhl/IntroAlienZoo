@@ -48,17 +48,28 @@ class LogElapsedTimesHandler(BasisRequestHandler):
             self.send_custom_error(400, "Missing field 'timeElapsed'")
             raise Exception()
 
-        return user_id, event_id, time_elapsed
+        # Get block and trial number
+        block_id = self.args["blockNo"]
+        if block_id is None:
+            self.send_custom_error(400, "Missing field 'blockNo'")
+            raise Exception()
+
+        trial_id = self.args["trialNo"]
+        if trial_id is None:
+            self.send_custom_error(400, "Missing field 'trialNo'")
+            raise Exception()
+
+        return user_id, event_id, time_elapsed, block_id, trial_id
 
     def post(self):
         # Parse data
         try:
-            user_id, event_id, time_elapsed = self.__parse_request_body()
+            user_id, event_id, time_elapsed, block_id, trial_id = self.__parse_request_body()
         except:
             return
 
         # Log data
-        if self.datamgr.log_elapsed_time(user_id, event_id, time_elapsed) is False:
+        if self.datamgr.log_elapsed_time(user_id, event_id, time_elapsed, block_id, trial_id) is False:
             self.send_custom_error(500, "Internal server error")
         else:
             self.finish()

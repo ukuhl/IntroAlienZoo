@@ -43,19 +43,33 @@ class LogAttentionHandler(BasisRequestHandler):
             self.send_custom_error(400, "Missing field 'userPrediction'")
             raise Exception()
 
+        # Get trial count
+        trial_count = self.args["trialCount"]
+        if trial_count is None:
+            self.send_custom_error(400, "Missing field 'trialCount'")
+            raise Exception()
 
-        return user_id, user_prediction
+        # Get true number of shubs
+        n_shubs = self.args["shubNo"]
+        if n_shubs is None:
+            self.send_custom_error(400, "Missing field 'shubNo'")
+            raise Exception()
+
+
+        return user_id, user_prediction, n_shubs, trial_count
 
     def post(self):
         # Parse data
         try:
-            user_id, user_prediction = self.__parse_request_body()
+            user_id, user_prediction, n_shubs, trial_count = self.__parse_request_body()
         except:
             return
 
         # Log data
         log_data = {
-            "userPrediction": user_prediction
+            "userPrediction": user_prediction,
+            "n_shubs": n_shubs,
+            "trialCount": trial_count
         }
 
         if self.datamgr.log_user_stuff(user_id, json.dumps(log_data)) is False:

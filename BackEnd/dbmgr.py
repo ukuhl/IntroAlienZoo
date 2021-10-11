@@ -16,7 +16,7 @@ class DataMgr():
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS users (userId TEXT NOT NULL, controlGroup INT NOT NULL)")
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS logs (userId TEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, data TEXT NOT NULL)")
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS questionnaire_logs (userId TEXT NOT NULL, questionId INT NOT NULL, var1 INT NOT NULL, var2 INT NOT NULL, var3 INT NOT NULL, var4 INT NOT NULL, var5 INT NOT NULL, var6 INT NOT NULL)");
-        self.db.cursor().execute("CREATE TABLE IF NOT EXISTS elapsedtime_logs (userId TEXT NOT NULL, eventId INT NOT NULL, timeElapsed INT NOT NULL)")
+        self.db.cursor().execute("CREATE TABLE IF NOT EXISTS elapsedtime_logs (userId TEXT NOT NULL, eventId INT NOT NULL, timeElapsed INT NOT NULL, blockId INT NOT NULL, trialId INT NOT NULL)")
         self.db.commit()
 
     def add_new_user(self, user_id, control_group):
@@ -51,9 +51,9 @@ class DataMgr():
             print(ex)
             return False
 
-    def log_elapsed_time(self, user_id, event_id, time_elapsed):
+    def log_elapsed_time(self, user_id, event_id, time_elapsed, block_id, trial_id):
         try:
-            self.db.cursor().execute("INSERT INTO elapsedtime_logs (userId, eventId, timeElapsed) VALUES(%s,%s,%s)", (user_id, event_id, time_elapsed))
+            self.db.cursor().execute("INSERT INTO elapsedtime_logs (userId, eventId, timeElapsed, blockId, trialId) VALUES(%s,%s,%s,%s,%s)", (user_id, event_id, time_elapsed, block_id, trial_id))
             self.db.commit()
 
             return True
