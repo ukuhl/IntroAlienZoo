@@ -31,6 +31,36 @@ class AlienZooApi {
         });
     }
 
+    logUserPerformance(trialCount, blockCount, plants, cfPlants, shubNoOld, shubNewOld) {
+        const data = {
+            "userId": this.userId,
+            "trialCount": trialCount,
+            "blockCount": blockCount,
+            "plants": plants,
+            "cfPlants": cfPlants,
+            "shubNoOld": shubNoOld,
+            "shubNoNew": shubNewOld
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/userPerformance", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
     logQuestionnaire(questionId, checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6) {
         const data = {
             "userId": this.userId,
@@ -57,11 +87,13 @@ class AlienZooApi {
         });
     }
 
-    logTime(eventId, timeElapsed) {
+    logTime(eventId, timeElapsed, blockNo=undefined, trialNo=undefined) {
         const data = {
             "userId": this.userId,
             "eventId": eventId,
-            "timeElapsed": timeElapsed
+            "timeElapsed": timeElapsed,
+            "blockNo": blockNo == undefined ? -1 : blockNo,
+            "trialNo": trialNo == undefined ? -1 : trialNo 
         };
 
         return new Promise(resolve => {
@@ -83,10 +115,12 @@ class AlienZooApi {
         });
     }
 
-    logAttention(userPrediction) {
+    logAttention(userPrediction, trialCount, shubNo) {
         const data = {
             "userId": this.userId,
-            "userPrediction": userPrediction
+            "userPrediction": userPrediction,
+            "trialCount": trialCount,
+            "shubNo": shubNo
         };
 
         return new Promise(resolve => {

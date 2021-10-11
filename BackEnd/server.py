@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
-import os
 from tornado.ioloop import IOLoop
 import tornado.web
 
-from models import load_model_from_file, Model, build_model
+from models import build_model
 from dbmgr import DataMgr
 
 from handler.gameStartHandler import GameStartHandler
@@ -14,6 +13,7 @@ from handler.logElapsedTimes import LogElapsedTimesHandler
 from handler.logQuestionnaire import LogQuestionnaireHandler
 from handler.logRandomFeedback import LogRandomFeedbackHandler
 from handler.logAttention import LogAttentionHandler
+from handler.logUserPerformanceHandler import LogUserPerformanceHandler
 
 
 port = 8888
@@ -22,7 +22,6 @@ port = 8888
 class WebServer(tornado.web.Application):
     def __init__(self):
         self.datamgr = DataMgr()
-        #self.model = load_model_from_file()
         self.model = build_model()
 
         handlers = [
@@ -36,6 +35,7 @@ class WebServer(tornado.web.Application):
             (r'/api/log/questionnaireAnswer', LogQuestionnaireHandler, dict(datamgr=self.datamgr)),
             (r'/api/log/elapsedTime', LogElapsedTimesHandler, dict(datamgr=self.datamgr)),
             (r'/api/log/randomFeedback', LogRandomFeedbackHandler, dict(datamgr=self.datamgr)),
+            (r'/api/log/userPerformance', LogUserPerformanceHandler, dict(datamgr=self.datamgr)),
             (r'/api/log/attention', LogAttentionHandler, dict(datamgr=self.datamgr))
         ]
 

@@ -262,12 +262,12 @@ class StableScene extends Phaser.Scene {
 
 	logTimeFeed() {
 		var time = new Date().getTime() - this.startTime;
-		this.varObj.api.logTime(3, time);
+		this.varObj.api.logTime(3, time, this.varObj.blockCount, this.varObj.trialCount);
 	}
 
 	logTimeFeedback() {
 		var time = new Date().getTime() - this.startTime;
-		this.varObj.api.logTime(4, time);
+		this.varObj.api.logTime(4, time, this.varObj.blockCount, this.varObj.trialCount);
 	}
 
 	update() { }

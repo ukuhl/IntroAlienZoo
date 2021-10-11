@@ -96,7 +96,7 @@ class ProgressScene extends Phaser.Scene {
 			this.varObj.newNumber = newShubData.newNumShubs;
 
 			// Logging random feedback
-			this.varObj.api.logRandomFeedback(this.varObj.trialCount, this.varObj.blockCount, this.varObj.rand_array[idx]);
+			this.varObj.api.logUserPerformance(this.varObj.trialCount, this.varObj.blockCount, this.varObj.in_array[idx], this.varObj.cf_array[idx], this.varObj.oldNumber, newShubData.newNumShubs);
 
 			// switch to stable Scene again
 			this.scene.remove('stableScene', stableScene);

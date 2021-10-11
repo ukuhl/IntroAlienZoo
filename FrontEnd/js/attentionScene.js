@@ -84,7 +84,7 @@ class AttentionScene extends Phaser.Scene {
   }
 
   logAnswer() {
-    this.varObj.api.logAttention(this.inputText.text);
+    this.varObj.api.logAttention(this.inputText.text, this.varObj.trialCount, this.varObj.oldNumber);
   }
 
   logTime() {
