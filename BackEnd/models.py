@@ -1,40 +1,6 @@
 # -*- coding: utf-8 -*-
-import torch
-import torch.nn.functional as F
 import numpy as np
 import sklearn
-
-#from ceml.torch import generate_counterfactual
-from ceml.sklearn import generate_counterfactual
-from ceml.backend.torch.costfunctions import SquaredError
-from ceml.model import ModelWithLoss
-
-# Neural network - Linear regression
-class Model(torch.nn.Module, ModelWithLoss):
-    def __init__(self, input_size):
-        super(Model, self).__init__()
-        self.linear1 = torch.nn.Linear(input_size, 200)
-        self.linear2 = torch.nn.Linear(200, 100)
-        self.linear3 = torch.nn.Linear(100, 1)
-
-    def forward(self, x):
-        x = torch.Tensor(x).double()
-        x = F.leaky_relu(self.linear1(x))
-        x = F.leaky_relu(self.linear2(x))
-
-        return self.linear3(x)
-
-    def predict(self, x, dim=1):
-        return self.forward(x)
-
-    def get_loss(self, y_target, pred=None):
-        return SquaredError(input_to_output=self.predict, y_target=y_target)
-
-
-# Load stored model parameters
-def load_model_from_file(file_path='modelsStuff/PyTorchNetDataSet1_Regression_500epochs_SquaredError.joblib'):
-#def load_model_from_file(file_path='modelsStuff/PyTorchNetDataSet1_Regression_2000epochs_SquaredError.joblib'):
-    return torch.load(file_path)
 
 # Fit model
 def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
@@ -72,38 +38,6 @@ def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
     y_pred = model.predict(X_test)
     print(f"R^2: {r2_score(y_test, y_pred)}")
     print(f"MSE: {mean_squared_error(y_test, y_pred)}")
-    
-    """
-    # TEMP ONLY
-    print("Testing and comparing counterfactuals....")
-    differences = []
-    cf_pairs = []
-    for i in range(100):
-        #x_test = np.array([0, 1, 1, 0, 0])
-        x_test = np.array([random.randint(0,6) for _ in range(5)])
-        y_test_pred = model.predict([x_test])
-        #print(x_test, y_test_pred)
-
-        xcf1 = compute_counterfactual_of_model(model, x_test, y_test_pred, plausible=False)
-        xcf2 = compute_counterfactual_of_model(model, x_test, y_test_pred, plausible=True, X_train=X_train, y_train=y_train)
-        if xcf1[0] == -1000 or xcf2[0] == -1000:
-            print("No counterfactual found!")
-            continue
-
-        cf_pairs.append((xcf1,xcf2))
-        num_diff = np.sum(xcf1 != xcf2)
-        #print(xcf1, xcf2)
-        differences.append(num_diff)
-
-    #print(xcf1, model.predict([xcf1]))
-    #print(xcf2, model.predict([xcf2]))
-
-    print(cf_pairs)
-    print(differences)
-    print(np.mean(differences), np.median(differences), np.var(differences), np.std(differences))
-
-    ###################################
-    """
 
     return {"model": model, "X_train": X_train, "y_train": y_train}
 
