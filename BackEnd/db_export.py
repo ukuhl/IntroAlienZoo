@@ -15,7 +15,20 @@ class DataMgr():
         self.db = mysql.connector.connect(host="localhost", user=user_name, password=user_pw, database=database)
         
         # Create dictionary where userId is mapped to group
-        # TODO
+        self.user_groups = {}
+        self._get_users_groups()
+
+    def _get_users_groups(self):
+        try:
+            cur = self.db.cursor()
+            cur.execute("SELECT userId, controlGroup FROM users")
+            for row in cur.fetchall():
+                self.user_groups[str(row[0])] = int(row[1])
+
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
 
     def export_performance(self, file_out="performance.csv"):
         try:
@@ -34,7 +47,7 @@ class DataMgr():
                 d = json.loads(row[1])
                 if "cfPlants" in d:
                     data_userId.append(str(row[0]))
-                    data_group.append("")
+                    data_group.append(self.user_groups[str(row[0])])
                     data_blockNo.append(int(d["blockCount"]))
                     data_trialNo.append(int(d["trialCount"]))
                     data_shubNoOld.append(int(d["shubNoOld"]))
@@ -110,7 +123,7 @@ class DataMgr():
                             continue
 
                         data_userId.append(user_id)
-                        data_group.append("")  # TODO
+                        data_group.append(self.user_groups[user_id])
                         data_BlockNr.append(block_id)
                         data_TrialNr.append(trial_id)
                         data_timeAgreementScene.append(data[user_id]["timeAgreementScene"])
@@ -139,7 +152,7 @@ class DataMgr():
             for row in cur.fetchall():
                 for i in range(2, 8):
                     data_userId.append(str(row[0]))
-                    data_group.append("") # TODO
+                    data_group.append(self.user_groups[str(row[0])])
                     data_itemNo.append(int(row[1]))
 
                     data_reponseNo.append(i - 1)
@@ -167,7 +180,7 @@ class DataMgr():
                 d = json.loads(row[1])
                 if "userPrediction" in d:
                     data_userId.append(str(row[0]))
-                    data_group.append("")
+                    data_group.append(self.user_groups[str(row[0])])
                     data_trialNo.append(int(d["trialCount"]))
                     data_userInput.append(int(d["userPrediction"]))
                     data_shubNo.append(int(d["n_shubs"]))
