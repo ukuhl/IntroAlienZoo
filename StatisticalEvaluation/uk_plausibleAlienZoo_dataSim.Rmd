@@ -1,0 +1,127 @@
+---
+title: "Plausible Alien Zoo: Generate simulated data to test statistics script"
+output: 
+  pdf_document:
+  toc: TRUE
+toc_depth: 5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+
+library(stringi)
+
+set.seed(42)
+
+# generate user Ids once for all:
+users = stri_rand_strings(100, 4, '[A-Z]')
+
+```
+
+
+# Generate AttentionCheck.csv data
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+
+# interleave to get appropriate userId vector:
+userId = rep(users,times=c(rep(2,100)))
+group = rep(c("C","C","P","P"),50)
+trialNo = rep(c(5,11),100)
+userInput = floor(runif(200, 5, 40))
+shubNo = floor(userInput+abs(rnorm(length(userInput), sd=0.7)))
+
+
+attention = data.frame(userId,group,trialNo,userInput,shubNo)
+
+write.csv(attention,"AttentionCheckSim.csv", row.names = TRUE)
+
+```
+
+# Generate Performance.csv data
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+
+userId = rep(users,times=c(rep(15,100)))
+group = rep(c(rep("C",15),rep("P",15)),50)
+blockNo = rep(rep(c(1,2,3,4,5),times=c(rep(3,5))),100)
+trialNo = rep(c(1:15),100)
+
+plant1=abs(floor(runif(100*15,0,6)))
+plant2=abs(floor(runif(100*15,0,6)))
+plant3=abs(floor(runif(100*15,0,6)))
+plant4=abs(floor(runif(100*15,0,6)))
+plant5=abs(floor(runif(100*15,0,6)))
+
+CFplant1=abs(floor(jitter(plant1, factor = 1, amount = NULL)))
+CFplant2=abs(floor(jitter(plant2, factor = 1, amount = NULL)))
+CFplant3=abs(floor(jitter(plant3, factor = 1, amount = NULL)))
+CFplant4=abs(floor(jitter(plant4, factor = 1, amount = NULL)))
+CFplant5=abs(floor(jitter(plant5, factor = 1, amount = NULL)))
+
+tmp=sapply(1:100, function(x) {floor(seq(15, runif(1,2,100), length.out = 16))})
+
+shubNoOld=c(tmp[c(1:15),])
+shubNoNew=c(tmp[c(2:16),])
+
+performance = data.frame(userId,group,blockNo,trialNo,plant1,plant2,plant3,plant4,plant5,CFplant1,CFplant2,CFplant3,CFplant4,CFplant5,shubNoOld,shubNoNew)
+
+write.csv(performance,"PerformanceSim.csv", row.names = TRUE)
+
+```
+
+# Generate ReactionTimes.csv data
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+
+BlockNr=blockNo
+TrialNr=trialNo
+
+timeAgreementScene=rep(floor(runif(100, min=9000, max=50000)),times=c(rep(15,100)))
+timeStartScene=rep(floor(runif(100, min=3500, max=50000)),times=c(rep(15,100)))
+timeStableUntilFeeding=floor(runif(1500, min=4750, max=50000))
+timeFeedbackScene=rep(floor(runif(500, min=9500, max=50000)),times=c(rep(3,500)))
+
+rts=data.frame(userId,group,BlockNr,TrialNr,timeAgreementScene,timeStartScene,timeStableUntilFeeding,timeFeedbackScene)
+
+write.csv(rts,"ReactionTimesSim.csv", row.names = TRUE)
+
+```
+
+# Generate Survey.csv data
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+
+userId = rep(users,times=c(rep(54,100)))
+group = rep(c(rep("C",54),rep("P",54)),50)
+
+itemNo = rep(rep(c(1:9),times=c(rep(6,9))),100)
+  
+responseNo = responseNo = rep(c(1:6),9*100)
+
+item1=sapply(1:100, function(x) {c(sample(c(0,1),1),sample(c(0,1),1),sample(c(0,1),1),sample(c(0,1),1),sample(c(0,1),1))})
+item2 = +(!item1)
+
+item1=rbind(item1,as.numeric(!colSums(item1)))
+item2=rbind(item2,as.numeric(!colSums(item2)))
+item3=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+item4=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+item5=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+item6=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+item7=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+item8=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+item9=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0))})
+
+l=list(item1,item2,item3,item4,item5,item6,item7,item8,item9)
+res=do.call(cbind, l)[, order(sequence(sapply(l, ncol)))]
+
+checked = c(res[c(1:6),])
+
+survey=data.frame(userId,group,itemNo,responseNo,checked)
+
+write.csv(survey,"SurveySim.csv", row.names = TRUE)
+
+```
