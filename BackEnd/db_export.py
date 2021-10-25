@@ -139,8 +139,9 @@ class DataMgr():
             print(ex)
             return False
 
-    def export_survey(self, file_out="survey.csv"):
+    def export_survey(self, file_out_survey="survey.csv", file_out_demographics="demographics.csv"):
         try:
+            # Survey
             data_userId = []
             data_group = []
             data_itemNo = []
@@ -159,7 +160,35 @@ class DataMgr():
                     data_checked.append(int(row[i]))
 
             df = pd.DataFrame({"userId": data_userId, "group": data_group, "itemNo": data_itemNo, "responseNo": data_reponseNo, "checked": data_checked})        
-            df.to_csv(file_out, index=False)
+            df.to_csv(file_out_survey, index=False)
+
+            # Demographics
+            data_demographics_userId = []
+            data_demographics_group = []
+            data_demographics_item = []
+            data_demographics_responseNo = []
+            data_demographics_checked = []
+
+            cur = self.db.cursor()
+            cur.execute("SELECT userId, varAge1, varAge2, varAge3, varAge4, varAge5, varAge6, varAge7, varGender1, varGender2, varGender3, varGender4, varGender5, varGender6, varGender7 FROM questionnaire_logs")
+            for row in cur.fetchall():
+                for i in range(1, 8):
+                    data_demographics_userId.append(str(row[0]))
+                    data_demographics_group.append(self.user_groups[str(row[0])])
+                    data_demographics_item.append("age")
+
+                    data_demographics_responseNo.append(i)
+                    data_demographics_checked.append(int(row[i]))
+                for i in range(8, 15):
+                    data_demographics_userId.append(str(row[0]))
+                    data_demographics_group.append(self.user_groups[str(row[0])])
+                    data_demographics_item.append("gender")
+
+                    data_demographics_responseNo.append(i - 7)
+                    data_demographics_checked.append(int(row[i]))
+
+            df_demographics = pd.DataFrame({"userId": data_demographics_userId, "group": data_demographics_group, "item": data_demographics_item, "responseNo": data_demographics_responseNo, "checked": data_demographics_checked})
+            df_demographics.to_csv(file_out_demographics, index=False)
 
             return True
         except Exception as ex:

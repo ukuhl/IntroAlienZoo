@@ -684,6 +684,8 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 	logAnswers() {
 		this.varObj.api.logQuestionnaire(8, this.item9Var1Checked, this.item9Var2Checked, this.item9Var3Checked, this.item9Var4Checked, this.item9Var5Checked, this.item9Var6Checked);
+		this.varObj.api.logDemographics(this.itemAgeVar1Checked, this.itemAgeVar2Checked, this.itemAgeVar3Checked, this.itemAgeVar4Checked, this.itemAgeVar5Checked, this.itemAgeVar6Checked, this.itemAgeVar7Checked,
+			this.itemGenderVar1Checked, this.itemGenderVar2Checked, this.itemGenderVar3Checked, this.itemGenderVar4Checked, this.itemGenderVar5Checked, this.itemGenderVar6Checked, this.itemGenderVar7Checked);
 	}
 
 	onBtnContinue() {

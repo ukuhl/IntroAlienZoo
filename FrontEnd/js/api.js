@@ -61,7 +61,34 @@ class AlienZooApi {
         });
     }
 
-    logQuestionnaire(questionId, checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6) {
+    logDemographics(itemAgeVar1Checked, itemAgeVar2Checked, itemAgeVar3Checked, itemAgeVar4Checked, itemAgeVar5Checked, itemAgeVar6Checked, itemAgeVar7Checked, itemGenderVar1Checked, itemGenderVar2Checked, itemGenderVar3Checked, itemGenderVar4Checked, itemGenderVar5Checked, itemGenderVar6Checked, itemGenderVar7Checked) {
+        const data = {
+            "userId": this.userId,
+            "questionId": -1,
+            "checkboxValues": [itemAgeVar1Checked, itemAgeVar2Checked, itemAgeVar3Checked, itemAgeVar4Checked, itemAgeVar5Checked, itemAgeVar6Checked, itemAgeVar7Checked,
+                itemGenderVar1Checked, itemGenderVar2Checked, itemGenderVar3Checked, itemGenderVar4Checked, itemGenderVar5Checked, itemGenderVar6Checked, itemGenderVar7Checked]
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/questionnaireAnswer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
+    logQuestionnaire(questionId, checkboxVar1, checkboxVar2, checkboxVar3, checkboxVar4, checkboxVar5, checkboxVar6,) {
         const data = {
             "userId": this.userId,
             "questionId": questionId,
