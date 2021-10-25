@@ -26,9 +26,18 @@ class EndScene extends Phaser.Scene {
 			'',
 			'Thank you very much for your participation!',
 			'',
-			'If you have further questions or comments regarding this study, please contact Dr. Ulrike Kuhl at Bielefeld University: ukuhl@techfak.uni-bielefeld.de .',
+			'Your unique survey completion code is:',
 			'',
-			'You may close this window now.'
+			'INSERT FIRST 6 CHARACTERS OF userId HERE',
+			'',
+			'Note down this code, return to AMT and paste the code into the box to receive your payment.',
+			'',
+			'If you would like to know more about the aim of this work, visit: https://its-ml.de/index.php/pazdebrief/',
+			'',
+			'In case you have further questions or comments regarding this study, please contact Dr. Ulrike Kuhl at Bielefeld University: ukuhl@techfak.uni-bielefeld.de .',
+			'',
+			'You may close this window now.',
+			''
 		]
 
 		this.add.text(window.innerWidth * 0.05, window.innerHeight * 0.20, qIntro, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
