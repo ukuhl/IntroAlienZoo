@@ -13,6 +13,23 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		this.item9Var4Checked = false;
 		this.item9Var5Checked = false;
 		this.item9Var6Checked = false;
+
+		this.itemGenderVar1Checked = false;
+		this.itemGenderVar2Checked = false;
+		this.itemGenderVar3Checked = false;
+		this.itemGenderVar4Checked = false;
+		this.itemGenderVar5Checked = false;
+		this.itemGenderVar6Checked = false;
+		this.itemGenderVar7Checked = false;
+
+		this.itemAgeVar1Checked = false;
+		this.itemAgeVar2Checked = false;
+		this.itemAgeVar3Checked = false;
+		this.itemAgeVar4Checked = false;
+		this.itemAgeVar5Checked = false;
+		this.itemAgeVar6Checked = false;
+		this.itemAgeVar7Checked = false;
+
 	}
 
 	init() { }
@@ -227,357 +244,430 @@ class QuestionnaireScene4 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		if (this.varObj.api.controlGroup) {
-			var item10 = [
-				"7. I did not find inconsistencies in the feedback based on what other users tried at that point in time in the game."
-			];
-		} else {
-			var item10 = [
-				"7. I did not find inconsistencies in the feedback on what choice would have led to a better result."
-			];
-		}
 
-		/*
-		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.325, item10, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.375, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		var demographics = [
+			'To finish up, we would like to collect your demographic information.',,
+		]
 
-		var item10Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.25).setInteractive();
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.325, demographics, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		item10Sprite1.on('pointerdown', function (pointer) {
-		  if (item10Var1Checked) {
-			item10Sprite1.setFrame(0);
-			item10Var1Checked = false;
-		  } else {
-			item10Sprite1.setFrame(1);
-			item10Var1Checked = true;
-
-			item10Var2Checked = false;
-			item10Var3Checked = false;
-			item10Var4Checked = false;
-			item10Var5Checked = false;
-			item10Var6Checked = false;
-			item10Sprite2.setFrame(0);
-			item10Sprite3.setFrame(0);
-			item10Sprite4.setFrame(0);
-			item10Sprite5.setFrame(0);
-			item10Sprite6.setFrame(0);
-
-		  }
-		});
-
-		// option 2
-		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.375, 'Disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
-
-		var item10Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.25).setInteractive();
-
-		item10Sprite2.on('pointerdown', function (pointer) {
-		  if (item10Var2Checked) {
-			item10Sprite2.setFrame(0);
-			item10Var2Checked = false;
-		  } else {
-			item10Sprite2.setFrame(1);
-			item10Var2Checked = true;
-
-			item10Var1Checked = false;
-			item10Var3Checked = false;
-			item10Var4Checked = false;
-			item10Var5Checked = false;
-			item10Var6Checked = false;
-			item10Sprite1.setFrame(0);
-			item10Sprite3.setFrame(0);
-			item10Sprite4.setFrame(0);
-			item10Sprite5.setFrame(0);
-			item10Sprite6.setFrame(0);
-
-		  }
-		});
-
-		// option 3
-		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.375, 'Neutral', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
-
-		var item10Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.25).setInteractive();
-
-		item10Sprite3.on('pointerdown', function (pointer) {
-		  if (item10Var3Checked) {
-			item10Sprite3.setFrame(0);
-			item10Var3Checked = false;
-		  } else {
-			item10Sprite3.setFrame(1);
-			item10Var3Checked = true;
-
-			item10Var1Checked = false;
-			item10Var2Checked = false;
-			item10Var4Checked = false;
-			item10Var5Checked = false;
-			item10Var6Checked = false;
-			item10Sprite1.setFrame(0);
-			item10Sprite2.setFrame(0);
-			item10Sprite4.setFrame(0);
-			item10Sprite5.setFrame(0);
-			item10Sprite6.setFrame(0);
-
-		  }
-		});
-
-		// option 4
-		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.375, 'Agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
-
-		var item10Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.25).setInteractive();
-
-		item10Sprite4.on('pointerdown', function (pointer) {
-		  if (item10Var4Checked) {
-			item10Sprite4.setFrame(0);
-			item10Var4Checked = false;
-		  } else {
-			item10Sprite4.setFrame(1);
-			item10Var4Checked = true;
-
-			item10Var1Checked = false;
-			item10Var2Checked = false;
-			item10Var3Checked = false;
-			item10Var5Checked = false;
-			item10Var6Checked = false;
-			item10Sprite1.setFrame(0);
-			item10Sprite2.setFrame(0);
-			item10Sprite3.setFrame(0);
-			item10Sprite5.setFrame(0);
-			item10Sprite6.setFrame(0);
-
-		  }
-		});
-
-		// option 5
-		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.375, 'Strongly agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
-
-		var item10Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.25).setInteractive();
-
-		item10Sprite5.on('pointerdown', function (pointer) {
-		  if (item10Var5Checked) {
-			item10Sprite5.setFrame(0);
-			item10Var5Checked = false;
-		  } else {
-			item10Sprite5.setFrame(1);
-			item10Var5Checked = true;
-
-			item10Var1Checked = false;
-			item10Var2Checked = false;
-			item10Var3Checked = false;
-			item10Var4Checked = false;
-			item10Var6Checked = false;
-			item10Sprite1.setFrame(0);
-			item10Sprite2.setFrame(0);
-			item10Sprite3.setFrame(0);
-			item10Sprite4.setFrame(0);
-			item10Sprite6.setFrame(0);
-
-		  }
-		});
-
-		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.375, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
-
-		var item10Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.25).setInteractive();
-
-		item10Sprite6.on('pointerdown', function (pointer) {
-		  if (item10Var6Checked) {
-			item10Sprite6.setFrame(0);
-			item10Var6Checked = false;
-		  } else {
-			item10Sprite6.setFrame(1);
-			item10Var6Checked = true;
-
-			item10Var1Checked = false;
-			item10Var2Checked = false;
-			item10Var3Checked = false;
-			item10Var4Checked = false;
-			item10Var5Checked = false;
-			item10Sprite1.setFrame(0);
-			item10Sprite2.setFrame(0);
-			item10Sprite3.setFrame(0);
-			item10Sprite4.setFrame(0);
-			item10Sprite5.setFrame(0);
-
-		  }
-		});
-
-		if(this.varObj.api.controlGroup) {
-		  var item11 = [
-			"8. I think most people would learn to work with the feedback based on what other users tried at that point in time in the game very quickly."
-		  ];
-		} else {
-		  var item11 = [
-			"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
-		  ];
-		}
+		var itemGender = [
+			"Which term most accurately describes your gender?"
+		]
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.5, item11, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.375, itemGender, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.55, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, 'Female', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item11Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.25).setInteractive();
+		var itemGenderSprite1 = this.add.sprite(window.innerWidth * 0.04, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
 
-		item11Sprite1.on('pointerdown', function (pointer) {
-		  if (item11Var1Checked) {
-			item11Sprite1.setFrame(0);
-			item11Var1Checked = false;
-		  } else {
-			item11Sprite1.setFrame(1);
-			item11Var1Checked = true;
+		itemGenderSprite1.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar1Checked) {
+				itemGenderSprite1.setFrame(0);
+				this.itemGenderVar1Checked = false;
+			} else {
+				itemGenderSprite1.setFrame(1);
+				this.itemGenderVar1Checked = true;
 
-			item11Var2Checked = false;
-			item11Var3Checked = false;
-			item11Var4Checked = false;
-			item11Var5Checked = false;
-			item11Var6Checked = false;
-			item11Sprite2.setFrame(0);
-			item11Sprite3.setFrame(0);
-			item11Sprite4.setFrame(0);
-			item11Sprite5.setFrame(0);
-			item11Sprite6.setFrame(0);
+				this.itemGenderVar2Checked = false;
+				this.itemGenderVar3Checked = false;
+				this.itemGenderVar4Checked = false;
+				this.itemGenderVar5Checked = false;
+				this.itemGenderVar6Checked = false;
+				this.itemGenderVar7Checked = false;
+				itemGenderSprite2.setFrame(0);
+				itemGenderSprite3.setFrame(0);
+				itemGenderSprite4.setFrame(0);
+				itemGenderSprite5.setFrame(0);
+				itemGenderSprite6.setFrame(0);
+				itemGenderSprite7.setFrame(0);
 
-		  }
-		});
+			}
+		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.55, 'Disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.150, window.innerHeight * 0.425, 'Male', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item11Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.25).setInteractive();
+		var itemGenderSprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
 
-		item11Sprite2.on('pointerdown', function (pointer) {
-		  if (item11Var2Checked) {
-			item11Sprite2.setFrame(0);
-			item11Var2Checked = false;
-		  } else {
-			item11Sprite2.setFrame(1);
-			item11Var2Checked = true;
+		itemGenderSprite2.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar2Checked) {
+				itemGenderSprite2.setFrame(0);
+				this.itemGenderVar2Checked = false;
+			} else {
+				itemGenderSprite2.setFrame(1);
+				this.itemGenderVar2Checked = true;
 
-			item11Var1Checked = false;
-			item11Var3Checked = false;
-			item11Var4Checked = false;
-			item11Var5Checked = false;
-			item11Var6Checked = false;
-			item11Sprite1.setFrame(0);
-			item11Sprite3.setFrame(0);
-			item11Sprite4.setFrame(0);
-			item11Sprite5.setFrame(0);
-			item11Sprite6.setFrame(0);
+				this.itemGenderVar1Checked = false;
+				this.itemGenderVar3Checked = false;
+				this.itemGenderVar4Checked = false;
+				this.itemGenderVar5Checked = false;
+				this.itemGenderVar6Checked = false;
+				this.itemGenderVar7Checked = false;
+				itemGenderSprite1.setFrame(0);
+				itemGenderSprite3.setFrame(0);
+				itemGenderSprite4.setFrame(0);
+				itemGenderSprite5.setFrame(0);
+				itemGenderSprite6.setFrame(0);
+				itemGenderSprite7.setFrame(0);
 
-		  }
-		});
+			}
+		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.55, 'Neutral', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.265, window.innerHeight * 0.425, 'Transgender female', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item11Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.25).setInteractive();
+		var itemGenderSprite3 = this.add.sprite(window.innerWidth * 0.29, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
 
-		item11Sprite3.on('pointerdown', function (pointer) {
-		  if (item11Var3Checked) {
-			item11Sprite3.setFrame(0);
-			item11Var3Checked = false;
-		  } else {
-			item11Sprite3.setFrame(1);
-			item11Var3Checked = true;
+		itemGenderSprite3.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar3Checked) {
+				itemGenderSprite3.setFrame(0);
+				this.itemGenderVar3Checked = false;
+			} else {
+				itemGenderSprite3.setFrame(1);
+				this.itemGenderVar3Checked = true;
 
-			item11Var1Checked = false;
-			item11Var2Checked = false;
-			item11Var4Checked = false;
-			item11Var5Checked = false;
-			item11Var6Checked = false;
-			item11Sprite1.setFrame(0);
-			item11Sprite2.setFrame(0);
-			item11Sprite4.setFrame(0);
-			item11Sprite5.setFrame(0);
-			item11Sprite6.setFrame(0);
+				this.itemGenderVar1Checked = false;
+				this.itemGenderVar2Checked = false;
+				this.itemGenderVar4Checked = false;
+				this.itemGenderVar5Checked = false;
+				this.itemGenderVar6Checked = false;
+				this.itemGenderVar7Checked = false;
+				itemGenderSprite1.setFrame(0);
+				itemGenderSprite2.setFrame(0);
+				itemGenderSprite4.setFrame(0);
+				itemGenderSprite5.setFrame(0);
+				itemGenderSprite6.setFrame(0);
+				itemGenderSprite7.setFrame(0);
 
-		  }
-		});
+			}
+		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.55, 'Agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.385, window.innerHeight * 0.425, 'Transgender male', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item11Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.25).setInteractive();
+		var itemGenderSprite4 = this.add.sprite(window.innerWidth * 0.42, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
 
-		item11Sprite4.on('pointerdown', function (pointer) {
-		  if (item11Var4Checked) {
-			item11Sprite4.setFrame(0);
-			item11Var4Checked = false;
-		  } else {
-			item11Sprite4.setFrame(1);
-			item11Var4Checked = true;
+		itemGenderSprite4.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar4Checked) {
+				itemGenderSprite4.setFrame(0);
+				this.itemGenderVar4Checked = false;
+			} else {
+				itemGenderSprite4.setFrame(1);
+				this.itemGenderVar4Checked = true;
 
-			item11Var1Checked = false;
-			item11Var2Checked = false;
-			item11Var3Checked = false;
-			item11Var5Checked = false;
-			item11Var6Checked = false;
-			item11Sprite1.setFrame(0);
-			item11Sprite2.setFrame(0);
-			item11Sprite3.setFrame(0);
-			item11Sprite5.setFrame(0);
-			item11Sprite6.setFrame(0);
+				this.itemGenderVar1Checked = false;
+				this.itemGenderVar2Checked = false;
+				this.itemGenderVar3Checked = false;
+				this.itemGenderVar5Checked = false;
+				this.itemGenderVar6Checked = false;
+				this.itemGenderVar7Checked = false;
+				itemGenderSprite1.setFrame(0);
+				itemGenderSprite2.setFrame(0);
+				itemGenderSprite3.setFrame(0);
+				itemGenderSprite5.setFrame(0);
+				itemGenderSprite6.setFrame(0);
+				itemGenderSprite7.setFrame(0);
 
-		  }
-		});
+			}
+		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.55, 'Strongly agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.505, window.innerHeight * 0.41, 'Non-binary /\n gender non-conforming', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item11Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.25).setInteractive();
+		var itemGenderSprite5 = this.add.sprite(window.innerWidth * 0.54, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
 
-		item11Sprite5.on('pointerdown', function (pointer) {
-		  if (item11Var5Checked) {
-			item11Sprite5.setFrame(0);
-			item11Var5Checked = false;
-		  } else {
-			item11Sprite5.setFrame(1);
-			item11Var5Checked = true;
+		itemGenderSprite5.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar5Checked) {
+				itemGenderSprite5.setFrame(0);
+				this.itemGenderVar5Checked = false;
+			} else {
+				itemGenderSprite5.setFrame(1);
+				this.itemGenderVar5Checked = true;
 
-			item11Var1Checked = false;
-			item11Var2Checked = false;
-			item11Var3Checked = false;
-			item11Var4Checked = false;
-			item11Var6Checked = false;
-			item11Sprite1.setFrame(0);
-			item11Sprite2.setFrame(0);
-			item11Sprite3.setFrame(0);
-			item11Sprite4.setFrame(0);
-			item11Sprite6.setFrame(0);
+				this.itemGenderVar1Checked = false;
+				this.itemGenderVar2Checked = false;
+				this.itemGenderVar3Checked = false;
+				this.itemGenderVar4Checked = false;
+				this.itemGenderVar6Checked = false;
+				this.itemGenderVar7Checked = false;
+				itemGenderSprite1.setFrame(0);
+				itemGenderSprite2.setFrame(0);
+				itemGenderSprite3.setFrame(0);
+				itemGenderSprite4.setFrame(0);
+				itemGenderSprite6.setFrame(0);
+				itemGenderSprite7.setFrame(0);
 
-		  }
-		});
+			}
+		}.bind(this));
+
+		// option 6
+		this.add.text(window.innerWidth * 0.65, window.innerHeight * 0.425, 'Not listed', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemGenderSprite6 = this.add.sprite(window.innerWidth * 0.67, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemGenderSprite6.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar6Checked) {
+				itemGenderSprite6.setFrame(0);
+				this.itemGenderVar6Checked = false;
+			} else {
+				itemGenderSprite6.setFrame(1);
+				this.itemGenderVar6Checked = true;
+
+				this.itemGenderVar1Checked = false;
+				this.itemGenderVar2Checked = false;
+				this.itemGenderVar3Checked = false;
+				this.itemGenderVar4Checked = false;
+				this.itemGenderVar5Checked = false;
+				this.itemGenderVar7Checked = false;
+				itemGenderSprite1.setFrame(0);
+				itemGenderSprite2.setFrame(0);
+				itemGenderSprite3.setFrame(0);
+				itemGenderSprite4.setFrame(0);
+				itemGenderSprite5.setFrame(0);
+				itemGenderSprite7.setFrame(0);
+
+			}
+		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.55, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.425, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item11Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.25).setInteractive();
+		var itemGenderSprite7 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.25).setInteractive();
 
-		item11Sprite6.on('pointerdown', function (pointer) {
-		  if (item11Var6Checked) {
-			item11Sprite6.setFrame(0);
-			item11Var6Checked = false;
-		  } else {
-			item11Sprite6.setFrame(1);
-			item11Var6Checked = true;
+		itemGenderSprite7.on('pointerdown', function (pointer) {
+			if (this.itemGenderVar7Checked) {
+				itemGenderSprite7.setFrame(0);
+				this.itemGenderVar7Checked = false;
+			} else {
+				itemGenderSprite7.setFrame(1);
+				this.itemGenderVar7Checked = true;
 
-			item11Var1Checked = false;
-			item11Var2Checked = false;
-			item11Var3Checked = false;
-			item11Var4Checked = false;
-			item11Var5Checked = false;
-			item11Sprite1.setFrame(0);
-			item11Sprite2.setFrame(0);
-			item11Sprite3.setFrame(0);
-			item11Sprite4.setFrame(0);
-			item11Sprite5.setFrame(0);
+				this.itemGenderVar1Checked = false;
+				this.itemGenderVar2Checked = false;
+				this.itemGenderVar3Checked = false;
+				this.itemGenderVar4Checked = false;
+				this.itemGenderVar5Checked = false;
+				this.itemGenderVar6Checked = false;
+				itemGenderSprite1.setFrame(0);
+				itemGenderSprite2.setFrame(0);
+				itemGenderSprite3.setFrame(0);
+				itemGenderSprite4.setFrame(0);
+				itemGenderSprite5.setFrame(0);
+				itemGenderSprite6.setFrame(0);
 
-		  }
-		});
-		*/
+			}
+		}.bind(this));
+
+		var itemAge = [
+			"Plase indicate your age:"
+		]
+
+		// add item 1
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.550, itemAge, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		// option 1
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.600, '18-24y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite1 = this.add.sprite(window.innerWidth * 0.04, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite1.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar1Checked) {
+				itemAgeSprite1.setFrame(0);
+				this.itemAgeVar1Checked = false;
+			} else {
+				itemAgeSprite1.setFrame(1);
+				this.itemAgeVar1Checked = true;
+
+				this.itemAgeVar2Checked = false;
+				this.itemAgeVar3Checked = false;
+				this.itemAgeVar4Checked = false;
+				this.itemAgeVar5Checked = false;
+				this.itemAgeVar6Checked = false;
+				this.itemAgeVar7Checked = false;
+				itemAgeSprite2.setFrame(0);
+				itemAgeSprite3.setFrame(0);
+				itemAgeSprite4.setFrame(0);
+				itemAgeSprite5.setFrame(0);
+				itemAgeSprite6.setFrame(0);
+
+			}
+		}.bind(this));
+
+		// option 2
+		this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6, '25-34y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite2 = this.add.sprite(window.innerWidth * 0.14, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite2.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar2Checked) {
+				itemAgeSprite2.setFrame(0);
+				this.itemAgeVar2Checked = false;
+			} else {
+				itemAgeSprite2.setFrame(1);
+				this.itemAgeVar2Checked = true;
+
+				this.itemAgeVar1Checked = false;
+				this.itemAgeVar3Checked = false;
+				this.itemAgeVar4Checked = false;
+				this.itemAgeVar5Checked = false;
+				this.itemAgeVar6Checked = false;
+				this.itemAgeVar7Checked = false;
+				itemAgeSprite1.setFrame(0);
+				itemAgeSprite3.setFrame(0);
+				itemAgeSprite4.setFrame(0);
+				itemAgeSprite5.setFrame(0);
+				itemAgeSprite6.setFrame(0);
+
+			}
+		}.bind(this));
+
+		// option 3
+		this.add.text(window.innerWidth * 0.225, window.innerHeight * 0.6, '35-44y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite3 = this.add.sprite(window.innerWidth * 0.24, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite3.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar3Checked) {
+				itemAgeSprite3.setFrame(0);
+				this.itemAgeVar3Checked = false;
+			} else {
+				itemAgeSprite3.setFrame(1);
+				this.itemAgeVar3Checked = true;
+
+				this.itemAgeVar1Checked = false;
+				this.itemAgeVar2Checked = false;
+				this.itemAgeVar4Checked = false;
+				this.itemAgeVar5Checked = false;
+				this.itemAgeVar6Checked = false;
+				this.itemAgeVar7Checked = false;
+				itemAgeSprite1.setFrame(0);
+				itemAgeSprite2.setFrame(0);
+				itemAgeSprite4.setFrame(0);
+				itemAgeSprite5.setFrame(0);
+				itemAgeSprite6.setFrame(0);
+
+			}
+		}.bind(this));
+
+		// option 4
+		this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6, '45-54y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite4 = this.add.sprite(window.innerWidth * 0.34, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite4.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar4Checked) {
+				itemAgeSprite4.setFrame(0);
+				this.itemAgeVar4Checked = false;
+			} else {
+				itemAgeSprite4.setFrame(1);
+				this.itemAgeVar4Checked = true;
+
+				this.itemAgeVar1Checked = false;
+				this.itemAgeVar2Checked = false;
+				this.itemAgeVar3Checked = false;
+				this.itemAgeVar5Checked = false;
+				this.itemAgeVar6Checked = false;
+				this.itemAgeVar6Checked = false;
+				this.itemAgeVar7Checked = false;
+				itemAgeSprite1.setFrame(0);
+				itemAgeSprite2.setFrame(0);
+				itemAgeSprite3.setFrame(0);
+				itemAgeSprite5.setFrame(0);
+				itemAgeSprite6.setFrame(0);
+
+			}
+		}.bind(this));
+
+		// option 5
+		this.add.text(window.innerWidth * 0.425, window.innerHeight * 0.6, '55-64y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite5 = this.add.sprite(window.innerWidth * 0.44, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite5.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar5Checked) {
+				itemAgeSprite5.setFrame(0);
+				this.itemAgeVar5Checked = false;
+			} else {
+				itemAgeSprite5.setFrame(1);
+				this.itemAgeVar5Checked = true;
+
+				this.itemAgeVar1Checked = false;
+				this.itemAgeVar2Checked = false;
+				this.itemAgeVar3Checked = false;
+				this.itemAgeVar4Checked = false;
+				this.itemAgeVar6Checked = false;
+				this.itemAgeVar7Checked = false;
+				itemAgeSprite1.setFrame(0);
+				itemAgeSprite2.setFrame(0);
+				itemAgeSprite3.setFrame(0);
+				itemAgeSprite4.setFrame(0);
+				itemAgeSprite6.setFrame(0);
+
+			}
+		}.bind(this));
+
+		// option 6
+		this.add.text(window.innerWidth * 0.525, window.innerHeight * 0.6, '65y and over', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite6 = this.add.sprite(window.innerWidth * 0.54, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite6.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar6Checked) {
+				itemAgeSprite6.setFrame(0);
+				this.itemAgeVar6Checked = false;
+			} else {
+				itemAgeSprite6.setFrame(1);
+				this.itemAgeVar6Checked = true;
+
+				this.itemAgeVar1Checked = false;
+				this.itemAgeVar2Checked = false;
+				this.itemAgeVar3Checked = false;
+				this.itemAgeVar4Checked = false;
+				this.itemAgeVar5Checked = false;
+				this.itemAgeVar7Checked = false;
+				itemAgeSprite1.setFrame(0);
+				itemAgeSprite2.setFrame(0);
+				itemAgeSprite3.setFrame(0);
+				itemAgeSprite4.setFrame(0);
+				itemAgeSprite5.setFrame(0);
+				itemAgeSprite7.setFrame(0);
+
+			}
+		}.bind(this));
+
+		// Don't know
+		this.add.text(window.innerWidth * 0.625, window.innerHeight * 0.6, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+
+		var itemAgeSprite7 = this.add.sprite(window.innerWidth * 0.64, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.25).setInteractive();
+
+		itemAgeSprite7.on('pointerdown', function (pointer) {
+			if (this.itemAgeVar7Checked) {
+				itemAgeSprite7.setFrame(0);
+				this.itemAgeVar7Checked = false;
+			} else {
+				itemAgeSprite7.setFrame(1);
+				this.itemAgeVar7Checked = true;
+
+				this.itemAgeVar1Checked = false;
+				this.itemAgeVar2Checked = false;
+				this.itemAgeVar3Checked = false;
+				this.itemAgeVar4Checked = false;
+				this.itemAgeVar5Checked = false;
+				this.itemAgeVar6Checked = false;
+				itemAgeSprite1.setFrame(0);
+				itemAgeSprite2.setFrame(0);
+				itemAgeSprite3.setFrame(0);
+				itemAgeSprite4.setFrame(0);
+				itemAgeSprite5.setFrame(0);
+				itemAgeSprite6.setFrame(0);
+
+			}
+		}.bind(this));
+
 
 		// instatiate and add new end scene with current data
 		var endScene = undefined;
