@@ -55,7 +55,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 1
 		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.275, 'plant1').setScale(0.15);
 
-		var item1Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item1Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite1.on('pointerdown', function (pointer) {
 			if (this.item1Var1Checked) {
@@ -74,7 +74,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 2
 		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.275, 'plant2').setScale(0.15);
 
-		var item1Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item1Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite2.on('pointerdown', function (pointer) {
 			if (this.item1Var2Checked) {
@@ -93,7 +93,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 3
 		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.275, 'plant3').setScale(0.15);
 
-		var item1Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item1Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite3.on('pointerdown', function (pointer) {
 			if (this.item1Var3Checked) {
@@ -112,7 +112,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 4
 		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.275, 'plant4').setScale(0.15);
 
-		var item1Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item1Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite4.on('pointerdown', function (pointer) {
 			if (this.item1Var4Checked) {
@@ -131,7 +131,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 5
 		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.275, 'plant5').setScale(0.15);
 
-		var item1Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item1Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite5.on('pointerdown', function (pointer) {
 			if (this.item1Var5Checked) {
@@ -149,7 +149,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// Don't know
 		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.275, 'I do not know.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item1Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item1Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite6.on('pointerdown', function (pointer) {
 			if (this.item1Var6Checked) {
@@ -184,7 +184,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 1
 		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.475, 'plant1').setScale(0.15);
 
-		var item2Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item2Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite1.on('pointerdown', function (pointer) {
 			if (this.item2Var1Checked) {
@@ -203,7 +203,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 2
 		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.475, 'plant2').setScale(0.15);
 
-		var item2Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item2Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite2.on('pointerdown', function (pointer) {
 			if (this.item2Var2Checked) {
@@ -222,7 +222,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 3
 		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.475, 'plant3').setScale(0.15);
 
-		var item2Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item2Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite3.on('pointerdown', function (pointer) {
 			if (this.item2Var3Checked) {
@@ -241,7 +241,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 4
 		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.475, 'plant4').setScale(0.15);
 
-		var item2Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item2Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite4.on('pointerdown', function (pointer) {
 			if (this.item2Var4Checked) {
@@ -260,7 +260,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// plant 5
 		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.475, 'plant5').setScale(0.15);
 
-		var item2Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item2Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite5.on('pointerdown', function (pointer) {
 			if (this.item2Var5Checked) {
@@ -279,7 +279,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// Don't know
 		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.475, 'I do not know.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 
-		var item2Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.25).setInteractive();
+		var item2Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite6.on('pointerdown', function (pointer) {
 			if (this.item2Var6Checked) {
