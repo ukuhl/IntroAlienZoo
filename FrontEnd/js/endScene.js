@@ -28,7 +28,7 @@ class EndScene extends Phaser.Scene {
 			'',
 			'Your unique survey completion code is:',
 			'',
-			'INSERT FIRST 6 CHARACTERS OF userId HERE',
+			this.varObj["api"].userId.slice(0, 6),//'INSERT FIRST 6 CHARACTERS OF userId HERE',
 			'',
 			'Note down this code, return to AMT and paste the code into the box to receive your payment.',
 			'',
