@@ -64,7 +64,7 @@ class AttentionScene extends Phaser.Scene {
     	.on('pointerdown', () => this.scene.start('progressScene'));*/
       .on('pointerdown', () => this.onBtnContinue());
 
-    	var textContinue = this.add.text(-95, -20, 'Continue!', { fontFamily: "Arial", fontSize: '25px', color: '#ffffff' });
+    	var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#ffffff' });
     	this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue]);
 
   }

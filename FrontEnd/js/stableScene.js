@@ -196,7 +196,7 @@ class StableScene extends Phaser.Scene {
 					.on('pointerdown', () => this.scene.add('attentionScene', attentionScene))
 					.on('pointerdown', () => this.scene.start('attentionScene'));
 
-				var textFeed = this.add.text(-80, -15, 'Feeding time!', { fontFamily: "Arial", fontSize: '20px', color: '#ffffff' }).setOrigin(0);
+				var textFeed = this.add.text(-70, -15, 'Feeding time!', { fontSize: '20px', color: '#ffffff' }).setOrigin(0);
 				var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
 
 			} else {

@@ -298,7 +298,7 @@ class FeedbackScene extends Phaser.Scene {
 					.on('pointerdown', () => this.scene.add('stableScene', stableScene))
 					.on('pointerdown', () => this.scene.start('stableScene'));
 
-				var textContinue = this.add.text(-75, -20, 'Continue!', { fontSize: '25px', color: '#000000' });
+				var textContinue = this.add.text(-75, -20, 'Continue!', { fontSize: '25px', color: '#ffffff' });
 				this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue]);
 			}.bind(this), this.varObj.btnContinueShowDelay);
 		} else {
