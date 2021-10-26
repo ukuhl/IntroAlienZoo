@@ -47,8 +47,8 @@ class EndScene extends Phaser.Scene {
 			.on('pointerdown', () => { window.open('https://its-ml.de/index.php/pazdebrief/'); });
 
 		//var textAgree = this.add.text(-55, -20, 'I agree to participate in this study.', { fontFamily: 'Arial', fontSize: '14px', color: '#000000' }).setOrigin(0);
-		var textDebrief = this.add.text(-85, -25, ['Tell me more','about the study!'], { fontSize: '18px', color: '#000000' }).setOrigin(0);
-		var buttonContainer = this.add.container(window.innerWidth * 0.7, window.innerHeight * 0.6, [buttonDebrief, textDebrief])
+		var textDebrief = this.add.text(-100, -25, ['I want to learn more','about the study!'], { fontSize: '18px', color: '#ffffff' }).setOrigin(0);
+		var buttonContainer = this.add.container(window.innerWidth * 0.7, window.innerHeight * 0.7, [buttonDebrief, textDebrief])
 
 		this.add.text(window.innerWidth * 0.05, window.innerHeight * 0.20, qIntro, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
 

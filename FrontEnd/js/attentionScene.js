@@ -19,8 +19,8 @@ class AttentionScene extends Phaser.Scene {
 
     this.startTime = new Date().getTime();
 
-    this.add.text(window.innerWidth * 0.1, window.innerHeight * 0.1, 'Quick question: How many Shubs were in your pack in the last round?', { fontSize: '18px', color: '#000000' });
-    this.add.text(window.innerWidth * 0.1, window.innerHeight * 0.2, 'Please enter the number in the box below before continuing.', { fontSize: '18px', color: '#000000' });
+    this.add.text(window.innerWidth * 0.1, window.innerHeight * 0.1, 'Quick question: How many Shubs were in your pack in the last round?', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+    this.add.text(window.innerWidth * 0.1, window.innerHeight * 0.2, 'Please enter the number in the box below before continuing.', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 
     this.inputText = this.add.rexInputText(window.innerWidth * 0.1, window.innerHeight * 0.4, 200, 50, {
         id: 'myNumberInput',
@@ -64,7 +64,7 @@ class AttentionScene extends Phaser.Scene {
     	.on('pointerdown', () => this.scene.start('progressScene'));*/
       .on('pointerdown', () => this.onBtnContinue());
 
-    	var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#000000' });
+    	var textContinue = this.add.text(-95, -20, 'Continue!', { fontFamily: "Arial", fontSize: '25px', color: '#ffffff' });
     	this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue]);
 
   }

@@ -60,7 +60,7 @@ class PreloadScene extends Phaser.Scene {
 			//.on('pointerdown', () => socket.emit('gameStartEvent', { data: 'User started game' }));
 			// this.scene.start("titleScene");
 
-		var textStart = this.add.text(-55, -20, 'Start!', { fontSize: '30px', color: '#000000' }).setOrigin(0);
+		var textStart = this.add.text(-55, -20, 'Start!', { fontSize: '30px', color: '#ffffff' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.5, window.innerHeight * 0.85, [buttonStart, textStart])
 	}
 

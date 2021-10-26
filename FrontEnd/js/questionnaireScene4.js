@@ -67,7 +67,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 			'These questions are designed to assess your personal impressions from the game. Therefore, there are no wrong answers.',
 		]
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		if (this.varObj.api.controlGroup) {
 			var item9 = [
@@ -80,10 +80,10 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.15, item9, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.15, item9, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.2, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.2, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var item9Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -110,7 +110,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.2, 'Disagree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.2, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var item9Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -137,7 +137,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.2, 'Neutral', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.2, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var item9Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -164,7 +164,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.2, 'Agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.2, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var item9Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -191,7 +191,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.2, 'Strongly agree', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.2, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var item9Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -218,7 +218,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.2, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.2, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var item9Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -250,17 +250,17 @@ class QuestionnaireScene4 extends Phaser.Scene {
 			'To finish up, we would like to collect your demographic information.',,
 		]
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.325, demographics, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.325, demographics, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGender = [
 			"Which term most accurately describes your gender?"
 		]
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.375, itemGender, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.375, itemGender, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, 'Female', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, 'Female', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite1 = this.add.sprite(window.innerWidth * 0.04, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -289,7 +289,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.150, window.innerHeight * 0.425, 'Male', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.150, window.innerHeight * 0.425, 'Male', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -318,7 +318,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.265, window.innerHeight * 0.425, 'Transgender female', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.265, window.innerHeight * 0.425, 'Transgender female', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite3 = this.add.sprite(window.innerWidth * 0.29, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -347,7 +347,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.385, window.innerHeight * 0.425, 'Transgender male', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.385, window.innerHeight * 0.425, 'Transgender male', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite4 = this.add.sprite(window.innerWidth * 0.42, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -376,7 +376,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.505, window.innerHeight * 0.41, 'Non-binary /\n gender non-conforming', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.505, window.innerHeight * 0.41, 'Non-binary /\n gender non-conforming', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite5 = this.add.sprite(window.innerWidth * 0.54, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -405,7 +405,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 6
-		this.add.text(window.innerWidth * 0.65, window.innerHeight * 0.425, 'Not listed', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.65, window.innerHeight * 0.425, 'Not listed', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite6 = this.add.sprite(window.innerWidth * 0.67, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -434,7 +434,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.425, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.425, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemGenderSprite7 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -467,10 +467,10 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		]
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.550, itemAge, { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.550, itemAge, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.600, '18-24y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.600, '18-24y', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite1 = this.add.sprite(window.innerWidth * 0.04, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -498,7 +498,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6, '25-34y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6, '25-34y', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite2 = this.add.sprite(window.innerWidth * 0.14, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -526,7 +526,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.225, window.innerHeight * 0.6, '35-44y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.225, window.innerHeight * 0.6, '35-44y', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite3 = this.add.sprite(window.innerWidth * 0.24, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -554,7 +554,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6, '45-54y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6, '45-54y', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite4 = this.add.sprite(window.innerWidth * 0.34, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -583,7 +583,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.425, window.innerHeight * 0.6, '55-64y', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.425, window.innerHeight * 0.6, '55-64y', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite5 = this.add.sprite(window.innerWidth * 0.44, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -611,7 +611,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 6
-		this.add.text(window.innerWidth * 0.525, window.innerHeight * 0.6, '65y and over', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.525, window.innerHeight * 0.6, '65y and over', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite6 = this.add.sprite(window.innerWidth * 0.54, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -640,7 +640,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.625, window.innerHeight * 0.6, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '16px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.625, window.innerHeight * 0.6, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
 		var itemAgeSprite7 = this.add.sprite(window.innerWidth * 0.64, window.innerHeight * 0.65, 'checkbox', 0).setScale(0.4).setInteractive();
 
@@ -677,7 +677,7 @@ class QuestionnaireScene4 extends Phaser.Scene {
 			.setInteractive()
 			.on('pointerdown', () => this.onBtnContinue());
 
-		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#000000' })
+		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#ffffff' })
 		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
 
 	}
