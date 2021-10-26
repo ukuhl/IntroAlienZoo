@@ -159,7 +159,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		item1Sprite6.on('pointerdown', function (pointer) {
 			if (this.item1Var6Checked) {
 				item1Sprite6.setFrame(0);
-				item1Var6Checked = false;
+				this.item1Var6Checked = false;
 			} else {
 				item1Sprite6.setFrame(1);
 				this.item1Var6Checked = true;
