@@ -35,27 +35,32 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		// clean slate:
 		this.children.removeAll();
 
-		var qIntro = [
+		var qIntro1 = [
 			'You have completed the Alien Zoo game!',
 			'',
 			'To complete the study, please answer the following 9 questions.',
-			'Please answer as truthfully and accurately as possible.',
-			'These questions are designed to assess your personal impressions from the game. Therefore, there are no wrong answers.',
 		]
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		var qIntro2 = [
+			'These questions are designed to assess your personal impressions from the game. Therefore, there are no wrong answers.',
+			'',
+			'Please answer as truthfully and accurately as possible.',
+		]
+
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.15, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
 		var item1 = [
 			"1. What do you think: Which plants were relevant to increase the number of Shubs in your pack?"
 		];
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.2, item1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.3, item1, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// plant 1
-		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.275, 'plant1').setScale(0.15);
+		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.375, 'plant1').setScale(0.15);
 
-		var item1Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite1.on('pointerdown', function (pointer) {
 			if (this.item1Var1Checked) {
@@ -72,9 +77,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 2
-		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.275, 'plant2').setScale(0.15);
+		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.375, 'plant2').setScale(0.15);
 
-		var item1Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite2.on('pointerdown', function (pointer) {
 			if (this.item1Var2Checked) {
@@ -91,9 +96,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 3
-		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.275, 'plant3').setScale(0.15);
+		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.375, 'plant3').setScale(0.15);
 
-		var item1Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite3.on('pointerdown', function (pointer) {
 			if (this.item1Var3Checked) {
@@ -110,9 +115,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 4
-		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.275, 'plant4').setScale(0.15);
+		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.375, 'plant4').setScale(0.15);
 
-		var item1Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite4.on('pointerdown', function (pointer) {
 			if (this.item1Var4Checked) {
@@ -129,9 +134,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 5
-		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.275, 'plant5').setScale(0.15);
+		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.375, 'plant5').setScale(0.15);
 
-		var item1Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite5.on('pointerdown', function (pointer) {
 			if (this.item1Var5Checked) {
@@ -147,9 +152,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		});
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.275, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.375, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item1Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.325, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite6.on('pointerdown', function (pointer) {
 			if (this.item1Var6Checked) {
@@ -179,12 +184,12 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		];
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.4, item2, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.5, item2, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// plant 1
-		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.475, 'plant1').setScale(0.15);
+		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.575, 'plant1').setScale(0.15);
 
-		var item2Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite1.on('pointerdown', function (pointer) {
 			if (this.item2Var1Checked) {
@@ -201,9 +206,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 2
-		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.475, 'plant2').setScale(0.15);
+		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.575, 'plant2').setScale(0.15);
 
-		var item2Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite2.on('pointerdown', function (pointer) {
 			if (this.item2Var2Checked) {
@@ -220,9 +225,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		});
 
 		// plant 3
-		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.475, 'plant3').setScale(0.15);
+		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.575, 'plant3').setScale(0.15);
 
-		var item2Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite3.on('pointerdown', function (pointer) {
 			if (this.item2Var3Checked) {
@@ -239,9 +244,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 4
-		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.475, 'plant4').setScale(0.15);
+		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.575, 'plant4').setScale(0.15);
 
-		var item2Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite4.on('pointerdown', function (pointer) {
 			if (this.item2Var4Checked) {
@@ -258,9 +263,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 5
-		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.475, 'plant5').setScale(0.15);
+		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.575, 'plant5').setScale(0.15);
 
-		var item2Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite5.on('pointerdown', function (pointer) {
 			if (this.item2Var5Checked) {
@@ -277,9 +282,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.475, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.575, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item2Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.525, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite6.on('pointerdown', function (pointer) {
 			if (this.item2Var6Checked) {
@@ -327,7 +332,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 			.on('pointerdown', () => this.onBtnContinue());
 
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#ffffff' })
-		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
+		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.80, [buttonContinue, textContinue])
 
 
 	}

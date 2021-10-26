@@ -42,13 +42,18 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		// clean slate:
 		this.children.removeAll();
 
-		var qIntro = [
+		var qIntro1 = [
 			'To complete the study, please answer the following 9 questions.',
-			'Please answer as truthfully and accurately as possible.',
-			'These questions are designed to assess your personal impressions from the game. Therefore, there are no wrong answers.',
 		]
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		var qIntro2 = [
+			'These questions are designed to assess your personal impressions from the game. Therefore, there are no wrong answers.',
+			'',
+			'Please answer as truthfully and accurately as possible.',
+		]
+
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
 		if (this.varObj.api.controlGroup) {
 			var item6 = [
@@ -61,12 +66,12 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.15, item6, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.25, item6, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.2, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.3, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item6Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item6Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.35, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item6Sprite1.on('pointerdown', function (pointer) {
 			if (this.item6Var1Checked) {
@@ -91,9 +96,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.2, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.3, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item6Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item6Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.35, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item6Sprite2.on('pointerdown', function (pointer) {
 			if (this.item6Var2Checked) {
@@ -118,9 +123,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.2, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.3, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item6Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item6Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.35, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item6Sprite3.on('pointerdown', function (pointer) {
 			if (this.item6Var3Checked) {
@@ -145,9 +150,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.2, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.3, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item6Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item6Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.35, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item6Sprite4.on('pointerdown', function (pointer) {
 			if (this.item6Var4Checked) {
@@ -172,9 +177,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.2, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.3, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item6Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item6Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.35, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item6Sprite5.on('pointerdown', function (pointer) {
 			if (this.item6Var5Checked) {
@@ -199,9 +204,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.2, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.3, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item6Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.25, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item6Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.35, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item6Sprite6.on('pointerdown', function (pointer) {
 			if (this.item6Var6Checked) {
@@ -236,12 +241,12 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.325, item7, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, item7, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.375, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item7Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item7Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.55, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item7Sprite1.on('pointerdown', function (pointer) {
 			if (this.item7Var1Checked) {
@@ -266,9 +271,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.375, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.475, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item7Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item7Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.55, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item7Sprite2.on('pointerdown', function (pointer) {
 			if (this.item7Var2Checked) {
@@ -293,9 +298,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.375, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.475, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item7Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item7Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.55, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item7Sprite3.on('pointerdown', function (pointer) {
 			if (this.item7Var3Checked) {
@@ -320,9 +325,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.375, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.475, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item7Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item7Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.55, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item7Sprite4.on('pointerdown', function (pointer) {
 			if (this.item7Var4Checked) {
@@ -347,9 +352,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.375, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.475, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item7Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item7Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.55, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item7Sprite5.on('pointerdown', function (pointer) {
 			if (this.item7Var5Checked) {
@@ -374,9 +379,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.375, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.475, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item7Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.45, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item7Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.55, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item7Sprite6.on('pointerdown', function (pointer) {
 			if (this.item7Var6Checked) {
@@ -411,12 +416,12 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.5, item8, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6, item8, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// option 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.55, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.65, 'Strongly disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item8Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item8Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item8Sprite1.on('pointerdown', function (pointer) {
 			if (this.item8Var1Checked) {
@@ -441,9 +446,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 2
-		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.55, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.175, window.innerHeight * 0.65, 'Disagree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item8Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item8Sprite2 = this.add.sprite(window.innerWidth * 0.20, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item8Sprite2.on('pointerdown', function (pointer) {
 			if (this.item8Var2Checked) {
@@ -468,9 +473,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 3
-		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.55, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.335, window.innerHeight * 0.65, 'Neutral', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item8Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item8Sprite3 = this.add.sprite(window.innerWidth * 0.35, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item8Sprite3.on('pointerdown', function (pointer) {
 			if (this.item8Var3Checked) {
@@ -495,9 +500,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 4
-		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.55, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.485, window.innerHeight * 0.65, 'Agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item8Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item8Sprite4 = this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item8Sprite4.on('pointerdown', function (pointer) {
 			if (this.item8Var4Checked) {
@@ -522,9 +527,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// option 5
-		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.55, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.615, window.innerHeight * 0.65, 'Strongly agree', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item8Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item8Sprite5 = this.add.sprite(window.innerWidth * 0.65, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item8Sprite5.on('pointerdown', function (pointer) {
 			if (this.item8Var5Checked) {
@@ -549,9 +554,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.55, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.755, window.innerHeight * 0.65, 'I prefer not to answer.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item8Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item8Sprite6 = this.add.sprite(window.innerWidth * 0.80, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item8Sprite6.on('pointerdown', function (pointer) {
 			if (this.item8Var6Checked) {
@@ -584,7 +589,7 @@ class QuestionnaireScene3 extends Phaser.Scene {
 			.on('pointerdown', () => this.onBtnContinue());
 
 		var textContinue = this.add.text(-50, -15, 'Continue!', { fontSize: '18px', color: '#ffffff' })
-		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.70, [buttonContinue, textContinue])
+		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.80, [buttonContinue, textContinue])
 
 	}
 
