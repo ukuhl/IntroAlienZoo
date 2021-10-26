@@ -46,7 +46,19 @@ def runServer():
     WebServer().listen(port)
     IOLoop.instance().start()
 
+def runSslServer(certfile, keyfile):
+    tornado.httpserver.HTTPServer(WebServer(), ssl_options={
+        "certfile": certfile,
+        "keyfile": keyfile,
+    }).listen(port)
+    tornado.ioloop.IOLoop.instance().start()
+
 
 if __name__ == "__main__":
-    # Run webserver
-    runServer()
+    if len(sys.argv) == 3:
+        certfile = sys.argv[1]  # /etc/ssl/certs/ssl-cert-snakeoil.pem
+        keyfile = sys.argv[2]   # /etc/ssl/private/ssl-cert-snakeoil.key
+
+        runSslServer(certfile, keyfile)
+    else:
+        runServer()
