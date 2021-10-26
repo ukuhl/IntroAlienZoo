@@ -36,7 +36,7 @@ class WebServer(tornado.web.Application):
             (r'/api/log/elapsedTime', LogElapsedTimesHandler, dict(datamgr=self.datamgr)),
             (r'/api/log/randomFeedback', LogRandomFeedbackHandler, dict(datamgr=self.datamgr)),
             (r'/api/log/userPerformance', LogUserPerformanceHandler, dict(datamgr=self.datamgr)),
-            (r'/api/log/userPayment', LogUserPaymentHandler, dict(datamgr=self.datamgr))
+            (r'/api/log/userPayment', LogUserPaymentHandler, dict(datamgr=self.datamgr)),
             (r'/api/log/attention', LogAttentionHandler, dict(datamgr=self.datamgr))
         ]
 
