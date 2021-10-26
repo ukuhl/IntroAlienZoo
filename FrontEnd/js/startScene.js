@@ -43,35 +43,42 @@ class StartScene extends Phaser.Scene {
 		var textBlock2 = [
 			"Per round, you may feed up to 6 leaves per plant - any combination of plant leaves is possible.",
 			"But beware: Not all plants might be good for our pack!",
-			"If you have chosen a healthy combination, your pack size will increase.",
-			"If you have chosen an unhealthy combination, your pack size will decrease."
     ];
 
-		if(this.varObj.api.controlGroup) {
-			var textBlock3 = [
-				"After three rounds, you will get a summary of your past choices.",
-				"Also, there will be feedback on what other users tried at that point in time.",
-				"During the game, please do not resize our window or use the back button of your browser.",
-				"If you are ready to start, hit the start button.",
-			];
+		var textBlock3 = [
+			"If you have chosen a healthy combination, your pack size will increase.",
+			"If you have chosen an unhealthy combination, your pack size will decrease.",
+			"",
+			"Your task is to find the best diet for the Shubs, increasing the pack size as much as possible."
 
-		} else {
-			var textBlock3 = [
-				"After three rounds, you will get a summary of your past choices.",
-				"Also, there will be feedback on what choice would have led to a better result.",
-				"During the game, please do not resize our window or use the back button of your browser.",
-				"If you are ready to start, hit the start button.",
+		];
 
-			];
-		}
+		// //if(this.varObj.api.controlGroup) {
+		// //	var textBlock3 = [
+		// 		"After three rounds, you will get a summary of your past choices.",
+		// 		"Also, there will be feedback on what other users tried at that point in time.",
+		// 		"During the game, please do not resize our window or use the back button of your browser.",
+		// 		"If you are ready to start, hit the start button.",
+		// 	];
+		//
+		// } else {
+		var textBlock4 = [
+			"After " + this.varObj.numTrialsPerBlock + " rounds, you will get a summary of your past choices.",
+			"Also, there will be feedback on what choice would have led to a better result.",
+			"",
+			"During the game, please do not resize our window or use the back button of your browser.",
+			"If you are ready to start, hit the start button.",
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, textBlock1, { fontSize: '17px', color: '#000000', align: 'left'});
+		];
+		//}
+
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, textBlock1, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left'});
 
 		this.add.sprite(window.innerWidth * 0.25, window.innerHeight * 0.175, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(1.5);
 		this.add.sprite(window.innerWidth * 0.50, window.innerHeight * 0.175, 'shub', 5, { frameWidth: 50, frameHeight: 47 }).setScale(1.5);
 		this.add.sprite(window.innerWidth * 0.75, window.innerHeight * 0.175, 'shub', 8, { frameWidth: 50, frameHeight: 48 }).setScale(1.5);
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.250, 'For feeding, you can select from 5 different plants:', { fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.250, 'For feeding, you can select from 5 different plants:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 
 		this.add.image(window.innerWidth * 0.20, window.innerHeight * 0.350, 'plant1').setScale(0.15);
 		this.add.image(window.innerWidth * 0.35, window.innerHeight * 0.350, 'plant2').setScale(0.15);
@@ -79,9 +86,11 @@ class StartScene extends Phaser.Scene {
 		this.add.image(window.innerWidth * 0.65, window.innerHeight * 0.350, 'plant4').setScale(0.15);
 		this.add.image(window.innerWidth * 0.80, window.innerHeight * 0.350, 'plant5').setScale(0.15);
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, textBlock2, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, textBlock2, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.600, textBlock3, { fontSize: '17px', color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.550, textBlock3, { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold italic", color: '#000000', align: 'left', lineSpacing: 10});
+
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.750, textBlock4, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
 
 		// instatiate and add new stable scene with current data
 		var stableScene = undefined;
@@ -96,7 +105,7 @@ class StartScene extends Phaser.Scene {
 			.on('pointerdown', () => this.scene.add('stableScene', stableScene))
 			.on('pointerdown', () => this.scene.start('stableScene'));
 
-		var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+		var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#ffffff' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.75, [buttonStart, textStart])
 
 	}

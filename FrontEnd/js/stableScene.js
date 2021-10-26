@@ -58,23 +58,23 @@ class StableScene extends Phaser.Scene {
 
 		// *** Upper content of window ***
 		if (this.varObj.trialCount == 1) {
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'This is your first run!', { fontSize: '20px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Please make your first selection with the buttons on the right.', { fontSize: '20px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.125, 'Submit by hitting the button on the bottom right.', { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'This is your first run!', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Please make your first selection with the buttons on the right.', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.125, 'Submit by hitting the button on the bottom right.', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		} else {
-			let shubText = this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'Your pack now consists of ' + this.varObj.newNumber + ' Shubs. Before, it was ' + this.varObj.oldNumber + '.', { fontSize: '20px', color: '#000000' });
-			let feedText = this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Last round, you have fed them:', { fontSize: '20px', color: '#000000' });
+			let shubText = this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'Your pack now consists of ' + this.varObj.newNumber + ' Shubs. Before, it was ' + this.varObj.oldNumber + '.', { fontFamily: "Arial", fontSize: '20px', fontStyle: "bold italic", color: '#000000' });
+			let feedText = this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Last round, you have fed them:', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 			// display everything:
 			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.175, 'plant1').setScale(0.15);
-			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.175, 'x ' + oldVar1, { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.175, 'x ' + oldVar1, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.175, 'plant2').setScale(0.15);
-			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.175, 'x ' + oldVar2, { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.175, 'x ' + oldVar2, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.175, 'plant3').setScale(0.15);
-			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.175, 'x ' + oldVar3, { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.175, 'x ' + oldVar3, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.175, 'plant4').setScale(0.15);
-			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.175, 'x ' + oldVar4, { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.175, 'x ' + oldVar4, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.175, 'plant5').setScale(0.15);
-			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + oldVar5, { fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + oldVar5, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		}
 
 		// update old number of shubs
@@ -95,21 +95,21 @@ class StableScene extends Phaser.Scene {
 				.on('pointerdown', () => this.scene.add('feedbackScene', feedbackScene))
 				.on('pointerdown', () => this.scene.start('feedbackScene'));
 
-			var textFeedback = this.add.text(-95, -20, 'Get feedback!', { fontSize: '25px', color: '#000000' })
+			var textFeedback = this.add.text(-90, -20, 'Get feedback!', { fontSize: '25px', color: '#ffffff' })
 			buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonFeed, textFeedback])
 
 		} else {
 
 			// add counters for plant
-			this.clickCountTextVar1 = this.add.text(window.innerWidth * 0.725, window.innerHeight * 0.19, '0', { fontSize: '30px', color: '#000000' });
+			this.clickCountTextVar1 = this.add.text(window.innerWidth * 0.725, window.innerHeight * 0.19, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
 			// add counters for plant2
-			this.clickCountTextVar2 = this.add.text(window.innerWidth * 0.8, window.innerHeight * 0.19, '0', { fontSize: '30px', color: '#000000' });
+			this.clickCountTextVar2 = this.add.text(window.innerWidth * 0.8, window.innerHeight * 0.19, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
 			// add counters for plant3
-			this.clickCountTextVar3 = this.add.text(window.innerWidth * 0.875, window.innerHeight * 0.19, '0', { fontSize: '30px', color: '#000000' });
+			this.clickCountTextVar3 = this.add.text(window.innerWidth * 0.875, window.innerHeight * 0.19, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
 			// add counters for plant4
-			this.clickCountTextVar4 = this.add.text(window.innerWidth * 0.7625, window.innerHeight * 0.54, '0', { fontSize: '30px', color: '#000000' });
+			this.clickCountTextVar4 = this.add.text(window.innerWidth * 0.7625, window.innerHeight * 0.54, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
 			// add counters for plant5
-			this.clickCountTextVar5 = this.add.text(window.innerWidth * 0.8375, window.innerHeight * 0.54, '0', { fontSize: '30px', color: '#000000' });
+			this.clickCountTextVar5 = this.add.text(window.innerWidth * 0.8375, window.innerHeight * 0.54, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
 
 			//PLANT 1:
 			this.add.image(window.innerWidth * 0.725, window.innerHeight * 0.05, 'plant1').setScale(0.20);
@@ -196,7 +196,7 @@ class StableScene extends Phaser.Scene {
 					.on('pointerdown', () => this.scene.add('attentionScene', attentionScene))
 					.on('pointerdown', () => this.scene.start('attentionScene'));
 
-				var textFeed = this.add.text(-75, -15, 'Feeding time!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+				var textFeed = this.add.text(-70, -15, 'Feeding time!', { fontSize: '20px', color: '#ffffff' }).setOrigin(0);
 				var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
 
 			} else {
@@ -212,7 +212,7 @@ class StableScene extends Phaser.Scene {
 					.on('pointerdown', () => this.scene.add('progressScene', progressScene))
 					.on('pointerdown', () => this.scene.start('progressScene'));
 
-				var textFeed = this.add.text(-75, -15, 'Feeding time!', { fontSize: '20px', color: '#000000' }).setOrigin(0);
+				var textFeed = this.add.text(-70, -15, 'Feeding time!', { fontSize: '20px', color: '#ffffff' }).setOrigin(0);
 				var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.75, [buttonFeed, textFeed]);
 
 		  }

@@ -29,19 +29,19 @@ class ProgressScene extends Phaser.Scene {
 		// clean slate:
 		this.children.removeAll();
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, 'Feeding in progress...', { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, 'Feeding in progress...', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 
 		// add overview of current choice:
 		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.175, 'plant1').setScale(0.15);
-		this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar1, { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar1, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.175, 'plant2').setScale(0.15);
-		this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar2, { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar2, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.175, 'plant3').setScale(0.15);
-		this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar3, { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar3, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.175, 'plant4').setScale(0.15);
-		this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar4, { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar4, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.175, 'plant5').setScale(0.15);
-		this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar5, { fontSize: '20px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + this.varObj.clickCountVar5, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 
 		// add three shubs as 'loading animation'
 		var progShubs = {
