@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 import mysql.connector
+from crypt import load_key, encrypt
 
 
 database = "alienzoo"   # CREATE DATABASE alienzoo;
 user_name = "user_alienzoo"  # CREATE USER 'user_alienzoo'@'localhost' IDENTIFIED BY 'useralienzoopw123456'; GRANT ALL PRIVILEGES ON alienzoo. * TO 'user_alienzoo'@'localhost';
 user_pw = "useralienzoopw123456"
 
+public_key_file = "public_key.bin"
+
 
 class DataMgr():
     def __init__(self):
         self.db = mysql.connector.connect(host="localhost", user=user_name, password=user_pw, database=database)
+        self.public_key = load_key(public_key_file)
         self.__init_database()
 
     def __init_database(self):
@@ -18,6 +22,7 @@ class DataMgr():
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS questionnaire_logs (userId TEXT NOT NULL, questionId INT NOT NULL, var1 INT NOT NULL, var2 INT NOT NULL, var3 INT NOT NULL, var4 INT NOT NULL, var5 INT NOT NULL, var6 INT NOT NULL)")
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS demographics (userId TEXT NOT NULL, varAge1 INT NOT NULL, varAge2 INT NOT NULL, varAge3 INT NOT NULL, varAge4 INT NOT NULL, varAge5 INT NOT NULL, varAge6 INT NOT NULL, varAge7 INT NOT NULL, varGender1 INT NOT NULL, varGender2 INT NOT NULL, varGender3 INT NOT NULL, varGender4 INT NOT NULL, varGender5 INT NOT NULL, varGender6 INT NOT NULL, varGender7 INT NOT NULL)")
         self.db.cursor().execute("CREATE TABLE IF NOT EXISTS elapsedtime_logs (userId TEXT NOT NULL, eventId INT NOT NULL, timeElapsed INT NOT NULL, blockId INT NOT NULL, trialId INT NOT NULL)")
+        self.db.cursor().execute("CREATE TABLE IF NOT EXISTS users_payout (userId TEXT NOT NULL, paymentId TEXT NOT NULL)")
         self.db.commit()
 
     def add_new_user(self, user_id, control_group):
@@ -71,6 +76,18 @@ class DataMgr():
     def log_user_stuff(self, user_id, data):
         try:
             self.db.cursor().execute("INSERT INTO logs (userId, data) VALUES(%s,%s)", (user_id, data))
+            self.db.commit()
+
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
+    
+    def log_user_payment(self, user_id, payment_id):
+        try:
+            payment_id = encrypt(payment_id, self.public_key)   # Encrypt payment_id
+
+            self.db.cursor().execute("INSERT INTO users_payout (userId, paymentId) VALUES(%s,%s)", (user_id, payment_id))
             self.db.commit()
 
             return True

@@ -18,6 +18,7 @@ class EndScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.varObj.api.logUserPayment();	// Store (ecrypted) paymentId on server
 
 		this.add.image(window.innerWidth * 0.1, window.innerHeight * 0.1, 'UBIE').setScale(0.15);
 		this.add.image(window.innerWidth * 0.8, window.innerHeight * 0.1, 'ITSML').setScale(0.15);
@@ -29,7 +30,7 @@ class EndScene extends Phaser.Scene {
 			'',
 			'Your unique survey completion code is:',
 			'',
-			this.varObj["api"].userId.slice(0, 6),//'INSERT FIRST 6 CHARACTERS OF userId HERE',
+			this.varObj.api.paymentId,
 			'',
 			'Note down this code, return to AMT and paste the code into the box to receive your payment.',
 			'',

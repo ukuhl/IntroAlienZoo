@@ -3,6 +3,7 @@
 class AlienZooApi {
     userId = undefined;
     controlGroup = undefined;
+    paymentId = undefined;
 
     logRandomFeedback(trialCount, blockCount, randFeedbackIndices) {
         const data = {
@@ -169,6 +170,18 @@ class AlienZooApi {
         });
     }
 
+    generatePaymentId() {
+        var paymentIdLengt = 6; // Length of payment identifier
+        var abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+        var paymentId = "";
+        for (var i=0; i < paymentIdLengt; i++) {
+            paymentId += abc.charAt(Math.floor(Math.random() * abc.length));
+        }
+
+        return paymentId;
+    }
+
     gameStart() {
         return new Promise(resolve => {
             fetch("/api/gameStart", {
@@ -177,6 +190,32 @@ class AlienZooApi {
             .then(jsonData => {
                 this.userId = jsonData.userId;
                 this.controlGroup = jsonData.controlGroup;
+                this.paymentId = this.generatePaymentId()
+                resolve(true);
+            })
+            .catch((error) => {
+                console.error(error);
+
+                resolve(false);
+            });
+        });
+    }
+
+    logUserPayment() {
+        const data = {
+            "userId": this.userId,
+            "paymentId": this.paymentId   // Will be encrypted on the server!
+        };
+
+        return new Promise(resolve => {
+            fetch("/api/log/userPayment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
                 resolve(true);
             })
             .catch((error) => {
