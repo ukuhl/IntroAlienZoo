@@ -237,7 +237,7 @@ class QuestionnaireScene2 extends Phaser.Scene {
 		// 	];
 		// } else {
 		var item4 = [
-			"4. I did not need support to understand the feedback on what choice would have led to a better result."
+			"4. I needed support to understand the feedback on what choice would have led to a better result."
 		];
 		// }
 

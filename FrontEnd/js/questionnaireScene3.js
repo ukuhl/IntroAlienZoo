@@ -236,7 +236,7 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		// 	];
 		// } else {
 		var item7 = [
-			"7. I did not find inconsistencies in the feedback on what choice would have led to a better result."
+			"7. I found inconsistencies in the feedback on what choice would have led to a better result."
 		];
 		// }
 
