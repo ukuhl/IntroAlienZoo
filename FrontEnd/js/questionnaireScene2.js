@@ -56,15 +56,15 @@ class QuestionnaireScene2 extends Phaser.Scene {
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
 
-		if (this.varObj.api.controlGroup) {
-			var item3 = [
-				"3. I understood the feedback based on what other users tried at that point in time in the game."
-			];
-		} else {
-			var item3 = [
-				"3. I understood the feedback on what choice would have led to a better result."
-			];
-		}
+		// if (this.varObj.api.controlGroup) {
+		// 	var item3 = [
+		// 		"3. I understood the feedback based on what other users tried at that point in time in the game."
+		// 	];
+		// } else {
+		var item3 = [
+			"3. I understood the feedback on what choice would have led to a better result."
+		];
+		//}
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.25, item3, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -231,15 +231,15 @@ class QuestionnaireScene2 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		if (this.varObj.api.controlGroup) {
-			var item4 = [
-				"4. I did not need support to understand the feedback based on what other users tried at that point in time in the game."
-			];
-		} else {
-			var item4 = [
-				"4. I did not need support to understand the feedback on what choice would have led to a better result."
-			];
-		}
+		// if (this.varObj.api.controlGroup) {
+		// 	var item4 = [
+		// 		"4. I did not need support to understand the feedback based on what other users tried at that point in time in the game."
+		// 	];
+		// } else {
+		var item4 = [
+			"4. I did not need support to understand the feedback on what choice would have led to a better result."
+		];
+		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, item4, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold", color: '#000000' });
@@ -406,15 +406,15 @@ class QuestionnaireScene2 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		if (this.varObj.api.controlGroup) {
-			var item5 = [
-				"5. I found that the feedback based on what other users tried at that point in time in the game helped me to increase the number of Shubs."
-			];
-		} else {
-			var item5 = [
+		//if (this.varObj.api.controlGroup) {
+		//	var item5 = [
+		//		"5. I found that the feedback based on what other users tried at that point in time in the game helped me to increase the number of Shubs."
+		//	];
+		//} else {
+		var item5 = [
 				"5. I found that the feedback on what choice would have led to a better result helped me to increase the number of Shubs."
-			];
-		}
+		];
+		//}
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6, item5, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold", color: '#000000' });

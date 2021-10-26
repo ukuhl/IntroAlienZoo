@@ -55,15 +55,15 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
-		if (this.varObj.api.controlGroup) {
-			var item6 = [
-				"6. I was able to use the feedback based on what other users tried at that point in time in the game to increase the number of Shubs."
-			];
-		} else {
-			var item6 = [
-				"6. I was able to use the feedback on what choice would have led to a better result to increase the number of Shubs."
-			];
-		}
+		// if (this.varObj.api.controlGroup) {
+		// 	var item6 = [
+		// 		"6. I was able to use the feedback based on what other users tried at that point in time in the game to increase the number of Shubs."
+		// 	];
+		// } else {
+		var item6 = [
+			"6. I was able to use the feedback on what choice would have led to a better result to increase the number of Shubs."
+		];
+		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.25, item6, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -230,15 +230,15 @@ class QuestionnaireScene3 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		if (this.varObj.api.controlGroup) {
-			var item7 = [
-				"7. I did not find inconsistencies in the feedback based on what other users tried at that point in time in the game."
-			];
-		} else {
-			var item7 = [
-				"7. I did not find inconsistencies in the feedback on what choice would have led to a better result."
-			];
-		}
+		// if (this.varObj.api.controlGroup) {
+		// 	var item7 = [
+		// 		"7. I did not find inconsistencies in the feedback based on what other users tried at that point in time in the game."
+		// 	];
+		// } else {
+		var item7 = [
+			"7. I did not find inconsistencies in the feedback on what choice would have led to a better result."
+		];
+		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, item7, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -405,15 +405,15 @@ class QuestionnaireScene3 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		if (this.varObj.api.controlGroup) {
-			var item8 = [
-				"8. I think most people would learn to work with the feedback based on what other users tried at that point in time in the game very quickly."
-			];
-		} else {
-			var item8 = [
-				"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
-			];
-		}
+		// if (this.varObj.api.controlGroup) {
+		// 	var item8 = [
+		// 		"8. I think most people would learn to work with the feedback based on what other users tried at that point in time in the game very quickly."
+		// 	];
+		// } else {
+		var item8 = [
+			"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
+		];
+		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6, item8, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
