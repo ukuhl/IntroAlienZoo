@@ -69,16 +69,41 @@ class InfoScene extends Phaser.Scene {
 		// add button to start game and switch to fullscreen
 		var buttonAgree = this.add.image(0, 0, 'buttonAgree').setScale(0.5)
 			.setInteractive()
-			.on('pointerdown', () => this.logTime())
+			.on('pointerdown', () => this.onClickBtnAgree());
+			/*.on('pointerdown', () => this.logTime())
 			.on('pointerdown', () => this.scale.startFullscreen())
 			.on('pointerdown', () => startScene = new StartScene(this.varObj))
 			.on('pointerdown', () => this.scene.add('startScene', startScene))
-			.on('pointerdown', () => this.scene.start('startScene'));
+			.on('pointerdown', () => this.scene.start('startScene'));*/
 
 		//var textAgree = this.add.text(-55, -20, 'I agree to participate in this study.', { fontFamily: 'Arial', fontSize: '14px', color: '#000000' }).setOrigin(0);
 		var textAgree = this.add.text(-85, -15, 'I agree to participate.', { fontSize: '14px', color: '#000000' }).setOrigin(0);
-		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.85, [buttonAgree, textAgree])
+		this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.85, [buttonAgree, textAgree])
 
+	}
+
+	isBrowserWindowMaximized() {
+		var maxWidth = screen.availWidth - window.innerWidth === 0;
+		var screenPixelRatio = (window.outerWidth - 8) / window.innerWidth;
+		var defaultZoom = screenPixelRatio > 0.92 && screenPixelRatio <= 1.10;
+
+		return maxWidth && defaultZoom;
+	}
+
+	onClickBtnAgree() {
+		if(this.isBrowserWindowMaximized() == false) {
+			alert("Please maximize your bowser window before continuing!");
+		}
+		else{
+			this.logTime();
+			entering_fullscreen = true;
+
+			this.scale.startFullscreen();
+			
+			var startScene = new StartScene(this.varObj);
+			this.scene.add('startScene', startScene);
+			this.scene.start('startScene');
+		}
 	}
 
 	logTime() {
