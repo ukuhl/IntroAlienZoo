@@ -60,7 +60,8 @@ class StableScene extends Phaser.Scene {
 		if (this.varObj.trialCount == 1) {
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'This is your first run!', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Please make your first selection with the buttons on the right.', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.125, 'Submit by hitting the button on the bottom right.', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.125, 'Clicking on the upward arrows increases the number of leaves per plant,\nclicking on the downward arrows decreases it.', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.2, 'Submit by hitting the button on the bottom right.', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		} else {
 			let shubText = this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'Your pack now consists of ' + this.varObj.newNumber + ' Shubs. Before, it was ' + this.varObj.oldNumber + '.', { fontFamily: "Arial", fontSize: '20px', fontStyle: "bold italic", color: '#000000' });
 			let feedText = this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, 'Last round, you have fed them:', { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
