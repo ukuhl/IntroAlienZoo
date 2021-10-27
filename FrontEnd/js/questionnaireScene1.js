@@ -149,7 +149,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 				this.item1Var6Checked = false;
 				item1Sprite6.setFrame(0);
 			}
-		});
+		}.bind(this));
 
 		// Don't know
 		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.375, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
@@ -222,7 +222,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 				item2Sprite6.setFrame(0);
 
 			}
-		});
+		}.bind(this));
 
 		// plant 3
 		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.575, 'plant3').setScale(0.15);
