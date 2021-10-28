@@ -57,8 +57,8 @@ def runSslServer(certfile, keyfile):
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
-        certfile = sys.argv[1]  # /etc/ssl/certs/ssl-cert-snakeoil.pem
-        keyfile = sys.argv[2]   # /etc/ssl/private/ssl-cert-snakeoil.key
+        certfile = sys.argv[1]  # /etc/ssl/certs/fullchain14.pem
+        keyfile = sys.argv[2]   # /home/itsmladm/AlienZoo/alienzoo/privkey14.pem
 
         runSslServer(certfile, keyfile)
     else:
