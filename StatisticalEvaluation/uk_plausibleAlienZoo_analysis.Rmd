@@ -72,6 +72,14 @@ pal_okabe_ito <- newpal(col = Okabe_Ito_palette,
 Ccol=Okabe_Ito_palette[3]
 Pcol=Okabe_Ito_palette[4]
 
+# palette for likert scale data, inspired by yellow and vermillion values from Okabe_Ito
+likert_Okabe_Ito_palette <- c(rgb(213,  94,   0, maxColorValue = 255),  # vermillion (strongly disagree)
+                rgb(234, 175, 128, maxColorValue = 255),  # middle yellow red (disagree)
+                rgb(255, 255, 255, maxColorValue = 255),  # white (neutral)
+                rgb(249, 245, 179, maxColorValue = 255),  # medium champagne (agree)
+                rgb(240, 228,  66, maxColorValue = 255)   # yellow (strongly agree)
+)
+
 # set an empty string to save all information
 matchingRes=""
 matchingRes="Comparison,ShapiroPval,TestUsed,TestPval,TestEffSize"
@@ -83,13 +91,168 @@ source("uk_wilcox.test.R")
 
 \newpage
 
-# To Dos when real data arrives
-
-* include the 'remove problematic users section' (taken out now, because wouldn't run otherwise with simulated toy data, as too many instances would be removed)
-
 # Introduction
 
 This is an analysis of data acquired in the plausible Alien Zoo study run on Amazon mechanical turk in October-November 2021. In this study, naive users were asked to interact with the Alien Zoo paradigm to understand relationships in an unknown dataset, what has been termed “learning to discover” by [@adadi_peeking_2018]. In regular intervals, participants receive counterfactual explanations (CFEs) regarding past choices. These are either "closest" CFEs that fulfill the "smallest feature change" condition [@wachter_counterfactual_2017], or "plausible" CFEs that are smallest feature changes and also prototypical instances of the data [@farkas_convex_2020].
+
+## Check covariates across groups
+
+Additionally to assessing performance, we also acquire age and gender information of participants.
+How do our groups look like? are they comparable?
+
+```{r echo=FALSE, warning=FALSE,fig.height = 4, fig.width = 3.5}
+
+sourceLoc=here::set_here()
+setwd(dirname(sourceLoc))
+
+# Where's the data
+demo_source = list.files(pattern="DemographicsSim.csv")
+
+# load to dframes
+df_demo=read.csv(demo_source,header=TRUE)
+
+# drop fields 'X'
+# drop fields 'X' if present (was problem with simulated data)
+if("X" %in% colnames(df_demo)){
+df_demo=subset(df_demo,select=-c(X))
+}
+
+print(colnames(df_demo))
+
+# get only age info
+df_demo_age = df_demo[df_demo$item=='age',]
+df_demo_gender = df_demo[df_demo$item=='gender',]
+
+# summarize to get overview values of frequencies and percentages
+df_demo_age_summary=dplyr::summarise(group_by(df_demo_age, group, item, responseNo),
+          SumChecks=sum(checked),
+          PercUsersChecked=100*(sum(checked)/length(unique(userId))))
+
+# summarize to get overview values of frequencies and percentages
+df_demo_gender_summary=dplyr::summarise(group_by(df_demo_gender, group, item, responseNo),
+          SumChecks=sum(checked),
+          PercUsersChecked=100*(sum(checked)/length(unique(userId))))
+
+# convert to factor for proper plotting:
+df_demo_age_summary$responseNo=as.factor(df_demo_age_summary$responseNo)
+df_demo_gender_summary$responseNo=as.factor(df_demo_gender_summary$responseNo)
+
+# AGE: display frequency as raw counts
+CovAge_FreqUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fill = group)) + 
+  geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
+  labs(title="Age of participants (freq. counts)",x="", y = "Frequency of answer")+
+  theme_bw(base_size = 10)+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_x_discrete(breaks=1:7, labels=c("18-24y","25-34y","35-44y","45-54y","55-64y","65 and\nover","Prefer not\nto answer"))+
+  theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+# AGE: display frequency as percentage
+CovAge_PercUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fill = group)) + 
+  geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
+  labs(title="Age of participants (% of users)",x="", y = "% of users")+
+  theme_bw(base_size = 10)+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_x_discrete(breaks=1:7, labels=c("18-24y","25-34y","35-44y","45-54y","55-64y","65 and\nover","Prefer not\nto answer"))+
+  theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+# put plots together
+figure_CovAgeRaw <- ggarrange(CovAge_FreqUserResponses,CovAge_PercUserResponses,
+                    ncol = 1, nrow = 2, align = "v")
+# save
+ggsave("Figures/CovAgeRaw_distribution.pdf",width = 9, height = 7,)
+
+# show 
+figure_CovAgeRaw
+
+# GENDER: display frequency as raw counts
+CovGender_FreqUserResponses = ggplot(data=df_demo_gender_summary, aes(x=responseNo,fill = group)) + 
+  geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
+  labs(title="Gender of participants (freq. counts)",x="", y = "Frequency of answer")+
+  theme_bw(base_size = 10)+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_x_discrete(breaks=1:7, labels=c("Female","Male","Transgender\nfemale","Transgender\nmale","Non-binary/\n gender non-\nconforming","Not listed","Prefer not\nto answer"))+
+  theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+# GENDER: display frequency as percentage
+CovGender_PercUserResponses = ggplot(data=df_demo_gender_summary, aes(x=responseNo,fill = group)) + 
+  geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
+  labs(title="Gender of participants (% of users)",x="", y = "% of users")+
+  theme_bw(base_size = 10)+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_x_discrete(breaks=1:7, labels=c("Female","Male","Transgender\nfemale","Transgender\nmale","Non-binary/\n gender non-\nconforming","Not listed","Prefer not\nto answer"))+
+  theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+# put plots together
+figure_CovGenderRaw <- ggarrange(CovGender_FreqUserResponses,CovGender_PercUserResponses,
+                    ncol = 1, nrow = 2, align = "v")
+# save
+ggsave("Figures/CovGenderRaw_distribution.pdf",width = 9, height = 7,)
+
+# show 
+figure_CovGenderRaw
+```
+
+Let's run a statistical comparison between our two groups. For age, we have ordinal data (in age bands), so we will use a non-parametric statistical test for ordinal data, that's the Wilcoxon–Mann–Whitney U test.
+
+For gender, we need to check if data is normally distributed. If so, use a ttest, if not, we will also use the non-parametric Wilcoxon–Mann–Whitney U.
+
+```{r echo=FALSE, warning=FALSE}
+
+# statistical differences between groups?
+# remove 'prefer not to answer' entries
+df_demo_age = df_demo_age[!df_demo_age$responseNo==7,]
+df_demo_age_responses=df_demo_age[!df_demo_age$checked==0,]
+
+df_demo_gender = df_demo_gender[!df_demo_gender$responseNo==7,]
+df_demo_gender_responses=df_demo_gender[!df_demo_gender$checked==0,]
+
+# Age first: 
+
+# check sample sizes, make sure they deviate not too much:
+N_P_age=sum(df_demo_age_responses$group=='P')
+N_C_age=sum(df_demo_age_responses$group=='C')
+
+aget="Wilcox"
+agetest=uk_wilcox.test(df_demo_age_responses$responseNo[df_demo_age_responses$group=="P"],df_demo_age_responses$responseNo[df_demo_age_responses$group=="C"],paired=FALSE,exact=FALSE)
+ageeffsize=agetest$z_val/(sqrt(nrow(df_demo_age_responses)))
+
+matchingRes=paste(matchingRes,paste("\n","AgeRaw",sep=""),"",aget,agetest$p.value,ageeffsize,sep = ",")
+
+# Gender second: 
+
+# check sample sizes, make sure they deviate not too much:
+N_P_gender=sum(df_demo_gender_responses$group=='P')
+N_C_gender=sum(df_demo_gender_responses$group=='C')
+
+# check for significant differences - "irrelevant plans" judgements:
+# check if sample is normally distributed using shapiro test
+shapiro=shapiro.test(df_demo_gender_responses$responseNo) # if p-value is lower than 0.05, you can conclude that the sample deviates from normality
+if(shapiro$p.value > 0.05){
+  # if it's normal: t-test
+  gent="TTest"
+  gentest=t.test(df_demo_gender_responses$responseNo ~ df_demo_gender_responses$group,alternative="two.sided")
+  geneffsize=cohen.d(df_demo_gender_responses$responseNo ~ df_demo_gender_responses$group)
+} else {
+  gent="Wilcox"
+  gentest=uk_wilcox.test(df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="P"],df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="C"],paired=FALSE,exact=FALSE)
+  geneffsize=gentest$z_val/(sqrt(nrow(df_demo_gender_responses)))
+}
+
+matchingRes=paste(matchingRes,paste("\n","GenderRaw",sep=""),shapiro$p.value,gent,gentest$p.value,geneffsize,sep = ",")
+
+```
+
+The analysis showed for *Age*:
+
+* We have age information for `r N_P_age` users in the plausible and `r N_C_age` users in the closest group.
+* Is there a significant difference in terms of age between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r aget` test. This showed: U=`r agetest$statistic `, p=`r agetest$p.value `, r = `r ageeffsize `
+  
+The analysis showed for *Gender*:
+
+* We have age information for `r N_P_gender` users in the plausible and `r N_C_gender` users in the closest group.
+* Is there a significant difference in terms of age between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r gent` test. This showed
+  + for ttest: t(`r gentest$parameter `)=`r gentest$statistic `, p=`r gentest$p.value `, cohen's d = `r geneffsize `
+  + for wilcoxon test: U=`r gentest$statistic `, p=`r gentest$p.value `, r = `r geneffsize `
 
 ## Hypotheses
 
@@ -182,7 +345,7 @@ Speeders are people clicking through the study way too quickly (i.e. only a few 
 
 Aim: identify IDs being faster than specified values (variable per game part).
 
-```{r echo=FALSE,, fig.height = 7, fig.width = 7, fig.align = "center"}
+```{r echo=FALSE,, fig.height = 7, fig.width = 7, fig.align = "center",fig.height = 4, fig.width = 6}
 
 # define min times for individual trial types (in ms)
 min_timeAgreementScene=10000 # 10 seconds?
@@ -766,7 +929,7 @@ H1.3_figure1_UserResponses
 
 How to evaluate this statistically? Let's just count the matches between 'judged as relevant' / 'judged as irrelevant' user vectors and the true 'relevant' / 'irrelevant' factors.
 
-```{r echo=FALSE, fig.height = 4, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
 
 # define vectors with ground truth
 relevantPlants_truth_vec=c(0,0,0,0,0)
@@ -822,7 +985,8 @@ H1.3_figure2_UserResponseMatches = ggplot(df_survey_relevantPlants_plot, aes(x=g
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`1`="What plants are relevant?",`2`="What plants are not relevant?")))+
   labs(title="Mean no. of matches (judgements vs. truth)",x="Group", y = "mean number of matches")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(plot.title = element_text(hjust = 0.5))
 
 # save
 ggsave("Figures/H1.3_figure2_UserResponseMatches.pdf",width = 5, height = 6,)
@@ -915,7 +1079,7 @@ df_survey_subjUsability_summary=dplyr::summarise(group_by(df_survey_subjUsabilit
 H2.1_p_FreqUserResponses = ggplot(data=df_survey_subjUsability_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
-  labs(title="Judged helpfulness / usability of CFEs",x="", y = "Frequency of answer")+
+  labs(title="Subjective helpfulness / usability of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
@@ -925,11 +1089,14 @@ H2.1_p_FreqUserResponses = ggplot(data=df_survey_subjUsability_summary, aes(x=re
 H2.1_p_PercUserResponses = ggplot(data=df_survey_subjUsability_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
-  labs(title="Judged helpfulness / usability of CFEs",x="", y = "% of users per group")+
+  labs(title="Subjective helpfulness / usability of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+# safe summary to generate likert plots:
+likert_subjHelpUsability=df_survey_subjUsability_summary
 
 # put all plots together
 H2.1_figure1_UserResponses <- ggarrange(H2.1_p_FreqUserResponses,H2.1_p_PercUserResponses,
@@ -946,7 +1113,7 @@ H2.1_figure1_UserResponses
 
 On to the statistical comparison: for Likert-scale, we want a non-parametric statistical test for ordinal data, that's the Wilcoxon–Mann–Whitney U test.
 
-```{r echo=FALSE, fig.height = 4, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
 
 # extract response numbers per participant
 df_survey_subjHelpfulness_responses = df_survey_subjUsability[df_survey_subjUsability$itemNo==5,]
@@ -976,7 +1143,7 @@ df_survey_subjHelpUsability_responses = df_survey_subjHelpUsability_responses[!d
 df_survey_subjHelpUsability_responses$responseNo=as.numeric(df_survey_subjHelpUsability_responses$responseNo)
 
 # plot distribution
-H2.1_figure2_UserResponses = ggplot(df_survey_subjHelpUsability_responses, aes(x=group, y=responseNo, color=group, fill=group)) + 
+H2.1_figure2_UserResponses_violin = ggplot(df_survey_subjHelpUsability_responses, aes(x=group, y=responseNo, color=group, fill=group)) + 
   geom_violin(scale = "count")+
   geom_boxplot(width=0.1)+
   #geom_jitter(height = 0, width = 0.1)+ # ADD THIS TO DISPLAY INDIVIDUAL DATA POINTS!
@@ -990,11 +1157,53 @@ H2.1_figure2_UserResponses = ggplot(df_survey_subjHelpUsability_responses, aes(x
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H2.1_figure2_UserResponses.pdf",width = 5, height = 6,)
+ggsave("Figures/H2.1_figure2_UserResponses_violin.pdf",width = 6, height = 4,)
 
-# show plot
+# Stacked bar plot, the more appropriate visualization for likert data:
+# separate "high" and "low" values
+lows=likert_subjHelpUsability[as.numeric(likert_subjHelpUsability$responseNo)<4,]
+highs=likert_subjHelpUsability[as.numeric(likert_subjHelpUsability$responseNo)>2,]
+# NOTE: we take response no 6 out here, after percentages were computed
+# THUS, THE RESPONSES WILL NOT SUM UP TO 100% ID PEOPLE CHOSE NOT TO ANSWER!
+highs=highs[!highs$responseNo==6,]
+  
+# divide neutral category by 2 for plotting:
+lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
+highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
+
+H2.1_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+  # annotation:
+  annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
+  annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
+  # geom_bar, add data high:
+  geom_bar(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y=PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y = PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # geom_bar, add data low:
+  geom_bar(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # flip coordinates:
+  coord_flip() +
+  # more aesthetics:
+  geom_hline(yintercept = 0, color =c("black"),size=0.1) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
+  theme_bw(base_size = 10)+
+theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
+  labs(title="Subjective helpfulness / usability of CFEs",x="Group", y ="% of users")+
+  scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_y_continuous(labels=c(100,50,0,50,100))
+
+# save
+ggsave("Figures/H2.1_figure2_UserResponses_stackedBar.pdf",width = 6, height = 4,)
+
+# show plots
 print("Mean user response for subjective helpfulness / usability:")
-H2.1_figure2_UserResponses
+H2.1_figure2_UserResponses_violin
+H2.1_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item5t="Wilcox"
@@ -1045,7 +1254,7 @@ df_survey_UsabilityForOthers_summary=dplyr::summarise(group_by(df_survey_Usabili
 H2.2_p_FreqUserResponses = ggplot(data=df_survey_UsabilityForOthers_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"Most people would learn quickly.\"")))+
-  labs(title="Judged helpfulness for others",x="", y = "Frequency of answer")+
+  labs(title="Subjective helpfulness for others",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
@@ -1055,11 +1264,14 @@ H2.2_p_FreqUserResponses = ggplot(data=df_survey_UsabilityForOthers_summary, aes
 H2.2_p_PercUserResponses = ggplot(data=df_survey_UsabilityForOthers_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"Most people would learn quickly.\"")))+
-  labs(title="Judged helpfulness for others",x="", y = "% of users per group")+
+  labs(title="Subjective helpfulness for others",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+# safe summary to generate likert plots:
+likert_UsabilityForOthers=df_survey_UsabilityForOthers_summary
 
 # put all plots together
 H2.2_figure1_UserResponses <- ggarrange(H2.2_p_FreqUserResponses,H2.2_p_PercUserResponses,
@@ -1076,7 +1288,7 @@ H2.2_figure1_UserResponses
 
 Check for significant differences between groups using the Wilcoxon–Mann–Whitney U test, as we have Likert-scale data.
 
-```{r echo=FALSE, fig.height = 2, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 2, fig.width = 5, fig.align = "center"}
 
 # extract response numbers per participant
 df_survey_UsabilityForOthers_responses = df_survey_UsabilityForOthers[!df_survey_UsabilityForOthers$checked==0,]
@@ -1094,13 +1306,13 @@ df_survey_UsabilityForOthers_summary=data_summary(df_survey_UsabilityForOthers_r
 df_survey_UsabilityForOthers_responses$responseNo=as.numeric(df_survey_UsabilityForOthers_responses$responseNo)
 
 # plot distribution
-H2.2_figure2_UserResponses = ggplot(df_survey_UsabilityForOthers_responses, aes(x=group, y=responseNo, color=group, fill=group)) +
+H2.2_figure2_UserResponses_violin = ggplot(df_survey_UsabilityForOthers_responses, aes(x=group, y=responseNo, color=group, fill=group)) +
   geom_violin(scale = "count")+
   geom_boxplot(width=0.1)+
   #geom_jitter(height = 0, width = 0.1)+ # ADD THIS TO DISPLAY INDIVIDUAL DATA POINTS!
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"Most people would learn quickly.\""))) +
   stat_summary(fun=mean, geom="point", shape=23, size=2, color="red")  +
-  labs(title="Judged helpfulness for others",x="Group", y = "Response")+
+  labs(title="Subjective helpfulness for others",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Closest", "Plausible"))+
@@ -1108,11 +1320,54 @@ H2.2_figure2_UserResponses = ggplot(df_survey_UsabilityForOthers_responses, aes(
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H2.2_figure2_UserResponses.pdf",width = 5, height = 6,)
+ggsave("Figures/H2.2_figure2_UserResponses_violin.pdf",width = 6, height = 4,)
+
+
+# Stacked bar plot, the more appropriate visualization for likert data:
+# separate "high" and "low" values
+lows=likert_UsabilityForOthers[as.numeric(likert_UsabilityForOthers$responseNo)<4,]
+highs=likert_UsabilityForOthers[as.numeric(likert_UsabilityForOthers$responseNo)>2,]
+# NOTE: we take response no 6 out here, after percentages were computed
+# THUS, THE RESPONSES WILL NOT SUM UP TO 100% ID PEOPLE CHOSE NOT TO ANSWER!
+highs=highs[!highs$responseNo==6,]
+  
+# divide neutral category by 2 for plotting:
+lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
+highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
+
+H2.2_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+  # annotation:
+  annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
+  annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
+  # geom_bar, add data high:
+  geom_bar(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y=PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y = PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # geom_bar, add data low:
+  geom_bar(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # flip coordinates:
+  coord_flip() +
+  # more aesthetics:
+  geom_hline(yintercept = 0, color =c("black"),size=0.1) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"Most people would learn quickly.\"")))+
+  theme_bw(base_size = 10)+
+theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
+  labs(title="Subjective helpfulness for others",x="Group", y ="% of users")+
+  scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_y_continuous(labels=c(100,50,0,50,100))
+
+# save
+ggsave("Figures/H2.2_figure2_UserResponses_stackedBar.pdf",width = 6, height = 2,)
 
 # show plot
 print("Mean user response for subjective helpfulness / usability:")
-H2.2_figure2_UserResponses
+H2.2_figure2_UserResponses_violin
+H2.2_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item8t="Wilcox"
@@ -1138,7 +1393,7 @@ Revisiting the hypothesis:
 
 Item 3: "I understood the feedback on what choice would have led to a better result."
 
-Item 4: "I did not need support to understand the feedback on what choice would have led to a better result."
+Item 4: "I needed support to understand the feedback on what choice would have led to a better result."
 
 ```{r echo=FALSE, fig.height = 6, fig.width = 4, fig.align = "center"}
 
@@ -1160,8 +1415,8 @@ df_survey_understanding_summary=dplyr::summarise(group_by(df_survey_understandin
 # display frequency as raw counts
 H3_FreqUserResponses = ggplot(data=df_survey_understanding_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
-  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I did not need support to understand.\"")))+
-  labs(title="Judged understanding of CFEs",x="", y = "Frequency of answer")+
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
+  labs(title="Subjective understanding of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
@@ -1170,12 +1425,14 @@ H3_FreqUserResponses = ggplot(data=df_survey_understanding_summary, aes(x=respon
 # display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
 H3_PercUserResponses = ggplot(data=df_survey_understanding_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
-  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I did not need support to understand.\"")))+
-  labs(title="Judged understanding of CFEs",x="", y = "% of users per group")+
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
+  labs(title="Subjective understanding of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+likert_understanding=df_survey_understanding_summary
 
 # put all plots together
 H3_figure1_UserResponses <- ggarrange(H3_FreqUserResponses,H3_PercUserResponses,
@@ -1192,7 +1449,7 @@ H3_figure1_UserResponses
 
 On to the statistical comparison: for Likert-scale, we want a non-parametric statistial test for ordinal data, that's the Wilcoxon–Mann–Whitney U test.
 
-```{r echo=FALSE, fig.height = 4, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
 
 # extract response numbers per participant
 df_survey_understanding_responses = df_survey_understanding[df_survey_understanding$itemNo==3,]
@@ -1222,11 +1479,11 @@ df_survey_understanding_support_responses = df_survey_understanding_support_resp
 df_survey_understanding_support_responses$responseNo=as.numeric(df_survey_understanding_support_responses$responseNo)
 
 # plot distribution
-H3_figure2_UserResponses = ggplot(df_survey_understanding_support_responses, aes(x=group, y=responseNo, color=group, fill=group)) + 
+H3_figure2_UserResponses_violin = ggplot(df_survey_understanding_support_responses, aes(x=group, y=responseNo, color=group, fill=group)) + 
   geom_violin(scale = "count")+
   geom_boxplot(width=0.1)+
   #geom_jitter(height = 0, width = 0.1)+ # ADD THIS TO DISPLAY INDIVIDUAL DATA POINTS!
-  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I did not need support to understand.\""))) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\""))) +
   stat_summary(fun=mean, geom="point", shape=23, size=2, color="red")  +
   labs(title="Mean response for understanding\n/ support for understanding",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
@@ -1236,11 +1493,54 @@ H3_figure2_UserResponses = ggplot(df_survey_understanding_support_responses, aes
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H3_figure2_UserResponses.pdf",width = 5, height = 6,)
+ggsave("Figures/H3_figure2_UserResponses_violin.pdf",width = 6, height = 4,)
+
+
+# Stacked bar plot, the more appropriate visualization for likert data:
+# separate "high" and "low" values
+lows=likert_understanding[as.numeric(likert_understanding$responseNo)<4,]
+highs=likert_understanding[as.numeric(likert_understanding$responseNo)>2,]
+# NOTE: we take response no 6 out here, after percentages were computed
+# THUS, THE RESPONSES WILL NOT SUM UP TO 100% ID PEOPLE CHOSE NOT TO ANSWER!
+highs=highs[!highs$responseNo==6,]
+  
+# divide neutral category by 2 for plotting:
+lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
+highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
+
+H3_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+  # annotation:
+  annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
+  annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
+  # geom_bar, add data high:
+  geom_bar(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y=PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y = PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # geom_bar, add data low:
+  geom_bar(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # flip coordinates:
+  coord_flip() +
+  # more aesthetics:
+  geom_hline(yintercept = 0, color =c("black"),size=0.1) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
+  theme_bw(base_size = 10)+
+theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
+  labs(title="Subjective understanding/\nneeding support for understanding",x="Group", y ="% of users")+
+  scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_y_continuous(labels=c(100,50,0,50,100))
+
+# save
+ggsave("Figures/H3_figure2_UserResponses_stackedBar.pdf",width = 6, height = 4,)
 
 # show plot
 print("Mean user response for understanding / need for support to understand:")
-H3_figure2_UserResponses
+H3_figure2_UserResponses_violin
+H3_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item3t="Wilcox"
@@ -1272,7 +1572,7 @@ H4) We expect timing and efficacy of how CFEs were presented to be comparable, a
 
 Item 9: "I received the feedback on what choice would have led to a better result in a timely and efficient manner."
 
-```{r echo=FALSE, fig.height = 6, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 4, fig.width = 4, fig.align = "center"}
 
 # Descriptive stats
 # subset to get only relevant data
@@ -1292,7 +1592,7 @@ df_survey_TimingEfficacy_summary=dplyr::summarise(group_by(df_survey_TimingEffic
 H4_FreqUserResponses = ggplot(data=df_survey_TimingEfficacy_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`9`="\"I received feedback timely and efficiently.\"")))+
-  labs(title="Judged presentation of CFEs",x="", y = "Frequency of answer")+
+  labs(title="Presentation of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
@@ -1302,11 +1602,13 @@ H4_FreqUserResponses = ggplot(data=df_survey_TimingEfficacy_summary, aes(x=respo
 H4_PercUserResponses = ggplot(data=df_survey_TimingEfficacy_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`9`="\"Feedback was timely and efficiently.\"")))+
-  labs(title="Judged presentation of CFEs",x="", y = "% of users per group")+
+  labs(title="Presentation of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+likert_TimingEfficacy=df_survey_TimingEfficacy_summary
 
 # put all plots together
 H4_figure1_UserResponses <- ggarrange(H4_FreqUserResponses,H4_PercUserResponses,
@@ -1324,7 +1626,7 @@ H4_figure1_UserResponses
 
 Check for significant differences between groups using the Wilcoxon–Mann–Whitney U test, as we have Likert-scale data.
 
-```{r echo=FALSE, fig.height = 2, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 2, fig.width = 5, fig.align = "center"}
 
 # extract response numbers per participant
 df_survey_TimingEfficacy_responses = df_survey_TimingEfficacy[!df_survey_TimingEfficacy$checked==0,]
@@ -1342,7 +1644,7 @@ df_survey_TimingEfficacy_summary=data_summary(df_survey_TimingEfficacy_responses
 df_survey_TimingEfficacy_responses$responseNo=as.numeric(df_survey_TimingEfficacy_responses$responseNo)
 
 # plot distribution
-H4_figure2_UserResponses = ggplot(df_survey_TimingEfficacy_responses, aes(x=group, y=responseNo, color=group, fill=group)) +
+H4_figure2_UserResponses_violin = ggplot(df_survey_TimingEfficacy_responses, aes(x=group, y=responseNo, color=group, fill=group)) +
   geom_violin(scale = "count")+
   geom_boxplot(width=0.1)+
   #geom_jitter(height = 0, width = 0.1)+ # ADD THIS TO DISPLAY INDIVIDUAL DATA POINTS!
@@ -1356,11 +1658,54 @@ H4_figure2_UserResponses = ggplot(df_survey_TimingEfficacy_responses, aes(x=grou
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H4_figure2_UserResponses.pdf",width = 5, height = 6,)
+ggsave("Figures/H4_figure2_UserResponses_violin.pdf",width = 6, height = 4,)
+
+
+# Stacked bar plot, the more appropriate visualization for likert data:
+# separate "high" and "low" values
+lows=likert_TimingEfficacy[as.numeric(likert_TimingEfficacy$responseNo)<4,]
+highs=likert_TimingEfficacy[as.numeric(likert_TimingEfficacy$responseNo)>2,]
+# NOTE: we take response no 6 out here, after percentages were computed
+# THUS, THE RESPONSES WILL NOT SUM UP TO 100% ID PEOPLE CHOSE NOT TO ANSWER!
+highs=highs[!highs$responseNo==6,]
+
+# divide neutral category by 2 for plotting:
+lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
+highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
+
+H4_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+  # annotation:
+  annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
+  annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
+  # geom_bar, add data high:
+  geom_bar(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y=PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y = PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # geom_bar, add data low:
+  geom_bar(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # flip coordinates:
+  coord_flip() +
+  # more aesthetics:
+  geom_hline(yintercept = 0, color =c("black"),size=0.1) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`9`="\"Feedback was timely and efficiently.\"")))+
+  theme_bw(base_size = 10)+
+theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
+  labs(title="Presentation of CFEs",x="Group", y ="% of users")+
+  scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_y_continuous(labels=c(100,50,0,50,100))
+
+# save
+ggsave("Figures/H4_figure2_UserResponses_stackedBar.pdf",width = 6, height = 2,)
 
 # show plot
 print("Mean user response for subjective helpfulness / usability:")
-H4_figure2_UserResponses
+H4_figure2_UserResponses_violin
+H4_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item9t="Wilcox"
@@ -1379,9 +1724,9 @@ The analysis revealed:
 
 It is not clear whether users were uncover inconsistencies in the feedback. Maybe that is the case for "closest" CFEs when we're in the areas of "no training data“? Let's see what users responded.
 
-Item 7: "I did not find inconsistencies in the feedback on what choice would have led to a better result."
+Item 7: "I found inconsistencies in the feedback on what choice would have led to a better result."
 
-```{r echo=FALSE, fig.height = 6, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 4, fig.width = 4, fig.align = "center"}
 
 # Descriptive stats
 # subset to get only relevant data
@@ -1400,7 +1745,7 @@ df_survey_Inconsist_summary=dplyr::summarise(group_by(df_survey_Inconsist, group
 # display frequency as raw counts
 Expl_FreqUserResponses = ggplot(data=df_survey_Inconsist_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
-  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I did not find inconsistencies.\"")))+
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I found inconsistencies.\"")))+
   labs(title="Detected inconsistencies of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
@@ -1410,12 +1755,14 @@ Expl_FreqUserResponses = ggplot(data=df_survey_Inconsist_summary, aes(x=response
 # display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
 Expl_PercUserResponses = ggplot(data=df_survey_Inconsist_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
-  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I did not find inconsistencies.\"")))+
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I found inconsistencies.\"")))+
   labs(title="Detected inconsistencies of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
+
+likert_Inconsist=df_survey_Inconsist_summary
 
 # put all plots together
 Expl_figure1_UserResponses <- ggarrange(Expl_FreqUserResponses,Expl_PercUserResponses,
@@ -1433,7 +1780,7 @@ Expl_figure1_UserResponses
 
 Check for significant differences between groups using the Wilcoxon–Mann–Whitney U test, as we have Likert-scale data.
 
-```{r echo=FALSE, fig.height = 2, fig.width = 4, fig.align = "center"}
+```{r echo=FALSE, fig.height = 2, fig.width = 5, fig.align = "center"}
 
 # extract response numbers per participant
 df_survey_Inconsist_responses = df_survey_Inconsist[!df_survey_Inconsist$checked==0,]
@@ -1451,11 +1798,11 @@ df_survey_Inconsist_summary=data_summary(df_survey_Inconsist_responses, varname=
 df_survey_Inconsist_responses$responseNo=as.numeric(df_survey_Inconsist_responses$responseNo)
 
 # plot distribution
-Expl_figure2_UserResponses = ggplot(df_survey_Inconsist_responses, aes(x=group, y=responseNo, color=group, fill=group)) +
+Expl_figure2_UserResponses_violin = ggplot(df_survey_Inconsist_responses, aes(x=group, y=responseNo, color=group, fill=group)) +
   geom_violin(scale = "count")+
   geom_boxplot(width=0.1)+
   #geom_jitter(height = 0, width = 0.1)+ # ADD THIS TO DISPLAY INDIVIDUAL DATA POINTS!
-  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I did not find inconsistencies.\""))) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I found inconsistencies.\""))) +
   stat_summary(fun=mean, geom="point", shape=23, size=2, color="red")  +
   labs(title="Mean responses re. inconsistencies of CFEs",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
@@ -1465,11 +1812,54 @@ Expl_figure2_UserResponses = ggplot(df_survey_Inconsist_responses, aes(x=group, 
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/Expl_figure2_UserResponses.pdf",width = 5, height = 6,)
+ggsave("Figures/Expl_figure2_UserResponses_violin.pdf",width = 6, height = 4,)
+
+# Stacked bar plot, the more appropriate visualization for likert data:
+# separate "high" and "low" values
+lows=likert_Inconsist[as.numeric(likert_Inconsist$responseNo)<4,]
+highs=likert_Inconsist[as.numeric(likert_Inconsist$responseNo)>2,]
+# NOTE: we take response no 6 out here, after percentages were computed
+# THUS, THE RESPONSES WILL NOT SUM UP TO 100% ID PEOPLE CHOSE NOT TO ANSWER!
+highs=highs[!highs$responseNo==6,]
+
+# divide neutral category by 2 for plotting:
+lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
+highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
+
+Expl_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+  # annotation:
+  annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
+  annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
+  # geom_bar, add data high:
+  geom_bar(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y=PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=highs[order(highs$responseNo, decreasing = F),], aes(x = group, y = PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # geom_bar, add data low:
+  geom_bar(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked, fill=responseNo, group=group), position="stack", stat="identity",width = 0.5) +
+  # add border for high values:
+  stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
+               fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
+  # flip coordinates:
+  coord_flip() +
+  # more aesthetics:
+  geom_hline(yintercept = 0, color =c("black"),size=0.1) +
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`7`="\"I found inconsistencies.\"")))+
+  theme_bw(base_size = 10)+
+theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
+  labs(title="Detected inconsistencies in CFEs",x="Group", y ="% of users")+
+  scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_y_continuous(labels=c(100,50,0,50,100))
+
+# save
+ggsave("Figures/H4_figure2_UserResponses_stackedBar.pdf",width = 6, height = 2,)
+
 
 # show plot
 print("Mean user response for inconsistencies of CFEs:")
-Expl_figure2_UserResponses
+Expl_figure2_UserResponses_violin
+Expl_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item7t="Wilcox"

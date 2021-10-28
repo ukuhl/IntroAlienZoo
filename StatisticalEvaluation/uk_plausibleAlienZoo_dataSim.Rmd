@@ -125,3 +125,29 @@ survey=data.frame(userId,group,itemNo,responseNo,checked)
 write.csv(survey,"SurveySim.csv", row.names = TRUE)
 
 ```
+
+
+# Generate Demographics.csv data
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+
+userId = rep(users,times=c(rep(14,100)))
+group = rep(c(rep("C",14),rep("P",14)),50)
+
+item = rep(c(rep("age",7),rep("gender",7)),100)
+
+responseNo = responseNo = rep(c(1:7),2*100)
+
+age=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0,0))})
+gender=sapply(1:100, function(x) {sample(c(1,0,0,0,0,0,0))})
+
+l=list(age,gender)
+res=do.call(cbind, l)[, order(sequence(sapply(l, ncol)))]
+
+checked = c(res[c(1:7),])
+
+demographics=data.frame(userId,group,item,responseNo,checked)
+
+write.csv(demographics,"DemographicsSim.csv", row.names = TRUE)
+
+```
