@@ -42,7 +42,7 @@ class InfoScene extends Phaser.Scene {
 			"Afterwards, you will be asked to answer a short questionnaire assessing your experience with the game.",
 			"",
 			"Your responses will be confidential and we do not collect identifying information such as your name, email address or IP address.",
-			"We will do our best to keep your information confidential. All data is stored in a password protected electronic format.",
+			"We will do our best to keep your information confidential.",//" All data is stored in a password protected electronic format.",
 			//"To help protect your confidentiality, the surveys will not contain information that will personally identify you.",
 			"",
 			"The results of this study will be used for scholarly purposes only.",
