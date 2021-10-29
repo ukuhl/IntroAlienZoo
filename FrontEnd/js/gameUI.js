@@ -80,7 +80,7 @@ window.onload = function(){
       // button to start the Game
       var buttonStart;
       var buttonContinue;
-      var btnContinueShowDelay = 10000; // Button "Continue" becomes visible after 10 seconds (= 10000ms)
+      var btnContinueShowDelay = 5000; // Button "Continue" becomes visible after 5 seconds (= 5000ms)
       // button to get feedback
       var buttonFeedback;
       // button to get feedback
@@ -88,8 +88,9 @@ window.onload = function(){
       // trial and block counters
       let trialCount = 0;
       let blockCount = 1;
-      let maxBlockCount = 6;
-      let numTrialsPerBlock = 3;  // ATTENTION: Must be less or equal than 3!
+      let maxBlockCount = 7; // ATTENTION: insert desired blockNumber + 1 --> 7!
+      let numTrialsPerBlock = 2;  // ATTENTION: Must be less or equal than 3!
+      let attentionTrials = [3,7]; // define after which trials attention scenes are played
       // arrays for storing user input / counterfactual information for later feedback
       let in_array = [];
       let cf_array = [];
@@ -111,6 +112,7 @@ window.onload = function(){
         "blockCount": blockCount,
         "maxBlockCount": maxBlockCount,
         "numTrialsPerBlock": numTrialsPerBlock,
+        "attentionTrials": attentionTrials,
         "clickCountVar1": clickCountVar1,
         "clickCountVar2": clickCountVar2,
         "clickCountVar3": clickCountVar3,

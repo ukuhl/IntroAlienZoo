@@ -183,8 +183,8 @@ class StableScene extends Phaser.Scene {
 				.on('pointerdown', () => this.clickCountTextVar5.setText(`${Math.max(--this.varObj.clickCountVar5, this.varObj.minFeedingNo)}`))
 				.on('pointerdown', () => this.varObj.clickCountVar5 = Math.max(this.varObj.clickCountVar5, this.varObj.minFeedingNo));
 
-      // enter attention scene after trial 5 and trial 11
-			if ( this.varObj.trialCount == 5 || this.varObj.trialCount == 11 ) {
+      // enter attention scene after pre-defined trials (see gameUI)
+			if ( this.varObj.attentionTrials.includes(this.varObj.trialCount) ) {
 
 				// instatiate and add new progress scene with current data
 				var attentionScene = undefined;
