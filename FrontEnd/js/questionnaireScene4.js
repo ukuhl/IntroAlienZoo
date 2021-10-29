@@ -694,7 +694,9 @@ class QuestionnaireScene4 extends Phaser.Scene {
 	}
 
 	onBtnContinue() {
-		if ([this.item9Var1Checked, this.item9Var2Checked, this.item9Var3Checked, this.item9Var4Checked, this.item9Var5Checked, this.item9Var6Checked].every(a => a == false)) {
+		if ([this.item9Var1Checked, this.item9Var2Checked, this.item9Var3Checked, this.item9Var4Checked, this.item9Var5Checked, this.item9Var6Checked].every(a => a == false) ||
+		[this.itemAgeVar1Checked, this.itemAgeVar2Checked, this.itemAgeVar3Checked, this.itemAgeVar4Checked, this.itemAgeVar5Checked, this.itemAgeVar6Checked, this.itemAgeVar7Checked].every(a => a == false) ||
+		[this.itemGenderVar1Checked, this.itemGenderVar2Checked, this.itemGenderVar3Checked, this.itemGenderVar4Checked, this.itemGenderVar5Checked, this.itemGenderVar6Checked, this.itemGenderVar7Checked].every(a => a == false)) {
 			//alert("Please answer all questions!");
 			// alerts cause issues in fullscreen mode, here's a workaround:
 
