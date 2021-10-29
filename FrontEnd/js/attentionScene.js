@@ -71,7 +71,28 @@ class AttentionScene extends Phaser.Scene {
 
   onBtnContinue() {
     if(this.inputText.text == "") {
-      alert("Please enter a number!");
+      //alert("Please enter a number!");
+			// alerts cause issues in fullscreen mode, here's a workaround:
+
+			// background
+			var warnDialogBG = this.add.rectangle(0, 0, window.innerWidth, window.innerHeight, 0xFFFFFF, 0.5).setOrigin(0);
+			// dialog
+			var warnDialog = this.add.rectangle((window.innerWidth * 0.5)-200, (window.innerHeight * 0.5)-130, 400, 200, 0xFFFFFF, 1).setOrigin(0);
+			warnDialog.setStrokeStyle(1, 0x1000000, 1);
+			var warnDialogTxt = this.add.text((window.innerWidth * 0.5)-150, (window.innerHeight * 0.5)-80, "Please enter a number!", { fontFamily: "Arial", fontSize: '25px', color: '#000000' }).setOrigin(0);
+			// text
+			var buttonOK = this.add.rectangle((window.innerWidth * 0.5)-50, (window.innerHeight * 0.5)-25, 100, 50, 0x1a65ac, 1).setOrigin(0);
+			buttonOK.setStrokeStyle(1, 0x1000000, 1);
+			var buttontextOK = this.add.text((window.innerWidth * 0.5)-20, (window.innerHeight * 0.5)-12.5, 'Ok', { fontFamily: "Arial", fontSize: '25px', color: '#FFFFFF' }).setOrigin(0);
+
+			// make interactive and remove all after clicking ok
+			buttonOK
+				.setInteractive()
+				.on('pointerdown', () => { warnDialogBG.destroy(); })
+				.on('pointerdown', () => { warnDialog.destroy(); })
+				.on('pointerdown', () => { warnDialogTxt.destroy(); })
+				.on('pointerdown', () => { buttonOK.destroy(); })
+				.on('pointerdown', () => { buttontextOK.destroy(); });
     }
     else {
       this.logAnswer();

@@ -603,7 +603,29 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		if ([this.item6Var1Checked, this.item6Var2Checked, this.item6Var3Checked, this.item6Var4Checked, this.item6Var5Checked, this.item6Var6Checked].every(a => a == false) ||
 			[this.item7Var1Checked, this.item7Var2Checked, this.item7Var3Checked, this.item7Var4Checked, this.item7Var5Checked, this.item7Var6Checked].every(a => a == false) ||
 			[this.item8Var1Checked, this.item8Var2Checked, this.item8Var3Checked, this.item8Var4Checked, this.item8Var5Checked, this.item8Var6Checked].every(a => a == false)) {
-			alert("Please answer all questions!");
+			//alert("Please answer all questions!");
+			// alerts cause issues in fullscreen mode, here's a workaround:
+
+			// background
+			var warnDialogBG = this.add.rectangle(0, 0, window.innerWidth, window.innerHeight, 0xFFFFFF, 0.5).setOrigin(0);
+			// dialog
+			var warnDialog = this.add.rectangle((window.innerWidth * 0.5)-200, (window.innerHeight * 0.5)-130, 400, 200, 0xFFFFFF, 1).setOrigin(0);
+			warnDialog.setStrokeStyle(1, 0x1000000, 1);
+			var warnDialogTxt = this.add.text((window.innerWidth * 0.5)-150, (window.innerHeight * 0.5)-80, "Please answer all questions!", { fontFamily: "Arial", fontSize: '25px', color: '#000000' }).setOrigin(0);
+			// text
+			var buttonOK = this.add.rectangle((window.innerWidth * 0.5)-50, (window.innerHeight * 0.5)-25, 100, 50, 0x1a65ac, 1).setOrigin(0);
+			buttonOK.setStrokeStyle(1, 0x1000000, 1);
+			var buttontextOK = this.add.text((window.innerWidth * 0.5)-20, (window.innerHeight * 0.5)-12.5, 'Ok', { fontFamily: "Arial", fontSize: '25px', color: '#FFFFFF' }).setOrigin(0);
+
+			// make interactive and remove all after clicking ok
+			buttonOK
+				.setInteractive()
+				.on('pointerdown', () => { warnDialogBG.destroy(); })
+				.on('pointerdown', () => { warnDialog.destroy(); })
+				.on('pointerdown', () => { warnDialogTxt.destroy(); })
+				.on('pointerdown', () => { buttonOK.destroy(); })
+				.on('pointerdown', () => { buttontextOK.destroy(); });
+
 		}
 		else {
 			this.logAnswers();
