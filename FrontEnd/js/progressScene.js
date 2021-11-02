@@ -81,10 +81,10 @@ class ProgressScene extends Phaser.Scene {
 			}
 
 			var idx;
-			if (this.varObj.trialCount % 3 == 0) {
-				idx = 3
+			if (this.varObj.trialCount % this.varObj.numTrialsPerBlock == 0) {
+				idx = this.varObj.numTrialsPerBlock
 			} else {
-				idx = this.varObj.trialCount % 3
+				idx = this.varObj.trialCount % this.varObj.numTrialsPerBlock
 			}
 
 			// assign info to arrays for later feedback Scene
