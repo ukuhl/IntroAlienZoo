@@ -73,9 +73,6 @@ class StableScene extends Phaser.Scene {
 			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.175, 'x ' + oldVar5, { fontFamily: "Arial", fontSize: '20px', color: '#000000' });
 		}
 
-		// update old number of shubs
-		this.varObj.oldNumber = this.varObj.newNumber;
-
 		// if three trails are done, get feedback and start a new block
 		//if (this.varObj.trialCount % 4 == 0) {
 		if ( this.varObj.feedback_flag ) {
@@ -97,6 +94,9 @@ class StableScene extends Phaser.Scene {
 			this.varObj.clickCountVar3 = 0;
 			this.varObj.clickCountVar4 = 0;
 			this.varObj.clickCountVar5 = 0;
+
+			// update old number of shubs
+			this.varObj.oldNumber = this.varObj.newNumber;
 
 			// add counters for plant
 			this.clickCountTextVar1 = this.add.text(window.innerWidth * 0.725, window.innerHeight * 0.19, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
