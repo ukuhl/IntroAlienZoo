@@ -170,7 +170,7 @@ class DataMgr():
             data_demographics_checked = []
 
             cur = self.db.cursor()
-            cur.execute("SELECT userId, varAge1, varAge2, varAge3, varAge4, varAge5, varAge6, varAge7, varGender1, varGender2, varGender3, varGender4, varGender5, varGender6, varGender7 FROM questionnaire_logs")
+            cur.execute("SELECT userId, varAge1, varAge2, varAge3, varAge4, varAge5, varAge6, varAge7, varGender1, varGender2, varGender3, varGender4, varGender5, varGender6, varGender7 FROM demographics")
             for row in cur.fetchall():
                 for i in range(1, 8):
                     data_demographics_userId.append(str(row[0]))
