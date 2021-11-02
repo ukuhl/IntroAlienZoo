@@ -50,11 +50,6 @@ class StableScene extends Phaser.Scene {
 		let oldVar3 = this.varObj.clickCountVar3;
 		let oldVar4 = this.varObj.clickCountVar4;
 		let oldVar5 = this.varObj.clickCountVar5;
-		this.varObj.clickCountVar1 = 0;
-		this.varObj.clickCountVar2 = 0;
-		this.varObj.clickCountVar3 = 0;
-		this.varObj.clickCountVar4 = 0;
-		this.varObj.clickCountVar5 = 0;
 
 		// *** Upper content of window ***
 		if (this.varObj.trialCount == 1) {
@@ -90,16 +85,18 @@ class StableScene extends Phaser.Scene {
 			// add button to submit new input - change scene when pressed!
 			const buttonFeed = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
 				.setInteractive()
-				.on('pointerdown', () => this.logTimeFeedback())
-				.on('pointerdown', () => feedbackScene = new FeedbackScene(this.varObj))
-				.on('pointerdown', () => this.scene.remove('feedbackScene', feedbackScene))
-				.on('pointerdown', () => this.scene.add('feedbackScene', feedbackScene))
-				.on('pointerdown', () => this.scene.start('feedbackScene'));
+				.on('pointerdown', this.clickBtnFeedback.bind(this));
 
 			var textFeedback = this.add.text(-90, -20, 'Get feedback!', { fontSize: '25px', color: '#ffffff' })
 			buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonFeed, textFeedback])
 
 		} else {
+			// Reset counters
+			this.varObj.clickCountVar1 = 0;
+			this.varObj.clickCountVar2 = 0;
+			this.varObj.clickCountVar3 = 0;
+			this.varObj.clickCountVar4 = 0;
+			this.varObj.clickCountVar5 = 0;
 
 			// add counters for plant
 			this.clickCountTextVar1 = this.add.text(window.innerWidth * 0.725, window.innerHeight * 0.19, '0', { fontFamily: "Arial", fontSize: '30px', color: '#000000' });
@@ -259,6 +256,14 @@ class StableScene extends Phaser.Scene {
 				thisShub.anims.reverse();
 			}
 		}
+	}
+
+	clickBtnFeedback() {
+		this.logTimeFeedback();
+		var feedbackScene = new FeedbackScene(this.varObj);
+		this.scene.remove('feedbackScene', feedbackScene);
+		this.scene.add('feedbackScene', feedbackScene);
+		this.scene.start('feedbackScene');
 	}
 
 	logTimeFeed() {
