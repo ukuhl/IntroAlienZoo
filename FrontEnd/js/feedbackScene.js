@@ -55,7 +55,7 @@ class FeedbackScene extends Phaser.Scene {
 		//
 		//
 		// 	if (this.varObj.cf_array[1][0] == -1000) {
-		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.200, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.200, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 		// 	} else {
 		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.175, 'Plants other users selected this at this point in time:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 		//
@@ -96,7 +96,7 @@ class FeedbackScene extends Phaser.Scene {
 		// 		this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 		//
 		// 		if (this.varObj.cf_array[2][0] == -1000) {
-		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 		// 		} else {
 		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Plants other users selected this at this point in time:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 		//
@@ -137,7 +137,7 @@ class FeedbackScene extends Phaser.Scene {
 		// 			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 		//
 		// 			if (this.varObj.cf_array[3][0] == -1000) {
-		// 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+		// 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 		// 			} else {
 		// 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Plants other users selected this at this point in time:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 		//
@@ -179,9 +179,9 @@ class FeedbackScene extends Phaser.Scene {
 
 
 		if (this.varObj.cf_array[1][0] == -1000) {
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.200, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.200, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 		} else {
-			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.175, 'Your result would have been better if you had selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.175, 'Your result would have been better if you had selected:', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 
 			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.2250, 'plant1').setScale(0.1);
 			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.2250, 'x ' + this.varObj.cf_array[1][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
@@ -220,9 +220,9 @@ class FeedbackScene extends Phaser.Scene {
 			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 
 			if (this.varObj.cf_array[2][0] == -1000) {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 			} else {
-				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Your result would have been better if you had selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Your result would have been better if you had selected:', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 
 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
 				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, `x ${this.varObj.cf_array[2][0]}`, { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
@@ -261,9 +261,9 @@ class FeedbackScene extends Phaser.Scene {
 				this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 
 				if (this.varObj.cf_array[3][0] == -1000) {
-					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 				} else {
-					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Your result would have been better if you had selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
+					this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Your result would have been better if you had selected:', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
 
 					this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
 					this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, `x ${this.varObj.cf_array[3][0]}`, { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
