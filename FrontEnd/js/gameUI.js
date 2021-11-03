@@ -75,7 +75,7 @@ window.onload = function(){
       let maxFeedingNo = 6;
       let minFeedingNo = 0;
       // numbers of Shubs
-      let newNumber = 5; //Math.floor(Math.random() * 100);
+      let newNumber = 10; //Math.floor(Math.random() * 100);
       let oldNumber = newNumber;
       // button to start the Game
       var buttonStart;
