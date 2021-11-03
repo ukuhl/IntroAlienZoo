@@ -3,6 +3,7 @@ from datetime import time
 import pandas as pd
 import json
 import mysql.connector
+from crypt import load_key, decrypt
 
 
 database = "alienzoo"
@@ -224,8 +225,30 @@ class DataMgr():
             print(ex)
             return False
     
+    def export_decrypted_payment_ids(self, file_out="decryptedPaymentIds.csv"):
+        try:
+            data_userId = []
+            data_paymentId = []
+        
+            cur = self.db.cursor()
+            cur.execute("SELECT userId, paymentId FROM users_payout")
+            for row in cur.fetchall():
+                data_userId.append(str(row[0]))
+                data_paymentId.append(str(row[1]))
+
+            private_key = load_key("private_key.bin")
+            data_paymentId = [decrypt(pid, private_key) for pid in data_paymentId]
+
+            df = pd.DataFrame({"userId": data_userId, "paymentId": data_paymentId})        
+            df.to_csv(file_out, index=False)
+
+            return True
+        except Exception as ex:
+            print(ex)
+            return False
+
     def export_everything(self):
-        return self.export_performance() and self.export_reactionTimes() and self.export_attentionCheck() and self.export_survey()
+        return self.export_performance() and self.export_reactionTimes() and self.export_attentionCheck() and self.export_survey() and self.export_decrypted_payment_ids()
 
 if __name__ == "__main__":
     dbmgr = DataMgr()
