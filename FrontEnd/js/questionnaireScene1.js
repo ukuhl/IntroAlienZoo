@@ -51,16 +51,16 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.15, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
 		var item1 = [
-			"1. What do you think: Which plants were relevant to increase the number of Shubs in your pack?"
+			"1. What do you think: Which plants were relevant to increase the number of Shubs in your pack?\n Please select ALL that you think were relevant."
 		];
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.3, item1, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// plant 1
-		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.375, 'plant1').setScale(0.15);
+		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.425, 'plant1').setScale(0.15);
 
-		var item1Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite1.on('pointerdown', function (pointer) {
 			if (this.item1Var1Checked) {
@@ -77,9 +77,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 2
-		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.375, 'plant2').setScale(0.15);
+		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.425, 'plant2').setScale(0.15);
 
-		var item1Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite2.on('pointerdown', function (pointer) {
 			if (this.item1Var2Checked) {
@@ -96,9 +96,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 3
-		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.375, 'plant3').setScale(0.15);
+		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.425, 'plant3').setScale(0.15);
 
-		var item1Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite3.on('pointerdown', function (pointer) {
 			if (this.item1Var3Checked) {
@@ -115,9 +115,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 4
-		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.375, 'plant4').setScale(0.15);
+		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.425, 'plant4').setScale(0.15);
 
-		var item1Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite4.on('pointerdown', function (pointer) {
 			if (this.item1Var4Checked) {
@@ -134,9 +134,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 5
-		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.375, 'plant5').setScale(0.15);
+		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.425, 'plant5').setScale(0.15);
 
-		var item1Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite5.on('pointerdown', function (pointer) {
 			if (this.item1Var5Checked) {
@@ -152,9 +152,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.375, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.425, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item1Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.425, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item1Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.475, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item1Sprite6.on('pointerdown', function (pointer) {
 			if (this.item1Var6Checked) {
@@ -180,16 +180,16 @@ class QuestionnaireScene1 extends Phaser.Scene {
 
 
 		var item2 = [
-			"2. What do you think: Which plants were not relevant to increase the number of Shubs in your pack?"
+			"2. What do you think: Which plants were not relevant to increase the number of Shubs in your pack?\n Please select ALL that you think were not relevant."
 		];
 
 		// add item 1
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.5, item2, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.55, item2, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
 
 		// plant 1
-		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.575, 'plant1').setScale(0.15);
+		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.675, 'plant1').setScale(0.15);
 
-		var item2Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite1 = this.add.sprite(window.innerWidth * 0.05, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite1.on('pointerdown', function (pointer) {
 			if (this.item2Var1Checked) {
@@ -206,9 +206,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 2
-		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.575, 'plant2').setScale(0.15);
+		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.675, 'plant2').setScale(0.15);
 
-		var item2Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite2 = this.add.sprite(window.innerWidth * 0.16, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite2.on('pointerdown', function (pointer) {
 			if (this.item2Var2Checked) {
@@ -225,9 +225,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 3
-		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.575, 'plant3').setScale(0.15);
+		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.675, 'plant3').setScale(0.15);
 
-		var item2Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite3 = this.add.sprite(window.innerWidth * 0.27, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite3.on('pointerdown', function (pointer) {
 			if (this.item2Var3Checked) {
@@ -244,9 +244,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 4
-		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.575, 'plant4').setScale(0.15);
+		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.675, 'plant4').setScale(0.15);
 
-		var item2Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite4 = this.add.sprite(window.innerWidth * 0.38, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite4.on('pointerdown', function (pointer) {
 			if (this.item2Var4Checked) {
@@ -263,9 +263,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// plant 5
-		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.575, 'plant5').setScale(0.15);
+		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.675, 'plant5').setScale(0.15);
 
-		var item2Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite5 = this.add.sprite(window.innerWidth * 0.49, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite5.on('pointerdown', function (pointer) {
 			if (this.item2Var5Checked) {
@@ -282,9 +282,9 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		}.bind(this));
 
 		// Don't know
-		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.575, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
+		this.add.text(window.innerWidth * 0.60, window.innerHeight * 0.675, 'I do not know.', { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 
-		var item2Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.625, 'checkbox', 0).setScale(0.4).setInteractive();
+		var item2Sprite6 = this.add.sprite(window.innerWidth * 0.60, window.innerHeight * 0.725, 'checkbox', 0).setScale(0.4).setInteractive();
 
 		item2Sprite6.on('pointerdown', function (pointer) {
 			if (this.item2Var6Checked) {
