@@ -93,6 +93,8 @@ class DataMgr():
                 if block_id != -1:
                     if block_id not in data[user_id]["blocks"]:
                         data[user_id]["blocks"][block_id] = {"trialNr": {}, "timeFeedbackScene": -1}
+                    if block_id - 1 not in data[user_id]["blocks"]:
+                        data[user_id]["blocks"][block_id-1] = {"trialNr": {}, "timeFeedbackScene": -1}
                 if trial_id != -1:
                     if trial_id not in data[user_id]["blocks"][block_id]["trialNr"]:
                         data[user_id]["blocks"][block_id]["trialNr"][trial_id] = {"timeStableUntilFeeding": -1}
