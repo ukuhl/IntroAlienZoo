@@ -67,7 +67,7 @@ class StartScene extends Phaser.Scene {
 		var textBlock5 = [
 			"After " + this.varObj.numTrialsPerBlock + " rounds, you will get a summary of your past choices.",
 			"Also, there will be feedback on what choice would have led to a better result.",
-			"During the game, please do not resize our window or use the back button of your browser.",
+			"During the game, please do not resize our window or use the back button of your browser!",
 			"If you are ready to start, hit the start button.",
 		];
 		//}
