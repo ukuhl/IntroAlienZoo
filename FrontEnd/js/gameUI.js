@@ -80,7 +80,7 @@ window.onload = function(){
       // button to start the Game
       var buttonStart;
       var buttonContinue;
-      var btnContinueShowDelay = 5000; // Button "Continue" becomes visible after 5 seconds (= 5000ms)
+      var btnContinueShowDelay = 10000; // Button "Continue" becomes visible after 10 seconds (= 10000ms)
       // button to get feedback
       var buttonFeedback;
       // button to get feedback
