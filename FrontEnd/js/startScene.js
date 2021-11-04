@@ -35,7 +35,7 @@ class StartScene extends Phaser.Scene {
 		// set the start screen:
 
 		var textBlock1 = [
-			"Welcome to the Alien Zoo!",
+			"Welcome to the Alien Zoo! Please read the following instructions carefully.",
 			"",
 			"Your task today is to feed a pack of little aliens, the so-called Shubs:"
     ];
@@ -48,9 +48,11 @@ class StartScene extends Phaser.Scene {
 		var textBlock3 = [
 			"If you have chosen a healthy combination, your pack size will increase.",
 			"If you have chosen an unhealthy combination, your pack size will decrease.",
-			"",
-			"Your task is to find the best diet for the Shubs, increasing the pack size as much as possible."
+		];
 
+		var textBlock4 = [
+			"Your task is to find the best diet for the Shubs, increasing the pack size as much as possible.",
+			"Try your best to make your pack grow! The best players will win an extra monetary reward!",
 		];
 
 		// //if(this.varObj.api.controlGroup) {
@@ -62,13 +64,11 @@ class StartScene extends Phaser.Scene {
 		// 	];
 		//
 		// } else {
-		var textBlock4 = [
+		var textBlock5 = [
 			"After " + this.varObj.numTrialsPerBlock + " rounds, you will get a summary of your past choices.",
 			"Also, there will be feedback on what choice would have led to a better result.",
-			"",
 			"During the game, please do not resize our window or use the back button of your browser.",
 			"If you are ready to start, hit the start button.",
-
 		];
 		//}
 
@@ -88,9 +88,11 @@ class StartScene extends Phaser.Scene {
 
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, textBlock2, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.550, textBlock3, { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold italic", color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.525, textBlock3, { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold italic", color: '#000000', align: 'left', lineSpacing: 10});
 
-		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.750, textBlock4, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.625, textBlock4, { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold italic", color: '#ff0000', align: 'left', lineSpacing: 10});
+
+		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.725, textBlock5, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
 
 		// instatiate and add new stable scene with current data
 		var stableScene = undefined;
