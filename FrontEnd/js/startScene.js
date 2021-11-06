@@ -37,7 +37,7 @@ class StartScene extends Phaser.Scene {
 		var textBlock1 = [
 			"Welcome to the Alien Zoo! Please read the following instructions carefully.",
     ];
-		
+
 		var textBlock2 = [
 			"Your task today is to feed a pack of little aliens, the so-called Shubs:"
     ];
@@ -70,7 +70,7 @@ class StartScene extends Phaser.Scene {
 			"After " + this.varObj.numTrialsPerBlock + " rounds, you will get a summary of your past choices.",
 			"Also, there will be feedback on what choice would have led to a better result.",
 			"During the game, please do not resize our window or use the back button of your browser!",
-			"If you are ready to start, hit the start button.",
+			"If you are ready to start, hit the start button (will appear shortly).",
 		];
 		//}
 
@@ -97,21 +97,23 @@ class StartScene extends Phaser.Scene {
 
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.725, textBlock6, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left', lineSpacing: 10});
 
-		// instatiate and add new stable scene with current data
-		var stableScene = undefined;
-		//this.scene.add('stableScene', stableScene);
+		setTimeout(function() {
+			// instatiate and add new stable scene with current data
+			var stableScene = undefined;
+			//this.scene.add('stableScene', stableScene);
 
-		// add button to start game and switch to fullscreen
-		var buttonStart = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
-			.setInteractive()
-			.on('pointerdown', () => this.logTime())
-			.on('pointerdown', () => this.scale.startFullscreen())
-			.on('pointerdown', () => stableScene = new StableScene(this.varObj))
-			.on('pointerdown', () => this.scene.add('stableScene', stableScene))
-			.on('pointerdown', () => this.scene.start('stableScene'));
+			// add button to start game and switch to fullscreen
+			var buttonStart = this.add.image(0, 0, 'buttonFeed').setScale(0.4)
+				.setInteractive()
+				.on('pointerdown', () => this.logTime())
+				.on('pointerdown', () => this.scale.startFullscreen())
+				.on('pointerdown', () => stableScene = new StableScene(this.varObj))
+				.on('pointerdown', () => this.scene.add('stableScene', stableScene))
+				.on('pointerdown', () => this.scene.start('stableScene'));
 
-		var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#ffffff' }).setOrigin(0);
-		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.75, [buttonStart, textStart])
+			var textStart = this.add.text(-40, -15, 'Start!', { fontSize: '20px', color: '#ffffff' }).setOrigin(0);
+			var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.75, [buttonStart, textStart]);
+		}.bind(this), this.varObj.btnStartShowDelay);
 
 	}
 

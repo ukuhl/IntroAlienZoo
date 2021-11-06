@@ -81,7 +81,9 @@ window.onload = function(){
       var buttonStart;
       var buttonContinue;
       var btnContinueShowDelay = 10000; // Button "Continue" becomes visible after 10 seconds (= 10000ms)
+      var btnStartShowDelay = 20000; // Button "Start!" becomes visible after 20 seconds (= 20000ms)
       var btnOkayShowDelay = 5000; // Button "Okay" becomes visible after 5 seconds (= 5000ms)
+
       // button to get feedback
       var buttonFeedback;
       // button to get feedback
@@ -110,6 +112,7 @@ window.onload = function(){
         "plants": plants,
         "btnContinueShowDelay": btnContinueShowDelay,
         "btnOkayShowDelay": btnOkayShowDelay,
+        "btnStartShowDelay": btnStartShowDelay,
         "trialCount": trialCount,
         "blockCount": blockCount,
         "maxBlockCount": maxBlockCount,
