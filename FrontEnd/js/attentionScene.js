@@ -97,10 +97,67 @@ class AttentionScene extends Phaser.Scene {
     else {
       this.logAnswer();
       this.logTime();
-      var progressScene = new ProgressScene(this.varObj);
-      this.scene.remove('progressScene', progressScene);
-      this.scene.add('progressScene', progressScene);
-      this.scene.start('progressScene');
+
+			////////
+			if(this.varObj.oldNumber==this.inputText.text){
+
+				var infoTxt = [
+					'Your answer was correct! Good job!',
+					'',
+					'Please keep paying close attention to',
+					'ALL aspects of the game at any time.',
+					'',
+					'If your responses fail to meet our quality control standards,',
+					'your HIT is likely to be rejected!',
+				]
+
+			} else {
+
+				var infoTxt = [
+					'Your answer was NOT correct! Oh no!',
+					'',
+					'Please keep paying close attention to',
+					'ALL aspects of the game at any time.',
+					'',
+					'If your responses fail to meet our quality control standards,',
+					'your HIT is likely to be rejected!',
+				]
+			}
+
+			var infoDialogBG = this.add.rectangle(0, 0, window.innerWidth, window.innerHeight, 0xFFFFFF, 0.5).setOrigin(0);
+			// dialog and text
+			var infoDialog = this.add.rectangle((window.innerWidth * 0.5)-300, (window.innerHeight * 0.5)-260, 800, 400, 0xFFFFFF, 1).setOrigin(0);
+			infoDialog.setStrokeStyle(1, 0x1000000, 1);
+
+			var infoDialogTxt = this.add.text((window.innerWidth * 0.5)-220, (window.innerHeight * 0.5)-200, infoTxt, { fontFamily: "Arial", fontSize: '25px', color: '#000000', align: 'center' }).setOrigin(0);
+
+			setTimeout(function() {
+				var buttonOK = this.add.rectangle((window.innerWidth * 0.5)+50, (window.innerHeight * 0.5)+25, 100, 50, 0x1a65ac, 1).setOrigin(0);
+				buttonOK.setStrokeStyle(1, 0x1000000, 1);
+				var buttontextOK = this.add.text((window.innerWidth * 0.5)+80, (window.innerHeight * 0.5)+35, 'Ok', { fontFamily: "Arial", fontSize: '25px', color: '#FFFFFF' }).setOrigin(0);
+
+				var progressScene = new ProgressScene(this.varObj);
+
+				buttonOK
+					.setInteractive()
+					.on('pointerdown', () => { infoDialogBG.destroy(); })
+					.on('pointerdown', () => { infoDialog.destroy(); })
+					.on('pointerdown', () => { infoDialogTxt.destroy(); })
+					.on('pointerdown', () => { buttonOK.destroy(); })
+					.on('pointerdown', () => { buttontextOK.destroy(); })
+					.on('pointerdown', () => { this.scene.remove('progressScene', progressScene); })
+					.on('pointerdown', () => { this.scene.add('progressScene', progressScene); })
+					.on('pointerdown', () => { this.scene.start('progressScene'); });
+
+			}.bind(this), this.varObj.btnOkayShowDelay);
+
+			///////
+      //var progressScene = new ProgressScene(this.varObj);
+      //this.scene.remove('progressScene', progressScene);
+      //this.scene.add('progressScene', progressScene);
+      //this.scene.start('progressScene');
+
+
     }
   }
 
