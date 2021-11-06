@@ -43,7 +43,7 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		this.children.removeAll();
 
 		var qIntro1 = [
-			'To complete the study, please answer the following 9 questions.',
+			'To complete the study, please answer the following 10 questions.',
 		]
 
 		var qIntro2 = [
@@ -236,7 +236,8 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		// 	];
 		// } else {
 		var item7 = [
-			"7. I found inconsistencies in the feedback on what choice would have led to a better result."
+			"7. Are you still paying attention? If so, please select 'I prefer not to answer' for this question."
+			//"7. I found inconsistencies in the feedback on what choice would have led to a better result."
 		];
 		// }
 
@@ -411,7 +412,8 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		// 	];
 		// } else {
 		var item8 = [
-			"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
+			"8. I found inconsistencies in the feedback on what choice would have led to a better result."
+			//"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
 		];
 		// }
 

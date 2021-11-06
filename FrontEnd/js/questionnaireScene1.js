@@ -38,7 +38,7 @@ class QuestionnaireScene1 extends Phaser.Scene {
 		var qIntro1 = [
 			'You have completed the Alien Zoo game!',
 			'',
-			'To complete the study, please answer the following 9 questions.',
+			'To complete the study, please answer the following 10 questions.',
 		]
 
 		var qIntro2 = [
