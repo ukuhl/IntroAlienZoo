@@ -6,6 +6,7 @@ import sklearn
 def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
     import pandas as pd
     import random
+    random.seed(42)
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error, r2_score
@@ -29,6 +30,8 @@ def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
     print(X.shape)
     print(y.shape)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+    # Save dataset
+    np.savez("dataset.npz", X_train=X_train, X_test=X_test, y_train=y_train, y_test=y_test)
 
     # Fit model
     model = DecisionTreeRegressor(max_depth=4, random_state=42)
