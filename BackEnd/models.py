@@ -6,6 +6,7 @@ import sklearn
 def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
     import pandas as pd
     import random
+    random.seed(42)
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error, r2_score
