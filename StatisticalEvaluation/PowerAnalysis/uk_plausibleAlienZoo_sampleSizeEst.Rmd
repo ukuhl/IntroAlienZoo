@@ -1,0 +1,1099 @@
+---
+title: "Plausible Alien Zoo: Esimation of sample size (October 2021)"
+output: 
+  pdf_document:
+    toc: TRUE
+    toc_depth: 5
+bibliography: PlausibleAlienZoo.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r results='asis', echo=FALSE, include=FALSE,}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+#install.packages("rstudioapi")
+#install.packages("unikn")
+#install.packages("tidyverse")
+#install.packages("here")
+#install.packages("plyr")
+#install.packages("effsize")
+
+library(rstudioapi)
+library(ggplot2)
+library(ggrepel)
+library(plyr)
+library(dplyr)
+library(unikn)
+library(ggpubr)
+library(data.table)
+library(tidyverse)
+library(scales)
+library(effsize)
+
+# for the lme approach:
+#install.packages("emmeans") # estimated marginal means and p values
+#install.packages("sjstats") # partial eta squared and cohens f effect size
+#install.packages("lme4") # estimated the multi level model (random intercept for participants)
+#install.packages("lmerTest") # more comprehensive anova output with p values
+#install.packages("MuMIn") # R^2 for the model
+library("emmeans")
+library("sjstats")
+library("lme4")
+library("lmerTest")
+library("MuMIn")
+
+# turn off scientific notation for exact values
+options(scipen = 999)
+
+# Barrier-free color palette
+# Source: Okabe & Ito (2008): Color Universal Design (CUD):
+#         Fig. 16 of <https://jfly.uni-koeln.de/color/>:
+
+# (a) Vector of colors (as RGB values):
+Okabe_Ito_palette <- c(rgb(  0,   0,   0, maxColorValue = 255),  # black
+                rgb(230, 159,   0, maxColorValue = 255),  # orange
+                rgb( 86, 180, 233, maxColorValue = 255),  # skyblue
+                rgb(  0, 158, 115, maxColorValue = 255),  # green
+                rgb(240, 228,  66, maxColorValue = 255),  # yellow
+                rgb(  0, 114, 178, maxColorValue = 255),  # blue
+                rgb(213,  94,   0, maxColorValue = 255),  # vermillion
+                rgb(204, 121, 167, maxColorValue = 255)   # purple
+)
+
+# (b) Vector of color names:
+o_i_names <- c("black", "orange", "skyblue", "green", "yellow", "blue", "vermillion", "purple")
+
+# (c) Use newpal() to combine colors and names:
+pal_okabe_ito <- newpal(col = Okabe_Ito_palette,
+                        names = o_i_names)
+
+Ccol=Okabe_Ito_palette[3]
+Pcol=Okabe_Ito_palette[4]
+
+# palette for likert scale data, inspired by yellow and vermillion values from Okabe_Ito
+likert_Okabe_Ito_palette <- c(rgb(213,  94,   0, maxColorValue = 255),  # vermillion (strongly disagree)
+                rgb(234, 175, 128, maxColorValue = 255),  # middle yellow red (disagree)
+                rgb(255, 255, 255, maxColorValue = 255),  # white (neutral)
+                rgb(249, 245, 179, maxColorValue = 255),  # medium champagne (agree)
+                rgb(240, 228,  66, maxColorValue = 255)   # yellow (strongly agree)
+)
+
+# set an empty string to save all information
+matchingRes=""
+matchingRes="Comparison,ShapiroPval,TestUsed,TestPval,TestEffSize"
+
+# Set working directory to source file location
+sourceLoc=here::set_here()
+setwd(dirname(sourceLoc))
+
+# source adapted wilcoxon test (easy computation of effect size)
+source("../uk_wilcox.test.R")
+
+```
+
+\newpage
+
+# Introduction
+
+This is an a priori computation of required sample size for the plausible Alien Zoo study run on Amazon mechanical turk in October-November 2021. In this study, naive users were asked to interact with the Alien Zoo paradigm to understand relationships in an unknown dataset, what has been termed “learning to discover” by [@adadi_peeking_2018]. In regular intervals, participants receive counterfactual explanations (CFEs) regarding past choices. These are either "closest" CFEs that fulfill the "smallest feature change" condition [@wachter_counterfactual_2017], or "plausible" CFEs that are smallest feature changes and also prototypical instances of the data [@farkas_convex_2020].
+
+Prior to the "full" data acquisition, we performed 2/3 pilots to evaluate the efficacy of our design.
+
+With the final design from the third pilot, we were happy with the outcome: only 2 of 10 users looked like they did not really perform the task ("straighlining" throughout the game without improving).
+
+With this data, let's estimate how many users we would need for a sufficiently powered study. We will focus on how many users are necessary for the linear mixed effects model analysis of ShubNo and Time (H1.1 and H1.2).
+
+<!-- ## Check covariates across groups -->
+
+<!-- Additionally to assessing performance, we also acquire age and gender information of participants. -->
+<!-- How do our groups look like? are they comparable? -->
+
+<!-- ```{r echo=FALSE, warning=FALSE,fig.height = 4, fig.width = 3.5} -->
+
+<!-- sourceLoc=here::set_here() -->
+<!-- setwd(dirname(sourceLoc)) -->
+
+<!-- # Where's the data -->
+<!-- demo_source = list.files(path = "../BackEnd/userData", pattern="demographics_PAZ_P3.csv",full.names=TRUE) -->
+
+<!-- # load to dframes -->
+<!-- df_demo=read.csv(demo_source,header=TRUE) -->
+<!-- # remove duplicate lines (buggy logging?) -->
+<!-- df_demo=df_demo[!duplicated(df_demo),] -->
+
+<!-- df_demo$group=as.factor(df_demo$group) -->
+<!-- df_demo$group=recode_factor(df_demo$group,"1"="C","0"="P") -->
+
+<!-- # drop fields 'X' -->
+<!-- # drop fields 'X' if present (was problem with simulated data) -->
+<!-- if("X" %in% colnames(df_demo)){ -->
+<!-- df_demo=subset(df_demo,select=-c(X)) -->
+<!-- } -->
+
+<!-- print(colnames(df_demo)) -->
+
+<!-- # get only age info -->
+<!-- df_demo_age = df_demo[df_demo$item=='age',] -->
+<!-- df_demo_gender = df_demo[df_demo$item=='gender',] -->
+
+<!-- # summarize to get overview values of frequencies and percentages -->
+<!-- df_demo_age_summary=dplyr::summarise(group_by(df_demo_age, group, item, responseNo), -->
+<!--           SumChecks=sum(checked), -->
+<!--           PercUsersChecked=100*(sum(checked)/length(unique(userId)))) -->
+
+<!-- # summarize to get overview values of frequencies and percentages -->
+<!-- df_demo_gender_summary=dplyr::summarise(group_by(df_demo_gender, group, item, responseNo), -->
+<!--           SumChecks=sum(checked), -->
+<!--           PercUsersChecked=100*(sum(checked)/length(unique(userId)))) -->
+
+<!-- # convert to factor for proper plotting: -->
+<!-- df_demo_age_summary$responseNo=as.factor(df_demo_age_summary$responseNo) -->
+<!-- df_demo_gender_summary$responseNo=as.factor(df_demo_gender_summary$responseNo) -->
+
+<!-- # AGE: display frequency as raw counts -->
+<!-- CovAge_FreqUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fill = group)) +  -->
+<!--   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+ -->
+<!--   labs(title="Age of participants (freq. counts)",x="", y = "Frequency of answer")+ -->
+<!--   theme_bw(base_size = 10)+ -->
+<!--   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+ -->
+<!--   scale_x_discrete(breaks=1:7, labels=c("18-24y","25-34y","35-44y","45-54y","55-64y","65 and\nover","Prefer not\nto answer"))+ -->
+<!--   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95)) -->
+
+<!-- # AGE: display frequency as percentage -->
+<!-- CovAge_PercUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fill = group)) +  -->
+<!--   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+ -->
+<!--   labs(title="Age of participants (% of users)",x="", y = "% of users")+ -->
+<!--   theme_bw(base_size = 10)+ -->
+<!--   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+ -->
+<!--   scale_x_discrete(breaks=1:7, labels=c("18-24y","25-34y","35-44y","45-54y","55-64y","65 and\nover","Prefer not\nto answer"))+ -->
+<!--   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95)) -->
+
+<!-- # put plots together -->
+<!-- figure_CovAgeRaw <- ggarrange(CovAge_FreqUserResponses,CovAge_PercUserResponses, -->
+<!--                     ncol = 1, nrow = 2, align = "v") -->
+<!-- # save -->
+<!-- ggsave("../Figures/CovAgeRaw_distribution_PAZ_P3.pdf",width = 9, height = 7,) -->
+
+<!-- # show  -->
+<!-- figure_CovAgeRaw -->
+
+<!-- # GENDER: display frequency as raw counts -->
+<!-- CovGender_FreqUserResponses = ggplot(data=df_demo_gender_summary, aes(x=responseNo,fill = group)) +  -->
+<!--   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+ -->
+<!--   labs(title="Gender of participants (freq. counts)",x="", y = "Frequency of answer")+ -->
+<!--   theme_bw(base_size = 10)+ -->
+<!--   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+ -->
+<!--   scale_x_discrete(breaks=1:7, labels=c("Female","Male","Transgender\nfemale","Transgender\nmale","Non-binary/\n gender non-\nconforming","Not listed","Prefer not\nto answer"))+ -->
+<!--   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95)) -->
+
+<!-- # GENDER: display frequency as percentage -->
+<!-- CovGender_PercUserResponses = ggplot(data=df_demo_gender_summary, aes(x=responseNo,fill = group)) +  -->
+<!--   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+ -->
+<!--   labs(title="Gender of participants (% of users)",x="", y = "% of users")+ -->
+<!--   theme_bw(base_size = 10)+ -->
+<!--   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+ -->
+<!--   scale_x_discrete(breaks=1:7, labels=c("Female","Male","Transgender\nfemale","Transgender\nmale","Non-binary/\n gender non-\nconforming","Not listed","Prefer not\nto answer"))+ -->
+<!--   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95)) -->
+
+<!-- # put plots together  -->
+<!-- figure_CovGenderRaw <- ggarrange(CovGender_FreqUserResponses,CovGender_PercUserResponses, -->
+<!--                     ncol = 1, nrow = 2, align = "v") -->
+<!-- # save -->
+<!-- ggsave("../Figures/CovGenderRaw_distribution_PAZ_P3.pdf",width = 9, height = 7,) -->
+
+<!-- # show  -->
+<!-- figure_CovGenderRaw -->
+<!-- ``` -->
+
+<!-- Let's run a statistical comparison between our two groups. For age, we have ordinal data (in age bands), so we will use a non-parametric statistical test for ordinal data, that's the Wilcoxon–Mann–Whitney U test. -->
+
+<!-- For gender, we need to check if data is normally distributed. If so, use a ttest, if not, we will also use the non-parametric Wilcoxon–Mann–Whitney U. -->
+
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+
+<!-- # statistical differences between groups? -->
+<!-- # count users who 'prefered not to answer' -->
+<!-- N_noAnswer_age=nrow(df_demo_age[df_demo_age$responseNo==7 & df_demo_age$checked==1,]) -->
+<!-- N_noAnswer_gender=nrow(df_demo_gender[df_demo_gender$responseNo==7 & df_demo_gender$checked==1,]) -->
+<!-- # remove 'prefer not to answer' entries -->
+<!-- df_demo_age = df_demo_age[!df_demo_age$responseNo==7,] -->
+<!-- df_demo_age_responses=df_demo_age[!df_demo_age$checked==0,] -->
+
+<!-- df_demo_gender = df_demo_gender[!df_demo_gender$responseNo==7,] -->
+<!-- df_demo_gender_responses=df_demo_gender[!df_demo_gender$checked==0,] -->
+
+<!-- # Age first:  -->
+
+<!-- # check sample sizes, make sure they deviate not too much: -->
+<!-- N_P_age=sum(df_demo_age_responses$group=='P') -->
+<!-- N_C_age=sum(df_demo_age_responses$group=='C') -->
+
+<!-- aget="Wilcox" -->
+<!-- agetest=uk_wilcox.test(df_demo_age_responses$responseNo[df_demo_age_responses$group=="P"],df_demo_age_responses$responseNo[df_demo_age_responses$group=="C"],paired=FALSE,exact=FALSE) -->
+<!-- ageeffsize=agetest$z_val/(sqrt(nrow(df_demo_age_responses))) -->
+
+<!-- matchingRes=paste(matchingRes,paste("\n","AgeRaw",sep=""),"",aget,agetest$p.value,ageeffsize,sep = ",") -->
+
+<!-- # Gender second:  -->
+
+<!-- # check sample sizes, make sure they deviate not too much: -->
+<!-- N_P_gender=sum(df_demo_gender_responses$group=='P') -->
+<!-- N_C_gender=sum(df_demo_gender_responses$group=='C') -->
+
+<!-- # check for significant differences - "irrelevant plans" judgements: -->
+<!-- # check if sample is normally distributed using shapiro test -->
+<!-- shapiro=shapiro.test(df_demo_gender_responses$responseNo) # if p-value is lower than 0.05, you can conclude that the sample deviates from normality -->
+<!-- if(shapiro$p.value > 0.05){ -->
+<!--   # if it's normal: t-test -->
+<!--   gent="TTest" -->
+<!--   gentest=t.test(df_demo_gender_responses$responseNo ~ df_demo_gender_responses$group,alternative="two.sided") -->
+<!--   geneffsize=cohen.d(df_demo_gender_responses$responseNo ~ df_demo_gender_responses$group) -->
+<!-- } else { -->
+<!--   gent="Wilcox" -->
+<!--   gentest=uk_wilcox.test(df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="P"],df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="C"],paired=FALSE,exact=FALSE) -->
+<!--   geneffsize=gentest$z_val/(sqrt(nrow(df_demo_gender_responses))) -->
+<!-- } -->
+
+<!-- matchingRes=paste(matchingRes,paste("\n","GenderRaw",sep=""),shapiro$p.value,gent,gentest$p.value,geneffsize,sep = ",") -->
+
+<!-- ``` -->
+
+<!-- The analysis showed for *Age*: -->
+
+<!-- * We have age information for `r N_P_age` users in the plausible and `r N_C_age` users in the closest group (`r N_noAnswer_age` user(s) preferred not to disclose age information). -->
+<!-- * Is there a significant difference in terms of age between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r aget` test. This showed: U=`r agetest$statistic `, p=`r agetest$p.value `, r = `r ageeffsize ` -->
+
+<!-- The analysis showed for *Gender*: -->
+
+<!-- * We have age information for `r N_P_gender` users in the plausible and `r N_C_gender` users in the closest group (`r N_noAnswer_gender` user(s) preferred not to give gender information). -->
+<!-- * Is there a significant difference in terms of age between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r gent` test. This showed -->
+<!--   + for ttest: t(`r gentest$parameter `)=`r gentest$statistic `, p=`r gentest$p.value `, cohen's d = `r geneffsize ` -->
+<!--   + for wilcoxon test: U=`r gentest$statistic `, p=`r gentest$p.value `, r = `r geneffsize ` -->
+
+## Hypotheses
+
+The main hypothesis is the following:
+
+*H1) Plausible CFEs will be more helpful to users tasked to discover unknown relationships in data than closest ones. This should affect objective as well as subjective understandability.*
+
+That means, we expect users in the plausible condition to 
+
+H1.1) perform better over time in terms of number of Shubs generated, *AND*
+
+H1.2) will become quicker in the final blocks, because choosing the right plants will become more automatic, *AND*
+
+## Descriptive stats
+
+Let's first just look at the data we have.
+
+```{r echo=FALSE, warning=FALSE}
+
+# Set working directory to source file location
+sourceLoc=here::set_here()
+setwd(dirname(sourceLoc))
+
+# Where's the data
+perf_source = list.files(path = "../../BackEnd/userData", pattern="performance_PAZ_P3.csv",full.names=TRUE)
+rt_source = list.files(path = "../../BackEnd/userData", pattern="reactionTime_PAZ_P3.csv",full.names=TRUE)
+survey_source = list.files(path = "../../BackEnd/userData", pattern="survey_PAZ_P3.csv",full.names=TRUE)
+attention_source = list.files(path = "../../BackEnd/userData", pattern="attentionCheck_PAZ_P3.csv",full.names=TRUE)
+
+# load to dframes
+df_perf=read.csv(perf_source,header=TRUE)
+df_rt=read.csv(rt_source,header=TRUE)
+df_survey=read.csv(survey_source,header=TRUE)
+df_attention=read.csv(attention_source,header=TRUE)
+
+# remove duplicated lines (double-logging happens accasionally)
+df_perf=df_perf[!duplicated(df_perf), ]
+df_rt=df_rt[!duplicated(df_rt), ]
+df_survey=df_survey[!duplicated(df_survey), ]
+df_attention=df_attention[!duplicated(df_attention), ]
+  
+# truncate user IDs after 5 characters for better visualization
+df_perf$userId=substr(df_perf$userId,1,5)
+df_rt$userId=substr(df_rt$userId,1,5)
+df_survey$userId=substr(df_survey$userId,1,5)
+df_attention$userId=substr(df_attention$userId,1,5)
+
+# group as factor
+df_perf$group=as.factor(df_perf$group)
+df_perf$group=recode_factor(df_perf$group,"1"="C","0"="P")
+df_rt$group=as.factor(df_rt$group)
+df_rt$group=recode_factor(df_rt$group,"1"="C","0"="P")
+df_survey$group=as.factor(df_survey$group)
+df_survey$group=recode_factor(df_survey$group,"1"="C","0"="P")
+df_attention$group=as.factor(df_attention$group)
+df_attention$group=recode_factor(df_attention$group,"1"="C","0"="P")
+
+# drop fields 'X' if present (was problem with simulated data)
+if("X" %in% colnames(df_perf)){
+df_perf=subset(df_perf,select=-c(X))
+df_rt=subset(df_rt,select=-c(X))
+df_survey=subset(df_survey,select=-c(X))
+df_attention=subset(df_attention,select=-c(X))
+}
+
+# correct item number in survey df if zero based
+if(0 %in% df_survey$itemNo){
+df_survey$itemNo=df_survey$itemNo+1
+}
+
+print(colnames(df_perf))
+
+# sanity check: Number of users in each df the same?
+# make df with user numbers: user ID 'XXXX' appears in how many dfs?
+# the value of 4 would be desireable: all IDs represented in all 4 dfs
+userNo_raw <- data.frame(table(c(unique(df_perf$userId), unique(df_rt$userId), unique(df_survey$userId), unique(df_attention$userId))))
+names(userNo_raw) <- c("Names", "Matches")
+
+```
+
+How many users do we have in our performance df? `r length(unique(df_perf$userId))`
+
+Do we have an equal number of users in each dataframe? `r length(unique(userNo_raw$Matches))==1`
+
+If not, it is most likely due to participants who aborted the game prematurely.
+
+AFTER CHECK, REMOVE USERS THAT DID NOT APPEAR IN ALL DFs
+(i.e., who did not finish the study, OR had logging issues)
+
+```{r echo=FALSE, warning=FALSE}
+# remove participants how did not finish all parts (i.e., not being part of all DFs)
+df_perf=df_perf[!df_perf$userId %in% userNo_raw$Names[!userNo_raw$Matches==4],]
+df_rt=df_rt[!df_rt$userId %in% userNo_raw$Names[!userNo_raw$Matches==4],]
+df_survey=df_survey[!df_survey$userId %in% userNo_raw$Names[!userNo_raw$Matches==4],]
+df_attention=df_attention[!df_attention$userId %in% userNo_raw$Names[!userNo_raw$Matches==4],]
+
+# sort according to ID and trial:
+df_perf=df_perf[order(df_perf$userId, df_perf$trialNo),]
+df_rt=df_rt[order(df_rt$userId, df_rt$TrialNr),]
+df_survey=df_survey[order(df_survey$userId, df_survey$itemNo),]
+df_attention=df_attention[order(df_attention$userId, df_attention$trialNo),]
+
+# design specs to make some things easier:
+numTrials=max(df_perf$trialNo)
+numAttentionTrials=2
+numSurveyItems=max(df_survey$itemNo)
+
+# number of trials per userId:
+df_perf_trialsPerUser=aggregate(trialNo ~ userId, data = df_perf, FUN = function(x){NROW(x)})
+df_rt_trialsPerUser=aggregate(TrialNr ~ userId, data = df_rt, FUN = function(x){NROW(x)})
+
+df_survey_checkedItemsPerUser=aggregate(checked ~ userId, data = df_survey, FUN = function(x){sum(x==1)})
+
+df_attention_trialsPerUser=aggregate(trialNo ~ userId, data = df_attention, FUN = function(x){NROW(x)})
+
+# collect "odd" userIDs:
+odd_userIDs=unique(c(df_perf_trialsPerUser$userId[!df_perf_trialsPerUser$trialNo==numTrials],
+  df_rt_trialsPerUser$userId[!df_rt_trialsPerUser$TrialNr==numTrials],
+  df_survey_checkedItemsPerUser$userId[df_survey_checkedItemsPerUser$checked<numSurveyItems],
+  df_attention_trialsPerUser$userId[!df_attention_trialsPerUser$trialNo==numAttentionTrials]))
+
+# make factors 
+df_rt$userId <- as.factor(df_rt$userId)
+df_rt$group <- as.factor(df_rt$group)
+
+```
+
+How many users do we have in our performance df after rough cleaning? `r length(unique(df_perf$userId))`
+How many users do we have in our reaction time df after rough cleaning? `r length(unique(df_rt$userId))`
+How many users do we have in our attention df after rough cleaning? `r length(unique(df_attention$userId))`
+How many users do we have in our survey df after rough cleaning? `r length(unique(df_survey$userId))`
+
+Do we have further odd userIDs that need manual checking? `r odd_userIDs`
+IF SO, DO FURTHER MANUAL CHECKS!
+
+<!-- ```{r echo=FALSE, warning=FALSE} -->
+<!-- # Manual checks showed:  -->
+<!-- ## 50575 does not have full RT data - REMOVE DUE TO LOGGING ISSUES -->
+
+<!-- # remove 50575 from all dfs: -->
+<!-- df_perf=df_perf[!df_perf$userId=="50575",] -->
+<!-- df_rt=df_rt[!df_rt$userId=="50575",] -->
+<!-- df_survey=df_survey[!df_survey$userId=="50575",] -->
+<!-- df_attention=df_attention[!df_attention$userId=="50575",] -->
+<!-- df_demo=df_demo[!df_demo$userId=="50575",] -->
+
+<!-- ``` -->
+
+General infos: 
+
+* At this point, we have `r length(unique(df_perf$userId))` participants. Of those, 
+
+* `r length(unique(df_perf$userId[df_perf$group=="C"]))` participants were in the closest condition and 
+
+* `r length(unique(df_perf$userId[df_perf$group=="P"]))` participants in the plausible condition.
+
+## Quality criteria
+
+### Identify "speeders"
+
+Speeders are people clicking through the study way too quickly (i.e. only a few seconds).
+
+Aim: identify IDs being faster than specified values (variable per game part).
+This part will tag users that needed less than 2000ms to reach a feeding decision (suspiciously quick) in 4 or more trials.
+
+
+```{r echo=FALSE,, fig.height = 7, fig.width = 7, fig.align = "center",fig.height = 4, fig.width = 6}
+
+# define min times for individual trial types (in ms)
+min_timeAgreementScene= 1 #1 # 1 second only? rationale: people agree really quickly, accept "speeding" here
+min_timeStartScene=20000 # 20000=20s is current delay before button appears
+min_timeStableUntilFeeding=2000 #2000ms = 2s ?
+min_timeFeedbackScene=10000 # 10000=10s is current delay before button appears
+
+# take a look: plot reaction times per participant, per trial type
+# AgreementScene
+pRTagreement <- ggplot(unique(df_rt[,c('userId','timeAgreementScene','group')]), aes(x=timeAgreementScene, y=0,label=userId,colour = factor(group)))+ 
+  geom_point(alpha = 0.5)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  geom_vline(xintercept = min_timeAgreementScene,linetype="dotted", 
+                color = "red")+
+  geom_text(aes(min_timeAgreementScene,0,label = min_timeAgreementScene, hjust = -0.1,vjust = -1),color = "red")+
+  geom_label_repel(data = . %>% mutate(lab = ifelse(timeAgreementScene < 
+    min_timeAgreementScene, userId, "")),
+                  aes(label = lab), 
+                  box.padding = 1,
+                  show.legend = FALSE,max.overlaps = Inf)+
+  labs(title="Time spent on agreement scene",x="Time (ms)", y = "")+
+  theme_bw()+
+  theme(axis.ticks.y=element_blank(),axis.text.y=element_blank())
+
+# StartScene (i.e., instructions)
+pRTstart <- ggplot(unique(df_rt[,c('userId','timeStartScene','group')]), aes(x=timeStartScene, y=0,label=userId,colour = factor(group)))+ 
+  geom_point(alpha = 0.5)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  geom_vline(xintercept = min_timeStartScene,linetype="dotted", 
+                color = "red")+
+  geom_text(aes(min_timeStartScene,0,label = min_timeStartScene, hjust = -0.1,vjust = -1),color = "red")+
+  geom_label_repel(data = . %>% mutate(lab = ifelse(timeStartScene < 
+    min_timeStartScene, userId, "")),
+                  aes(label = lab), 
+                  box.padding = 1,
+                  show.legend = FALSE,max.overlaps = Inf)+
+  labs(title="Time spent on start (instruction) scene",x="Time (ms)", y = "")+
+  theme_bw()+
+  theme(axis.ticks.y=element_blank(),axis.text.y=element_blank())
+
+# Time needed until feeding
+pRTuntilFeeding <- ggplot(df_rt[,c('userId','timeStableUntilFeeding','group','TrialNr')], aes(x=TrialNr, y=timeStableUntilFeeding,group=userId,label=userId,colour = factor(group)))+ 
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  geom_hline(yintercept = min_timeStableUntilFeeding,linetype="dotted", 
+                color = "red")+
+  geom_text(aes(0.3,min_timeStableUntilFeeding,label = min_timeStableUntilFeeding, vjust = -1),color = "red")+
+  geom_label_repel(data = . %>% mutate(lab = ifelse(timeStableUntilFeeding < min_timeStableUntilFeeding,userId, "")),
+                  aes(label = lab), 
+                  box.padding = 1,
+                  show.legend = FALSE,max.overlaps = Inf) + #this removes the 'a' from the legend
+  labs(title="Time needed to reach feeding decision",x="Trial", y = "Time (ms)")+
+  theme_bw()
+
+# time spent on feedback scenes
+pRTfeedback <- ggplot(unique(df_rt[,c('userId','timeFeedbackScene','group','BlockNr')]), aes(x=BlockNr, y=timeFeedbackScene,group=userId,label=userId,colour = factor(group)))+ 
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  geom_hline(yintercept = min_timeFeedbackScene,linetype="dotted", 
+                color = "red")+
+  geom_text(aes(0.7,min_timeFeedbackScene,label = min_timeFeedbackScene, vjust = -1),color = "red")+
+  geom_label_repel(data = . %>% mutate(lab = ifelse(timeFeedbackScene < min_timeFeedbackScene,as.character(userId), "")),
+                  aes(label = lab), 
+                  box.padding = 1,
+                  show.legend = FALSE,max.overlaps = Inf) + #this removes the 'a' from the legend
+  labs(title="Time needed to study feedback",x="Block", y = "Time (ms)")+
+  theme_bw()
+
+# put plots together, v1
+figure_RTquality_Agree_Start <- ggarrange(pRTagreement,pRTstart,
+                    ncol = 1, nrow = 2, align = "v")
+# save
+ggsave("../Figures/DatQual_RTquality_Agree_Start_PAZ_P3.pdf",width = 9, height = 7,)
+
+# put plots together, v2
+figure_RTquality_Feeding_Feedback <- ggarrange(pRTuntilFeeding, pRTfeedback,
+                    ncol = 1, nrow = 2, align = "v")
+# save 
+ggsave("../Figures/DatQual_RTquality_Feeding_Feedback_PAZ_P3.pdf",width = 9, height = 7,)
+
+# display figure
+print("Display detailed RT data for different trials:")
+figure_RTquality_Agree_Start
+figure_RTquality_Feeding_Feedback
+
+# get IDs of "speeders" per trialtype
+speederAgreement_IDs=as.character(unique(df_rt$userId[df_rt$timeAgreementScene < min_timeAgreementScene]))
+speederStart_IDs=as.character(unique(df_rt$userId[df_rt$timeStartScene < min_timeStartScene]))
+
+speederFeeding_IDs=as.character(df_rt$userId[df_rt$timeStableUntilFeeding < min_timeStableUntilFeeding])
+# duplicated once (i.e., happened in 2 trials at least):
+speederFeeding_IDs=speederFeeding_IDs[duplicated(speederFeeding_IDs)]
+# duplicated again (i.e., happened in 3 trials at least):
+speederFeeding_IDs=speederFeeding_IDs[duplicated(speederFeeding_IDs)]
+# duplicated again (i.e., happened in 4 trials at least):
+speederFeeding_IDs=unique(speederFeeding_IDs[duplicated(speederFeeding_IDs)])
+
+speederFeedback_IDs=as.character(unique(df_rt$userId[df_rt$timeFeedbackScene < min_timeFeedbackScene]))
+
+# get all unique IDs of "speeders"
+speeder_IDs=as.character(unique(c(speederAgreement_IDs,speederStart_IDs,speederFeeding_IDs,speederFeedback_IDs)))
+
+# look at performance data of speeders:
+# df_perf[df_perf$userId %in% speeder_IDs,]
+
+```
+
+### Identify participants failing the two attention checks
+
+We include 2 attention checks by asking participants to indicate current pack size after trials 5 and 11.
+
+Aim: Identify IDs of users getting either one or both checks wrong. 
+
+```{r echo=FALSE}
+
+# identify correct and incorrect replies
+df_attention$correctReply = df_attention$userInput == df_attention$shubNo
+
+# obtain IDs of participants that got 1 wrong
+attentionFailOne_IDs=as.character(unique(df_attention$userId[!df_attention$correctReply]))
+
+# obtain IDs of participants that got both wrong
+attentionFailBoth_IDs=as.character(df_attention$userId[!df_attention$correctReply][duplicated(df_attention$userId[!df_attention$correctReply])])
+
+# look at performance data of non-attentive users:
+# df_perf[df_perf$userId %in% attentionFailBoth_IDs,]
+
+# Second attention check: did users detect the "red hering" question (item 7); also consider removing those who did not!
+# set to data table
+dt_survey=setDT(df_survey,key=c("userId"))
+attentionFailSurvey = dt_survey[ checked == 1 & itemNo == 7 & !responseNo==6 ]
+attentionFailSurvey_IDs=attentionFailSurvey$userId
+
+```
+
+### Identify "straight-liners" in game part
+
+Identify users who always give the same answer in the game part (over individual blocks, and over all blocks) DESPITE not increasing their pack size.
+
+Aim: identify IDs of users "straight-lining" in at least two blocks, while packsize did not change (i.e., who were "immune to feedback").
+
+```{r echo=FALSE}
+
+# set to data table
+dt_perf=setDT(df_perf,key=c("userId", "blockNo"))
+
+# collect info on mismatched values across blocks
+# mismatch = TRUE is good, meaning there is variation in input data
+straightlineGame_data=merge(merge(merge(merge(merge(
+  dt_perf[,list(mismatchP1=length(unique(plant1))>1),keyby=.(userId,blockNo)],
+  dt_perf[,list(mismatchP2=length(unique(plant2))>1),keyby=.(userId,blockNo)],by=c("userId", "blockNo")),
+  dt_perf[,list(mismatchP3=length(unique(plant3))>1),keyby=.(userId,blockNo)],by=c("userId", "blockNo")),
+  dt_perf[,list(mismatchP4=length(unique(plant4))>1),keyby=.(userId,blockNo)],by=c("userId", "blockNo")),
+  dt_perf[,list(mismatchP5=length(unique(plant5))>1),keyby=.(userId,blockNo)],by=c("userId", "blockNo")),
+  dt_perf[,list(mismatchShubNoNew=length(unique(shubNoNew))>1),keyby=.(userId,blockNo)],by=c("userId", "blockNo"))
+
+# keep only rows without any mismatches (i.e., blocks without variation in user input)
+straightlineGame_data=straightlineGame_data[(!straightlineGame_data$mismatchP1) & (!straightlineGame_data$mismatchP2) & (!straightlineGame_data$mismatchP3) & (!straightlineGame_data$mismatchP4) & (!straightlineGame_data$mismatchP5) & (!straightlineGame_data$mismatchShubNoNew), ]
+
+# count occurences of userIDs
+straightlinersGame_IDs=as.data.frame(straightlineGame_data %>% count(userId))
+# keep only IDs of users straight-lining in at least 2 blocks
+straightlinersGame_IDs=straightlinersGame_IDs[(straightlinersGame_IDs$n > 2), ]
+straightlinersGame_IDs=as.character(straightlinersGame_IDs$userId)
+
+# look at performance data of game-straightliners:
+# df_perf[df_perf$userId %in% straightlinersGame_IDs,]
+
+```
+
+### Identify "straight-liners" in survey part
+
+Identify users who always give very uniform answers in the survey part.
+
+Aim: identify IDs of users "straight-lining", i.e. giving only responses with either positive or negative valence.
+
+```{r echo=FALSE}
+
+# set to data table
+dt_survey=setDT(df_survey,key=c("userId"))
+# get checked values for items 3,4,5,6,8,9 (7 is red hering)
+straightlineSurvey_data=dt_survey[ checked == 1 & itemNo > 2 & !itemNo==7] 
+
+straightlineSurvey_data$valence=ifelse(straightlineSurvey_data$responseNo>3,"pos","neg")
+straightlineSurvey_data$valence[straightlineSurvey_data$responseNo==3 | straightlineSurvey_data$responseNo==6]="neut"
+
+# identify users that answered with only 1 response type throughout all questions
+straightlinersSurvey_IDs=straightlineSurvey_data[,list(mismatchSurveyItems=length(unique(responseNo))>1),keyby=.(userId)]
+# identify users that answered only using positive / negative / neutral valence
+straightlinersSurvey_IDs=straightlineSurvey_data[,list(mismatchValenceSurveyItems=length(unique(valence))>1),keyby=.(userId)]
+# keep only users without "mismatchSurveyItems" (no mismatch = uniform answers)
+straightlinersSurvey_IDs=straightlinersSurvey_IDs[!straightlinersSurvey_IDs$mismatchValenceSurveyItems]
+straightlinersSurvey_IDs=as.character(straightlinersSurvey_IDs$userId)
+
+# look at survey responses of survey-straightliners:
+# df_survey[df_survey$userId %in% straightlinersSurvey_IDs & checked==1,]
+
+######## DELETE AGAIN IF WE WANT TO EXCLUDE STRAIGHTLINERS!
+#straightlinersSurvey_IDs=c()
+
+```
+
+### Remove data from problematic users
+
+As we have identified users that seem to have dodgy data, we want to remove them.
+
+```{r echo=FALSE}
+
+# remove speeders from all dfs
+
+df_perf=subset(df_perf, ! userId %in% speeder_IDs)
+df_rt=subset(df_rt, ! userId %in% speeder_IDs)
+df_survey=subset(df_survey, ! userId %in% speeder_IDs)
+df_attention=subset(df_attention, ! userId %in% speeder_IDs)
+#df_demo=subset(df_demo, ! userId %in% speeder_IDs)
+
+# remove attentionFailers (game checks), that were not already recognized as speeders
+
+attentionFailBoth_IDs_clean=attentionFailBoth_IDs[!attentionFailBoth_IDs %in% speeder_IDs]
+
+df_perf=subset(df_perf, ! userId %in% attentionFailBoth_IDs_clean)
+df_rt=subset(df_rt, ! userId %in% attentionFailBoth_IDs_clean)
+df_survey=subset(df_survey, ! userId %in% attentionFailBoth_IDs_clean)
+df_attention=subset(df_attention, ! userId %in% attentionFailBoth_IDs_clean)
+#df_demo=subset(df_demo, ! userId %in% attentionFailBoth_IDs_clean)
+
+# remove attentionFailers (survey check), that were not already recognized as speeders or game AFs
+attentionFailSurvey_IDs_clean=attentionFailSurvey_IDs[!attentionFailSurvey_IDs %in% c(speeder_IDs,attentionFailBoth_IDs_clean)]
+
+df_perf=subset(df_perf, ! userId %in% attentionFailSurvey_IDs_clean)
+df_rt=subset(df_rt, ! userId %in% attentionFailSurvey_IDs_clean)
+df_survey=subset(df_survey, ! userId %in% attentionFailSurvey_IDs_clean)
+df_attention=subset(df_attention, ! userId %in% attentionFailSurvey_IDs_clean)
+#df_demo=subset(df_demo, ! userId %in% attentionFailSurvey_IDs_clean)
+
+# remove game straightliners, that were not already recognized as speeders / attention failers
+straightlinersGame_IDs_clean=straightlinersGame_IDs[!straightlinersGame_IDs %in% c(speeder_IDs,attentionFailBoth_IDs_clean,attentionFailSurvey_IDs_clean) ]
+
+df_perf=subset(df_perf, ! userId %in% straightlinersGame_IDs_clean)
+df_rt=subset(df_rt, ! userId %in% straightlinersGame_IDs_clean)
+df_survey=subset(df_survey, ! userId %in% straightlinersGame_IDs_clean)
+df_attention=subset(df_attention, ! userId %in% straightlinersGame_IDs_clean)
+#df_demo=subset(df_demo, ! userId %in% straightlinersGame_IDs_clean)
+# 
+# # # FROM SURVEY DATA ONLY: remove survey straightliners, that were not already recognized as speeders / attention failers
+# 
+# straightlinersSurvey_IDs_clean=straightlinersSurvey_IDs[!straightlinersSurvey_IDs %in% c(speeder_IDs,attentionFailBoth_IDs_clean,attentionFailSurvey_IDs_clean,straightlinersGame_IDs_clean) ]
+# 
+# df_survey=subset(df_survey, ! userId %in% straightlinersSurvey_IDs_clean)
+
+# remove survey straightliners, that were not already recognized as speeders / attention failers
+
+straightlinersSurvey_IDs_clean=straightlinersSurvey_IDs[!straightlinersSurvey_IDs %in% c(speeder_IDs,attentionFailBoth_IDs_clean,attentionFailSurvey_IDs_clean,straightlinersGame_IDs_clean) ]
+
+df_perf=subset(df_perf, ! userId %in% straightlinersSurvey_IDs_clean)
+df_rt=subset(df_rt, ! userId %in% straightlinersSurvey_IDs_clean)
+df_survey=subset(df_survey, ! userId %in% straightlinersSurvey_IDs_clean)
+df_attention=subset(df_attention, ! userId %in% straightlinersSurvey_IDs_clean)
+#df_demo=subset(df_demo, ! userId %in% straightlinersSurvey_IDs_clean)
+
+# repeat sanity check: Number of users in each df the same?
+# make df with user numbers: user ID 'XXXX' appears in how many dfs?
+# 
+# # the value of 3 would be desireable: all IDs represented in all 3 dfs (except survey)
+# userNo_clean <- data.frame(table(c(as.character(unique(df_perf$userId)), as.character(unique(df_rt$userId)), as.character(unique(df_attention$userId)))))
+
+# IF SURVEY REMOVAL HOLDS FOR ALL: # the value of 4 would be desireable: all IDs represented in all 4 dfs
+userNo_clean <- data.frame(table(c(as.character(unique(df_perf$userId)), as.character(unique(df_rt$userId)), as.character(unique(df_survey$userId)), as.character(unique(df_attention$userId)))))
+names(userNo_clean) <- c("Names", "Matches")
+
+```
+
+So to summarize:
+
+* we have `r length(userNo_raw$Names)` users to begin with
+* we remove `r sum(!userNo_raw$Matches==4)` users that have incomplete datasets (aborted prematurely)
+* we remove `r length(odd_userIDs)` whose information was not logged properly
+* we remove `r length(speeder_IDs)` speeders
+* we remove `r length(attentionFailBoth_IDs_clean)` users that failed both attention tests during the game
+* we remove `r length(attentionFailSurvey_IDs_clean)` users that failed both attention tests during the game
+* we remove `r length(straightlinersGame_IDs_clean)` users that straightlined in the game, despite not improving
+* we remove `r length(straightlinersSurvey_IDs_clean)` users that straightlined in the survey
+
+Finally: How many users do we have in our clean performance df? `r length(unique(df_perf$userId))`
+
+Do we have an equal number of users in each clean dataframe? `r length(unique(userNo_clean$Matches))==1`
+
+# Statistical assessment
+
+<!--
+THE CLASSICAL MUTLIVARIATE ANOVA APPROACH:
+[...] Comparisons of performance over time between users in the plausible and closest conditions, respectively, were performed using R–4.1.1 (https://www.r-project.org/) using a two-way mixed analyses of variance (ANOVA). Before running each analysis, user data was checked (*and corrected???*) for outliers, as well as for compliance with the ANOVA assumption of normality by visually inspecting the correlation between data and the normal distribution in normal QQ plots. In case of heteroscadicity, the Greenhouse-Geisser sphericity correction was applied to the data [@greenhouse1959methods]. Significant interactions or main effects were followed up in post-hoc analyses by running simple pairwise comparisons. The post-hoc analysis was corrected for multiple comparisons, and only adjusted p-values $p_{adj}$ are reported in this manuscript.
+-->
+
+[...] Comparisons of performance over time between users in the plausible and closest conditions, respectively, are performed using R–4.1.1 [@r_core_team_r_2021]. Changes in performance over 12 trials as a measure of learning rate per group are modeled using the lme4 package v.4_1.1-27.1.
+
+In the model testing for differences in terms of user performance, the dependent variable is number of Shubs generated. In teh assessment of user's reaction time, we used time needed to reach a feeding decision in each trial as dependent variable.
+The final models include the fixed effects of group, trial number and their interaction. The random-effect structure includes a by-subjects random intercept. 
+Advantages of using this approach include that these models account for correlations of data drawn from the same participant [@detry_analyzing_2016], account for missing data, and better availability of post-hoc tests (according to here: https://www.theanalysisfactor.com/advantages-of-repeated-measures-anova-as-a-mixed-model/; find a more appropriate reference.)
+<!--The code is inspired by this 2-part tutotial: https://www.youtube.com/watch?v=AWInLxpiZuA; https://www.youtube.com/watch?v=YsD8b5KYdMw -->
+
+Model fits are compared with the analysis of variance function of the stats package.
+Effect sizes are computed in terms of $\eta_{\text{p}}^{2}$ using the effectsize package v.0.5.
+
+Significant main effects or interactions are followed up by computing the pairwise estimated marginal means. All post-hoc analyses reported are bonerroni corrected to account for multiple comparisons.
+
+## H1: Plausible CFEs are more helpful to users than closest CFEs
+
+Recap the full hypothesis:
+
+*H1) Plausible CFEs will be more helpful to users tasked to discover unknown relationships in data than closest ones. This should affect objective as well as subjective understandability.*
+
+That means, we expect users in the plausible condition to 
+
+H1.1) perform better over time in terms of number of Shubs generated, *AND*
+
+H1.2) will become quicker in the final blocks, because choosing the right plants will become more automatic, *AND*
+
+H1.3) can more clearly state which plants were crucial for the Shubs to prosper (questionnaire items 1 and 2)
+
+### H1.1) Users in the plausible condition perform better over time in terms of number of Shubs generated
+
+Let's start with a first peek at the data: Descriptive stats + plotting the packsize trajectories per trial and block for each person individually.
+
+```{r echo=FALSE, fig.height = 4, fig.width = 7, fig.align = "center"}
+
+# Descriptive stats
+
+# make group a factor
+df_perf$group=as.factor(df_perf$group)
+
+# First peek at the data, getting min / max / median:
+print("First peek at the data, getting min / max / median:")
+print(tapply(df_perf$shubNoNew, df_perf$group, summary))
+# CHECK: What can we see here? Do groups differ wrt the range? Does one have smaller minimal values / larger maximal scores?
+
+#Next is visual assessment: Plot scores per participant per trial and also averages over blocks (aka spaghetti plot):
+
+# plot data per trial
+H1.1_p_ShubsPerTrial <- ggplot(df_perf, aes(x=trialNo, y=shubNoNew, group = userId, color= group))+ 
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of packsize by group over trials",x="Trial", y = "Packsize")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_discrete(breaks=1:numTrials)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+# prepare line plot to show sd and sem
+data_summary <- function(data, varname, groupnames){
+  library(dplyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      sd = sd(x[[col]], na.rm=TRUE),
+      sem = sd(x[[col]], na.rm=TRUE)/sqrt(length(x[[col]])))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  return(data_sum)
+}
+
+df_ShubsPerTrial_summary=data_summary(df_perf, varname="shubNoNew",groupnames=c("group","trialNo"))
+
+# plot data per trial
+H1.1_p_ShubsPerTrial_summary <- ggplot(df_ShubsPerTrial_summary, aes(x=trialNo, y=mean, group = group, color= group))+ 
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  geom_ribbon(aes(ymin=mean-sem, ymax=mean+sem,fill=group), linetype=2, alpha=0.1)+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of mean packsize by group over trials",x="Trial", y = " Mean Packsize")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_discrete(breaks=1:numTrials)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+# plot averaged data per block
+df_perf_blockStats<-aggregate(shubNoNew ~ blockNo * userId + group, data=df_perf, FUN = function(x) c(mean = mean(x), sd = sd(x), sem = sd(x)/sqrt(length(x))))
+df_ShubsPerBlock_summary=data_summary(df_perf, varname="shubNoNew",groupnames=c("group","blockNo"))
+
+H1.1_p_ShubsPerBlock <- ggplot(df_perf_blockStats, aes(x=blockNo, y=shubNoNew[,"mean"], group = userId, color= group))+ 
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  geom_ribbon(aes(ymin=shubNoNew[,"mean"]-shubNoNew[,"sem"], ymax=shubNoNew[,"mean"]+shubNoNew[,"sem"],fill=group), linetype=2, alpha=0.1)+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of packsize by group over blocks",x="Block", y = "Packsize")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_continuous(breaks=1:max(df_perf$blockNo))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+# plot data per trial
+H1.1_p_ShubsPerBlock_summary <- ggplot(df_ShubsPerBlock_summary, aes(x=blockNo, y=mean, group = group, color= group))+ 
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  geom_ribbon(aes(ymin=mean-sem, ymax=mean+sem,fill=group), linetype=2, alpha=0.1)+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of mean packsize by group over blocks",x="Block", y = "Mean Packsize")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_continuous(breaks=1:max(df_ShubsPerBlock_summary$blockNo))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+# in separate facets for better visibility
+H1.1_p_ShubsPerTrial_facet <- H1.1_p_ShubsPerTrial + facet_wrap(vars(group),nrow = 2, ncol = 1) + theme_bw(base_size = 10)
+H1.1_p_ShubsPerBlock_facet <- H1.1_p_ShubsPerBlock + facet_wrap(vars(group),nrow = 2, ncol = 1) + theme_bw(base_size = 10)
+
+# put all plots together
+H1.1_figure1_ShubData <- ggarrange(H1.1_p_ShubsPerTrial,H1.1_p_ShubsPerBlock,
+                    ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
+
+# save
+ggsave("../Figures/H1.1_figure1_ShubData_PAZ_P3.pdf",width = 5, height = 4,)
+
+H1.1_figure1_ShubData_summary <- ggarrange(H1.1_p_ShubsPerTrial_summary,H1.1_p_ShubsPerBlock_summary,
+                    ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
+# save
+ggsave("../Figures/H1.1_figure1_ShubData_summary_PAZ_P3.pdf",width = 5, height = 4,)
+
+# show
+print("Display figures showing development of packsize over trials / blocks:")
+H1.1_figure1_ShubData
+H1.1_figure1_ShubData_summary
+
+# last, make trialno a factor and show again a summary of data
+df_perf$trialNo = as.factor(df_perf$trialNo)
+#summary(df_perf)
+
+```
+
+Now on to the statistics.
+
+```{r echo=FALSE, fig.height = 7, fig.width = 7, fig.align = "center"}
+
+# setting up our LME model (as a 2x15 Anova, group by trial)
+
+# mixed design, with one within-subjects IV (trial) and one between subjects IV (group)
+# investigating the effect of both on Shubs generated.
+
+# Note that we add a random intercept for the participant by stating + (1|userId)
+# This makes it repeated measures, as we control for the random effect of 
+# one person doing something mutliple times.
+ShubNo_effect= lmer(shubNoNew ~ trialNo*group + (1|userId), data = df_perf) # linear model DV ShubNoNew predicted by the IV (trials, i.e. time)
+
+# ------------------------------------------ #
+# ------------------------------------------ #
+# SAMPLE SIZE ESTIMATION USING mixedpower
+
+# try out library(mixedpower)
+# # install mixedpower
+# if (!require("devtools")) {
+#     install.packages("devtools", dependencies = TRUE)}
+# devtools::install_github("DejanDraschkow/mixedpower") # mixedpower is hosted on GitHub
+
+library(mixedpower)
+
+# ------------------------------------------ #
+# INFORMATION ABOUT MODEL USED FOR SIMULATION
+
+model <- ShubNo_effect # which model do we want to simulate power for?
+data <- df_perf # data used to fit the model
+fixed_effects <- c("trialNo", "group") # all fixed effects specified
+simvar <- "userId" # # which random effect do we want to vary in the simulation? SHOULD BE NUMERIC! Soo:
+# add dummy numeric variable for userId
+df_perf$userId_num=rep(1:8,each=12)
+steps <- c(20, 40, 60, 80, 100) # which sample sizes do we want to look at?
+critical_value <- 2 # which t/z value do we want to use to test for significance?
+n_sim <- 100 # how many single simulations should be used to estimate power?
+
+# ------------------------------------------ #
+# RUN SIMULATION
+#power_ShubNo_effect <- mixedpower(model = ShubNo_effect, data = df_perf, fixed_effects = c("trialNo", "group"), simvar = "userId_num", steps = c(20, 40, 60, 80, 100), critical_value = 2, n_sim = 1000)
+
+## save it so we don't have to wait so long again:
+#save(power_ShubNo_effect,file="power_ShubNo_effect.Rda")
+
+# load simulation results:
+load("power_ShubNo_effect.Rda")
+
+# look at results:
+power_ShubNo_effect
+
+# make a plot:
+multiplotPower(power_ShubNo_effect, filename = "power_ShubNo_effect.png")
+
+```
+
+
+### H1.2) Users in the plausible condition become quicker in deciding what plants to choose in the final blocks, because choice of the right plants will become more automatic
+
+Again, first peek at the data: Descriptive stats + plotting the RT trajectories per trial and block for each person individually.
+
+```{r echo=FALSE, fig.height = 4, fig.width = 7, fig.align = "center"}
+
+# Descriptive stats
+
+# make group a factor
+df_rt$group=as.factor(df_rt$group)
+
+# First peek at the data, getting min / max / median:
+print("First peek at the data, getting min / max / median:")
+print(tapply(df_rt$timeStableUntilFeeding, df_rt$group, summary))
+# CHECK: What can we see here? Do groups differ wrt the range? Does one have smaller minimal values / larger maximal scores?
+
+#Next is visual assessment: Plot scores per participant per trial and also averages over blocks (aka spaghetti plot):
+
+# plot data per trial
+H1.2_p_RTPerTrial <- ggplot(df_rt, aes(x=TrialNr, y=timeStableUntilFeeding, group = userId, color= group))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of time needed to reach\nfeeding decision by group over trials",x="Trial", y = "Reaction time (ms)")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_discrete(breaks=1:numTrials)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+# prepare line plot to show sd and sem
+df_RTPerTrial_summary=data_summary(df_rt, varname="timeStableUntilFeeding",groupnames=c("group","TrialNr"))
+
+# plot data per trial
+H1.2_p_RTPerTrial_summary <- ggplot(df_RTPerTrial_summary, aes(x=TrialNr, y=mean, group = group, color= group))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  geom_ribbon(aes(ymin=mean-sem, ymax=mean+sem,fill=group), linetype=2, alpha=0.1)+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of mean time needed to reach\nfeeding decision by group over trials",x="Trial", y = " Mean Reaction Time")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_discrete(breaks=1:numTrials)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+
+# plot averaged data per block
+df_rt_blockStats<-aggregate(timeStableUntilFeeding ~ BlockNr * userId + group, data=df_rt, FUN = function(x) c(mean = mean(x), sd = sd(x), sem = sd(x)/sqrt(length(x))))
+
+df_RTPerBlock_summary=data_summary(df_rt, varname="timeStableUntilFeeding",groupnames=c("group","BlockNr"))
+
+H1.2_p_RTPerBlock <- ggplot(df_rt_blockStats, aes(x=BlockNr, y=timeStableUntilFeeding[,"mean"], group = userId, color= group))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  geom_ribbon(aes(ymin=timeStableUntilFeeding[,"mean"]-timeStableUntilFeeding[,"sem"], ymax=timeStableUntilFeeding[,"mean"]+timeStableUntilFeeding[,"sem"],fill=group), linetype=2, alpha=0.1)+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of time needed to reach\nfeeding decision by group over blocks",x="Block", y = "Reaction time (ms)")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_continuous(breaks=1:max(df_perf$blockNo))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+H1.2_p_RTPerBlock_summary <- ggplot(df_RTPerBlock_summary, aes(x=BlockNr, y=mean, group = group, color= group))+
+  geom_point(alpha = 0.5)+
+  geom_line()+
+  geom_ribbon(aes(ymin=mean-sem, ymax=mean+sem,fill=group), linetype=2, alpha=0.1)+
+  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
+  labs(title="Development of mean time needed to reach\nfeeding decision by group over blocks",x="Block", y = " Mean Reaction Time")+
+  theme_bw(base_size = 10)+
+  #scale_y_continuous(limits = c(0, 100))+
+  scale_x_discrete(breaks=1:numTrials)+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  theme(legend.position="bottom")
+
+# in separate facets for better visibility
+H1.2_p_RTPerTrial_facet <- H1.2_p_RTPerTrial + facet_wrap(vars(group),nrow = 2, ncol = 1) + theme_bw(base_size = 10)
+H1.2_p_RTPerBlock_facet <- H1.2_p_RTPerBlock + facet_wrap(vars(group),nrow = 2, ncol = 1) + theme_bw(base_size = 10)
+
+# put all plots together
+H1.2_figure1_RTData <- ggarrange(H1.2_p_RTPerTrial,H1.2_p_RTPerBlock,
+                    ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
+# save
+ggsave("../Figures/H1.2_figure1_RTData_PAZ_P3.pdf",width = 5, height = 4,)
+
+# put all plots together
+H1.2_figure1_RTData_summary <- ggarrange(H1.2_p_RTPerTrial_summary,H1.2_p_RTPerBlock_summary,
+                    ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
+# save
+ggsave("../Figures/H1.2_figure1_RTData_summary_PAZ_P3.pdf",width = 5, height = 4,)
+
+# show
+print("Display figures showing development of reaction times over trials / blocks:")
+H1.2_figure1_RTData
+
+# last, make trialno a factor and show again a summary of data
+df_rt$TrialNr = as.factor(df_rt$TrialNr)
+#summary(df_rt)
+
+```
+
+Now on to the statistics.
+
+```{r echo=FALSE}
+
+# setting up our LME model (as a 2x15 Anova, group by trial)
+
+# mixed design, with one within-subjects IV (trial) and one between subjects IV (group)
+# investigating the effect of reaction times.
+
+# Note that we add a random intercept for the participant by stating + (1|userId)
+# This makes it repeated measures, as we control for the random effect of
+# one person doing something mutliple times.
+RT_effect= lmer(timeStableUntilFeeding ~ group*TrialNr + (1|userId), data = df_rt) # linear model DV ShubNoNew predicted by the IV (trials, i.e. time)
+
+# ------------------------------------------ #
+# ------------------------------------------ #
+# SAMPLE SIZE ESTIMATION USING mixedpower
+
+# try out library(mixedpower)
+# # install mixedpower
+# if (!require("devtools")) {
+#     install.packages("devtools", dependencies = TRUE)}
+# devtools::install_github("DejanDraschkow/mixedpower") # mixedpower is hosted on GitHub
+
+library(mixedpower)
+
+# ------------------------------------------ #
+# INFORMATION ABOUT MODEL USED FOR SIMULATION
+
+model <- RT_effect # which model do we want to simulate power for?
+data <- df_rt # data used to fit the model
+fixed_effects <- c("TrialNr", "group") # all fixed effects specified
+simvar <- "userId" # # which random effect do we want to vary in the simulation? SHOULD BE NUMERIC! Soo:
+# add dummy numeric variable for userId
+df_rt$userId_num=rep(1:8,each=12)
+steps <- c(20, 40, 60, 80, 100) # which sample sizes do we want to look at?
+critical_value <- 2 # which t/z value do we want to use to test for significance?
+n_sim <- 100 # how many single simulations should be used to estimate power?
+
+# ------------------------------------------ #
+# RUN SIMULATION
+#power_RT_effect <- mixedpower(model = RT_effect, data = df_rt, fixed_effects = c("TrialNr", "group"), simvar = "userId_num", steps = c(20, 40, 60, 80, 100), critical_value = 2, n_sim = 1000)
+## save it so we don't have to wait so long again:
+#save(power_RT_effect,file="power_RT_effect.Rda")
+
+# load simulation results:
+load("power_RT_effect.Rda")
+
+# look at results:
+power_RT_effect
+
+# make a plot:
+multiplotPower(power_RT_effect, filename = "power_RT_effect.png")
+
+```
+
+# References
