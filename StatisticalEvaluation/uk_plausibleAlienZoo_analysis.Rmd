@@ -13,12 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r results='asis', echo=FALSE, include=FALSE,}
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
-#install.packages("rstudioapi")
-#install.packages("unikn")
-#install.packages("tidyverse")
-#install.packages("here")
-#install.packages("plyr")
-#install.packages("effsize")
 
 library(rstudioapi)
 library(ggplot2)
@@ -109,18 +103,11 @@ sourceLoc=here::set_here()
 setwd(dirname(sourceLoc))
 
 # Where's the data
-demo_source = list.files(pattern="demographics.csv")
-perf_source = list.files(pattern="performance.csv")
-rt_source = list.files(pattern="reactionTime.csv")
-survey_source = list.files(pattern="survey.csv")
-attention_source = list.files(pattern="attentionCheck.csv")
-
-# Where's the data
-# demo_source = list.files(pattern="demographics_PAZ_FINAL.csv")
-# perf_source = list.files(pattern="performance_PAZ_FINAL.csv")
-# rt_source = list.files(pattern="reactionTime_PAZ_FINAL.csv")
-# survey_source = list.files(pattern="survey_PAZ_FINAL.csv")
-# attention_source = list.files(pattern="attentionCheck_PAZ_FINAL.csv")
+demo_source = list.files(path = "../BackEnd/userData", pattern="demographics.csv",full.names=TRUE)
+perf_source = list.files(path = "../BackEnd/userData", pattern="performance.csv",full.names=TRUE)
+rt_source = list.files(path = "../BackEnd/userData", pattern="reactionTime.csv",full.names=TRUE)
+survey_source = list.files(path = "../BackEnd/userData", pattern="survey.csv",full.names=TRUE)
+attention_source = list.files(path = "../BackEnd/userData", pattern="attentionCheck.csv",full.names=TRUE)
 
 # load to dframes
 df_demo=read.csv(demo_source,header=TRUE)
@@ -129,28 +116,7 @@ df_rt=read.csv(rt_source,header=TRUE)
 df_survey=read.csv(survey_source,header=TRUE)
 df_attention=read.csv(attention_source,header=TRUE)
 
-# 
-# # ############
-# # #### REMOVE PARTICIPANTS FROM THE THIRD PILOT!!!
-# remove_ppl=c("67902ecb09454c9fa106f613aeb00e3b","e11fd51ee4cf4f90a090138d0daa26c5","9d673a6ed17042b88756047944809447","a0c1b5a9552e4c3b92e5440cd8362ee7","4dd8f62dc0ff4caebca68f0dbc48accc","f745453fc9644f179c88b411066a437e","6edb792de08b48658196002a446ce735","5655c934794d4a29bc73177e33e17292","63200c7746d141bf979ecf847d4c093a","cf057adf72e7419a8a50bf0c521c5cf6")
-# #
-# ############
-# #### REMOVE PARTICIPANTS WITH LOGGING ISSUES (RE-DID THOSE)!!!
-# #remove_ppl=c(remove_ppl,"294e3","50575","5f8e5")#,"37794","8a63f")
-# 
-# df_perf = df_perf[!df_perf$userId %in% remove_ppl,]
-# df_rt = df_rt[!df_rt$userId %in% remove_ppl,]
-# df_survey = df_survey[!df_survey$userId %in% remove_ppl,]
-# df_attention = df_attention[!df_attention$userId %in% remove_ppl,]
-# df_demo = df_demo[!df_demo$userId %in% remove_ppl,]
-# 
-# write.csv(df_demo, "demographics.csv", row.names = FALSE)
-# write.csv(df_perf, "performance.csv", row.names = FALSE)
-# write.csv(df_rt, "reactionTime.csv", row.names = FALSE)
-# write.csv(df_survey, "survey.csv", row.names = FALSE)
-# write.csv(df_attention, "attentionCheck.csv", row.names = FALSE)
-
-# remove duplicated lines (double-logging happens accasionally)
+# remove duplicated lines (double-logging happens occasionally)
 df_demo=df_demo[!duplicated(df_demo),]
 df_perf=df_perf[!duplicated(df_perf), ]
 df_rt=df_rt[!duplicated(df_rt), ]
@@ -243,20 +209,6 @@ df_rt$group <- as.factor(df_rt$group)
 
 ```
 
-<!-- How many users do we have in our performance df? `r length(unique(df_perf$userId))` -->
-
-<!-- Do we have an equal number of users in each dataframe? `r length(unique(userNo_raw$Matches))==1` -->
-
-<!-- If not, it is most likely due to participants who aborted the game prematurely. -->
-
-<!-- AFTER CHECK, REMOVE USERS THAT DID NOT APPEAR IN ALL DFs -->
-<!-- (i.e., who did not finish the study, OR had logging issues) -->
-
-<!-- ```{r echo=FALSE, warning=FALSE} -->
-
-
-<!-- ``` -->
-
 How many users do we have in our performance df before any cleaning (i.e., also including users with incomplete datasets)? `r length(userNo_raw$Names)`
 
 How many users do we have in our performance df after cleaning? `r length(unique(df_perf$userId))`
@@ -266,13 +218,6 @@ How many users do we have in our reaction time df after cleaning? `r length(uniq
 How many users do we have in our attention df after cleaning? `r length(unique(df_attention$userId))`
 
 How many users do we have in our survey df after cleaning? `r length(unique(df_survey$userId))`
-
-<!-- Do we have further odd userIDs that need manual checking? `r odd_userIDs` -->
-<!-- IF SO, DO FURTHER MANUAL CHECKS! -->
-
-<!-- ```{r echo=FALSE, warning=FALSE} -->
-
-<!-- ``` -->
 
 ## General infos after removal of incomplete datasets
 
@@ -765,12 +710,6 @@ medianAge_P=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="P"]
 To sum up, in our final data we have `r length(unique(df_perf$userId))` users, with `r length(unique(df_perf$userId[df_perf$group=="C"]))` users in the control group (`r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 25-34years), and 
 `r length(unique(df_perf$userId[df_perf$group=="P"]))` users in the plausible group (`r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, `r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==5]))` non-binary / gender non-conforming, median age group is 35-44years).
 
-<!-- For evaluating the survey data only, we additionally: -->
-
-<!-- So for evaluating survey data, we end up with `r length(unique(df_survey$userId))` users. -->
-
-<!-- IF NOT, CHECK WHY! -->
-
 ## Hypotheses
 
 The main hypothesis is the following:
@@ -1165,9 +1104,6 @@ Now on to the statistics.
 # This makes it repeated measures, as we control for the random effect of 
 # one person doing something multiple times.
 RT_effect= lmer(timeStableUntilFeeding ~ group*TrialNr + (1|userId), data = df_rt) # linear model DV ShubNoNew predicted by the IV (trials, i.e. time)
-
-# NOTE NOTE NOTE! IF ESTIMATEABLE WITH FULL DATA, ALSO INCLUDE A RANDOM SLOPE FOLLOWING BARR et. al.:
-# RT_effect= lmer(timeStableUntilFeeding ~ group*TrialNr + (1+TrialNr|userId), data = df_rt)
 
 RT_effect_anova=anova(RT_effect)  # show model as anova
 names(RT_effect_anova)=c("SumSq","MeanSq","NumDF","DenDF","Fvalue","Pvalue") # rename fields for easy access
