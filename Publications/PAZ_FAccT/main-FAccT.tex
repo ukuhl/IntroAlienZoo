@@ -1,0 +1,173 @@
+\documentclass[format=manuscript,anonymous=true]{acmart}
+%\documentclass[format=manuscript]{acmart}
+
+%\documentclass[twocolumn]{article}
+%\PassOptionsToPackage{dvipsnames,table}{xcolor} % Some package in `preprint` (probably `background`) includes `xcolor`.
+%\usepackage{preprint}
+
+% Remove margin tick marks.
+%\SetBgContents{}
+
+% Show overfull boxes.
+%\overfullrule=1mm
+
+%% Technicalities and Typesetting
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage[english]{babel}
+%\usepackage{csquotes}
+%\usepackage[final,
+%            tracking=true,
+%            kerning=true]{microtype}
+
+% Technicalities and Typesetting
+\usepackage{xspace}
+
+%% Mathematics
+%\usepackage{amssymb}
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{mathtools}
+%\usepackage{bbm}
+
+%% Figures & Tables
+%\usepackage{graphicx}
+%\usepackage{booktabs}
+%\usepackage{subcaption}
+%\usepackage{listings}
+%\usepackage{float}
+
+%% Numbers
+%\usepackage{nth}
+%\usepackage{siunitx}
+%\sisetup{list-final-separator={, and }}
+
+% comments UK
+%\usepackage{color}
+%\usepackage[normalem]{ulem}
+%\newcommand{\rep}[3]{\textcolor{blue}{\sout{#1}} \textcolor{blue}{#2} \textit{\textcolor{gray}{#3}}}
+
+% Define ACM conference (throws error otherwise!)
+\acmConference[ACM FAccT 2022]{ACM Conference on Fairness, Accountability, and Transparency}{June 21--24, 2022}{Seoul, South Korea}
+
+% Title
+%\newcommand*{\titletext}{Introducing the Alien Zoo: An Evaluation of the Efficacy of Counterfactual Explanations for Machine Learning Predictions}
+\title[PAZ short title]{The plausible Alien Zoo: Users prefer closest, and not plausible counterfactual explanations}
+\subtitle{Subtitle}
+
+%% References
+\citestyle{acmnumeric}
+%\usepackage[backend=biber,
+%            sorting=nyt,
+%            maxcitenames=2,
+%            maxbibnames=8,
+%            backref=true]{biblatex}
+%\addbibresource{AlienZooV1_paper.bib}
+%\usepackage{varioref}
+%\usepackage[hypertexnames=false,
+%            colorlinks=true,
+%            linkcolor=MidnightBlue,
+%            urlcolor=Maroon,
+%            citecolor=ForestGreen,
+%            pdfauthor={Ulrike Kuhl},
+%            pdftitle={\titletext}]{hyperref}
+%\usepackage[all]{hypcap}
+%\usepackage[noabbrev,
+%            capitalize,
+%            nameinlink]{cleveref}
+%\crefname{hypothesis}{Hypothesis}{Hypotheses}
+%
+%\newfloat{lstfloat}{htbp}{lop}
+%\floatname{lstfloat}{Listing}
+%\def\lstfloatautorefname{Listing}
+%\crefalias{lstfloat}{listing}
+%
+%% Acronyms
+%\usepackage[nohyperlinks, nolist]{acronym}
+
+% Acronyms
+\usepackage{glossaries}
+\setacronymstyle{long-short}
+% include acronyms
+\input{acronyms_gls.tex}
+
+% Miscellaneous Macros
+\input{macros.tex}
+
+%
+%% Title & Authors
+%\title{\titletext}
+%
+%\usepackage[auth-sc]{authblk}
+
+%\author[1]{Ulrike Kuhl}
+%%\author[1]{Barbara Hammer}
+%\affil[1]{Bielefeld University, Germany}
+
+% author stuff
+\author{Ulrike Kuhl}
+\orcid{0000-0002-9405-918X}
+\affiliation{%
+   \institution{Bielefeld University}
+   \department{HammerLab for Machine Learning}
+   \streetaddress{CITEC-Building, Inspiration 1}
+   \postcode{33619}
+   \city{Bielefeld}
+   \country{Germany}}
+%\affiliation[obeypunctuation=true]{%
+%   \institution{Bielefeld University}\\
+%   \department{HammerLab for Machine Learning}\\
+%   \streetaddress{CITEC-Building, Inspiration 1}\\
+%   \postcode{33619}
+%   \city{Bielefeld},
+%   \country{Germany}}
+\email{ukuhl@techfak.uni-bielefeld.de}
+
+\author{André Artelt}
+\orcid{...}
+\affiliation{%
+   \institution{Bielefeld University}
+   \department{HammerLab for Machine Learning}
+   \streetaddress{CITEC-Building, Inspiration 1}
+   \postcode{33619}
+   \city{Bielefeld}
+   \country{Germany}}
+%\affiliation[obeypunctuation=true]{%
+%   \institution{Bielefeld University}
+%   \department{HammerLab for Machine Learning}
+%   \streetaddress{CITEC-Building, Inspiration 1}
+%   \city{Bielefeld}
+%   \postcode{33619}
+%   \country{Germany}}
+\email{aartelt@techfak.uni-bielefeld.de}
+
+\keywords{XAI, counterfactual explanations, quantitative user evaluation, Data and Algorithm Evaluation, Human Factors}
+
+\begin{document}
+
+% in the ACM world, use bastract environment BEFORE the maketitle command!
+\begin{abstract}
+\input{abstract.tex}
+\end{abstract}
+
+\maketitle
+
+\input{content.tex}
+
+% Acknowledgements:
+\begin{acks}
+The authors would like to thank Johannes Kummert for support with server set up and maintenance.
+This work is contained within the project ITS.ML as part of the ICT 2020 Funding Programme, supported by the \grantsponsor{BMBF}{Federal Ministry of Education and Research Germany (BMBF)} and the \grantsponsor{DLR}{Project Management Agency of the German Aerospace Centre (DLR)} under Grant
+   No.:~\grantnum{ITS.ML_no}{01IS18041 A}.
+\end{acks}
+
+%%%%
+% References
+%%%%
+%\AtNextBibliography{\raggedright\small}
+%\printbibliography
+
+\bibliographystyle{ACM-Reference-Format} 
+\bibliography{AlienZooPAZ_paper}
+
+\end{document}
