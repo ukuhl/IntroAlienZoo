@@ -8,7 +8,7 @@ from crypt import load_key, decrypt
 
 database = "alienzoo"
 user_name = "user_alienzoo"
-user_pw = "useralienzoopw123456"
+user_pw = ""
 
 
 class DataMgr():

@@ -7,7 +7,7 @@ class PreloadScene extends Phaser.Scene {
 
 	preload() {
 		console.log("inside PreloadScene preload function")
-		this.load.image('stable', 'static/stable.png'); //,{ scale: 0.5 });
+		this.load.image('stable', 'static/stable.png');
 
 		this.load.image('stable', 'static/stable.png');
 
@@ -57,8 +57,6 @@ class PreloadScene extends Phaser.Scene {
 			.setInteractive()
 			.on('pointerdown', () => this.time.addEvent({ delay: 100, callback: stableScene, callbackScope: this }))
 			.on('pointerdown', () => { window['game']['canvas'][this.device.fullscreen.request](); });
-			//.on('pointerdown', () => socket.emit('gameStartEvent', { data: 'User started game' }));
-			// this.scene.start("titleScene");
 
 		var textStart = this.add.text(-55, -20, 'Start!', { fontSize: '30px', color: '#ffffff' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.5, window.innerHeight * 0.85, [buttonStart, textStart])

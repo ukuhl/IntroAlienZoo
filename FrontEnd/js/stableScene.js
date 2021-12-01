@@ -74,9 +74,7 @@ class StableScene extends Phaser.Scene {
 		}
 
 		// if three trails are done, get feedback and start a new block
-		//if (this.varObj.trialCount % 4 == 0) {
 		if ( this.varObj.feedback_flag ) {
-			//this.varObj.blockCount++;
 			// instatiate and add new progress scene with current data
 			var feedbackScene = undefined;
 			// add button to submit new input - change scene when pressed!
@@ -116,7 +114,6 @@ class StableScene extends Phaser.Scene {
 				.setInteractive()
 				.on('pointerdown', () => this.clickCountTextVar1.setText(`${Math.min(++this.varObj.clickCountVar1, this.varObj.maxFeedingNo)}`))
 				.on('pointerdown', () => this.varObj.clickCountVar1 = Math.min(this.varObj.clickCountVar1, this.varObj.maxFeedingNo));
-			//.on('pointerdown', () => this.this.varObj.clickCountVar1 = Math.min(this.varObj.clickCountVar1, this.varObj.maxFeedingNo));
 
 			// button down, plant 1
 			const buttonDownVar1 = this.add.image(window.innerWidth * 0.725, window.innerHeight * 0.27, 'buttonDown').setScale(0.5)

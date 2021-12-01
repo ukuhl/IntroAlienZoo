@@ -2,7 +2,6 @@ import EndScene from './endScene.js';
 
 class QuestionnaireScene4 extends Phaser.Scene {
 
-	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
 		super({ key: 'questionnaireScene5' });
 		this.varObj = varObj;
@@ -29,44 +28,12 @@ class QuestionnaireScene4 extends Phaser.Scene {
 
 	preload() {
 		// load button images
-		//this.load.image('checkboxEmpty', 'static/CheckBoxEmpty.png');
-		//this.load.image('checkboxClicked', 'static/CheckBoxClicked.png');
 		this.load.spritesheet('checkbox', 'static/CheckBoxSprites.png', { frameWidth: 51, frameHeight: 50 });
 	}
 
 	create() {
-		/*
-		var item10Var1Checked = false;
-		var item10Var2Checked = false;
-		var item10Var3Checked = false;
-		var item10Var4Checked = false;
-		var item10Var5Checked = false;
-		var item10Var6Checked = false;
-
-		var item11Var1Checked = false;
-		var item11Var2Checked = false;
-		var item11Var3Checked = false;
-		var item11Var4Checked = false;
-		var item11Var5Checked = false;
-		var item11Var6Checked = false;
-		*/
-
 		// clean slate:
 		this.children.removeAll();
-
-		// var qIntro1 = [
-		// 	'To complete the study, please answer the following 10 questions.',
-		// ]
-		//
-		// var qIntro2 = [
-		// 	'These questions are designed to assess your personal impressions from the game. Therefore, there are no wrong answers.',
-		// 	'',
-		// 	'Please answer as truthfully and accurately as possible.',
-		// ]
-		//
-		// this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
-		// this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
-		//
 
 		var demographics = [
 			'To finish up, we would like to collect some demographic information.',,
@@ -512,7 +479,6 @@ class QuestionnaireScene4 extends Phaser.Scene {
 	onBtnContinue() {
 		if ([this.itemAgeVar1Checked, this.itemAgeVar2Checked, this.itemAgeVar3Checked, this.itemAgeVar4Checked, this.itemAgeVar5Checked, this.itemAgeVar6Checked, this.itemAgeVar7Checked].every(a => a == false) ||
 		[this.itemGenderVar1Checked, this.itemGenderVar2Checked, this.itemGenderVar3Checked, this.itemGenderVar4Checked, this.itemGenderVar5Checked, this.itemGenderVar6Checked, this.itemGenderVar7Checked].every(a => a == false)) {
-			//alert("Please answer all questions!");
 			// alerts cause issues in fullscreen mode, here's a workaround:
 
 			// background

@@ -39,8 +39,6 @@ class AttentionScene extends Phaser.Scene {
         }
     });
 
-    // To do: log value of inputText.text
-
     var style = document.createElement('style');
     style.innerHTML = `
     #myNumberInput::-webkit-inner-spin-button,
@@ -52,17 +50,11 @@ class AttentionScene extends Phaser.Scene {
 
     // add button to continue
     // instatiate and add new end scene with current data
-    //var progressScene = undefined;
 
     // add button to request feedback
     var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
     	.setInteractive()
-    	/*.on('pointerdown', () => this.logTime())
-    	.on('pointerdown', () => progressScene = new ProgressScene(this.varObj))
-    	.on('pointerdown', () => this.scene.remove('progressScene', progressScene))
-    	.on('pointerdown', () => this.scene.add('progressScene', progressScene))
-    	.on('pointerdown', () => this.scene.start('progressScene'));*/
-      .on('pointerdown', () => this.onBtnContinue());
+    	.on('pointerdown', () => this.onBtnContinue());
 
     	var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#ffffff' });
     	this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue]);
@@ -71,7 +63,6 @@ class AttentionScene extends Phaser.Scene {
 
   onBtnContinue() {
     if(this.inputText.text == "") {
-      //alert("Please enter a number!");
 			// alerts cause issues in fullscreen mode, here's a workaround:
 
 			// background
@@ -152,12 +143,6 @@ class AttentionScene extends Phaser.Scene {
 			}.bind(this), this.varObj.btnOkayShowDelay);
 
 			///////
-      //var progressScene = new ProgressScene(this.varObj);
-      //this.scene.remove('progressScene', progressScene);
-      //this.scene.add('progressScene', progressScene);
-      //this.scene.start('progressScene');
-
-
     }
   }
 

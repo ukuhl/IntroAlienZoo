@@ -2,7 +2,6 @@ import StableScene from './stableScene.js';
 
 class ProgressScene extends Phaser.Scene {
 
-	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
 		super({ key: 'progressScene' });
 		this.varObj = varObj
@@ -105,7 +104,6 @@ class ProgressScene extends Phaser.Scene {
 			this.time.delayedCall(3000, () => {
 				this.scene.start('stableScene')
 			})
-			//this.scene.start('stableScene');
 		});
 	}
 

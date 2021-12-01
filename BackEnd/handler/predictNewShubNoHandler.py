@@ -88,7 +88,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
 
         # Compute a prediction using the model
         x = np.array([input_vars["var1"], input_vars["var2"], input_vars["var3"], input_vars["var4"], input_vars["var5"]], dtype=float).reshape(1, -1)
-        pred = self.model["model"].predict(x)#self.model(x).detach().numpy()
+        pred = self.model["model"].predict(x)
 
         # Compute new number of shubs
         SNnew = int(np.floor(cur_num_shubs * pred))    # new number = old number * GR prediction)
@@ -97,11 +97,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
             SNnew = 2
 
         # Compute a plausible counterfactual explanation if the user is in the experimental group and a closest counterfactual explanatons otherwise
-        x_cf = None
-        if control_group is not True:
-            x_cf = self.__compute_counterfactual(x, pred, plausible=True)
-        else:
-            x_cf = self.__compute_counterfactual(x, pred)
+        x_cf = self.__compute_counterfactual(x, pred, plausible=not control_group)
         
         # Log everything!
         log_data = {
@@ -132,9 +128,6 @@ class PredictNewShubNoHandler(BasisRequestHandler):
             return
 
         # Send result back to client
-        #if control_group is True:
-        #   self.write(json.dumps({"newNumShubs": SNnew}))
-        #else:
         results = {
             "newNumShubs": SNnew
         }

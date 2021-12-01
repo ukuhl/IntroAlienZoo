@@ -1,6 +1,5 @@
 class EndScene extends Phaser.Scene {
 
-	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
 		super({key : 'endScene'});
 		this.varObj = varObj
@@ -52,7 +51,6 @@ class EndScene extends Phaser.Scene {
 			.setInteractive()
 			.on('pointerdown', () => { window.open('https://its-ml.de/index.php/pazdebrief/'); });
 
-		//var textAgree = this.add.text(-55, -20, 'I agree to participate in this study.', { fontFamily: 'Arial', fontSize: '14px', color: '#000000' }).setOrigin(0);
 		var textDebrief = this.add.text(-100, -25, ['I want to learn more','about the study!'], { fontSize: '18px', color: '#ffffff' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.80, [buttonDebrief, textDebrief])
 

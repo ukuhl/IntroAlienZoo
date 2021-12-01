@@ -23,8 +23,8 @@ class InfoScene extends Phaser.Scene {
 
 		this.startTime = new Date().getTime();
 
-		this.add.image(window.innerWidth * 0.1, window.innerHeight * 0.1, 'UBIE').setScale(0.15); //.setScale(0.15)
-		this.add.image(window.innerWidth * 0.8, window.innerHeight * 0.1, 'ITSML').setScale(0.15); // .setScale(0.15)
+		this.add.image(window.innerWidth * 0.1, window.innerHeight * 0.1, 'UBIE').setScale(0.15);
+		this.add.image(window.innerWidth * 0.8, window.innerHeight * 0.1, 'ITSML').setScale(0.15);
 
 		var content = [
 
@@ -36,14 +36,12 @@ class InfoScene extends Phaser.Scene {
 			"People of any gender, aged 18 and above, are invited to participate.",
 			"",
 			"Your participation in this research study is voluntary. You may choose not to participate. If you decide to participate, you may withdraw at any time.",
-			//"If you decide not to participate in this study or if you withdrawl from participating at any time, you will not be penalized.",
 			"",
 			"The procedure involves playing a small online game that will take approximately 15-20 minutes.",
 			"Afterwards, you will be asked to answer a short questionnaire assessing your experience with the game.",
 			"",
 			"Your responses will be confidential and we do not collect identifying information such as your name, email address or IP address.",
-			"We will do our best to keep your information confidential.",//" All data is stored in a password protected electronic format.",
-			//"To help protect your confidentiality, the surveys will not contain information that will personally identify you.",
+			"We will do our best to keep your information confidential.",
 			"",
 			"The results of this study will be used for scholarly purposes only.",
 			"If you have any questions about the research study, please contact Dr. Ulrike Kuhl at ukuhl@techfak.uni-bielefeld.de .",
@@ -70,13 +68,7 @@ class InfoScene extends Phaser.Scene {
 		var buttonAgree = this.add.image(0, 0, 'buttonAgree').setScale(0.5)
 			.setInteractive()
 			.on('pointerdown', () => this.onClickBtnAgree());
-			/*.on('pointerdown', () => this.logTime())
-			.on('pointerdown', () => this.scale.startFullscreen())
-			.on('pointerdown', () => startScene = new StartScene(this.varObj))
-			.on('pointerdown', () => this.scene.add('startScene', startScene))
-			.on('pointerdown', () => this.scene.start('startScene'));*/
 
-		//var textAgree = this.add.text(-55, -20, 'I agree to participate in this study.', { fontFamily: 'Arial', fontSize: '14px', color: '#000000' }).setOrigin(0);
 		var textAgree = this.add.text(-65, -25, 'I agree to\nparticipate.', { fontSize: '17px', color: '#ffffff' }).setOrigin(0);
 		this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.85, [buttonAgree, textAgree])
 

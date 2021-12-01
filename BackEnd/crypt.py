@@ -27,14 +27,3 @@ def generate_new_keypair(public_key_out="public_key.bin", private_key_out="priva
 
 if __name__ == "__main__":
     generate_new_keypair()
-    
-    """
-    public_key = load_key("public_key.bin")
-    private_key = load_key("private_key.bin")
-
-    paymentId = "123456"
-    encrypted_paymentId = encrypt(paymentId, public_key)
-    print(encrypted_paymentId)
-    decrypted_paymentId = decrypt(encrypted_paymentId, private_key)
-    print(decrypted_paymentId)
-    """
