@@ -188,14 +188,13 @@ Given that structure and presentation mode of \glspl{CFE} is kept constant for b
 }
 
 \subsection{ML model and implementation}
-\textcolor{ACMDarkBlue}{
-The web interface was developed using [REF to phaser, javascript, etc.].
-} \textcolor{ACMDarkBlue}{
-The behavior of the game is determined by predictions of underlying ML models. 
-} \textcolor{ACMDarkBlue}{
-While technically, any ML algorithm (that is CEML cimpatible) could be used, we chose to use ...
-% TO DO: explain 
-}
+While the back end of the system is written in Python3 using the sklearn package~\citep{scikit-learn} for the machine leaning part , the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
+We use a decision tree regression model for predicting the growth rate given the fed plants selected by the user. We choose a decision tree because computing counterfactuals of a decision is fairly simple~\citep{artelt_counterfactuals_survey_2019} but still the model if powerful enough to model our synthetic data set sufficiently well.
+The code for computing the counterfactual explanation is taken from the ceml package~\citep{ceml}.
+Note that, in the interest of reproducible research, all source code is made available.
+For the data set, we sample from all possible combination of plants (including the number of plants) and compute the ground truth growth rate according to the following scheme:
+The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4.
+
 
 \subsection{Participants}
 
