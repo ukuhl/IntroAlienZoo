@@ -84,8 +84,22 @@ If plausibility would be incorporated in the CFEs, it could help.
 }
 
 \section{Computation of CFs and plausible CFs}\label{sec:EffCompCFs}
+Outside the causality domain~\citep{halpern_causality_2020,karimi_counterfactuals_survey_2020}, a counterfactual explanation $\xcf\in\RN^\dimsym$ of a Machine Learning model $\classifier:\RN^\dimsym\to\setY$ was introduced and modeled by~\citep{wachter_counterfactual_2017} as an optimization problem:
+\begin{equation}\label{eq:counterfactual_opt_original}
+\underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x)
+\end{equation}
+where $\x\in\RN^\dimsym$ denotes the original input, the regularization $\regularization(\cdot)$ penalizes deviations from the original input $\x$ (weighted by a regularization strength $C>0$), $\ycf\in\setY$ denotes the requested output/behavior of the $\classifier(\cdot)$ under the counterfactual $\xcf$, and $\loss(\cdot)$ denotes a loss function penalizing deviations from the requested prediction.
+While~\refeq{eq:counterfactual_opt_original} was one of the first modelings of counterfactuals for classical Machine Learning, slightly similar, and often more model specific but more powerful, modelings were proposed as well as many different methods for solving these optimization problems~\citep{verma_counterfactual_2020,artelt_counterfactuals_survey_2019,karimi_counterfactuals_survey_2020}.
 
-\textcolor{ACMDarkBlue}{}
+However, over time it became clear that the original modeling~\refeq{eq:counterfactual_opt_original} (also called \textit{closest counterfactuals}) does not necessarily yield plausible/realistic counterfactuals -- indeed, it turned out that often (depending on the model, loss function and regularization) the counterfactual looked like an adversarial which might be less suited as an explanation~\citep{laugel_counterfactuals_2019}. It is therefore natural to add an additional plausibility constraint:
+\begin{equation}
+\begin{split}
+\underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x) \quad\quad \text{s.t. } \xcf \in \set{P}
+\end{split}
+\end{equation}
+where $\set{P}$ denotes the set of all plausible counterfactual explanations.
+Similar to the modeling of closest counterfactual explanation~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of plausibility have been proposed~\citep{looveren_counterfactuals_2019,poyiadzi_face_2019,farkas_convex_2020}-Survey. One particular prominent instance, are density based approaches~\citep{farkas_convex_2020} in which the counterfactual $\xcf$ is required to be in a region of high density (a density function might be estimated from the training data or from somewhere else available). Another, straight forward, approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019} -- this is the approach we use in this work for ensuring plausibility of the counterfactual explanations.
+
 %In the computer science world, generating a CFs translates into showing what input pertubations alter a model's prediction. Additionally, some authors use the constraint that these pertubations need ot be minimal (REF REF REF).
 %Changes need to be actionable to make a good explanation (REF), i.e. to also foster trust in the system (REF).
 %Counterfactuals are a good means to provide these explanations, as they do not require models themselves to be interpretable, and do not disclose details about an algorithms's internal logic, or other data samples in the training set~\citep{Wachter2017}.
