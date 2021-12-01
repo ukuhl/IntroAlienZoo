@@ -57,22 +57,12 @@ class StartScene extends Phaser.Scene {
 			"Try your best to make your pack grow! The best players will win an extra monetary reward!",
 		];
 
-		// //if(this.varObj.api.controlGroup) {
-		// //	var textBlock3 = [
-		// 		"After three rounds, you will get a summary of your past choices.",
-		// 		"Also, there will be feedback on what other users tried at that point in time.",
-		// 		"During the game, please do not resize our window or use the back button of your browser.",
-		// 		"If you are ready to start, hit the start button.",
-		// 	];
-		//
-		// } else {
 		var textBlock6 = [
 			"After " + this.varObj.numTrialsPerBlock + " rounds, you will get a summary of your past choices.",
 			"Also, there will be feedback on what choice would have led to a better result.",
 			"During the game, please do not resize our window or use the back button of your browser!",
 			"If you are ready to start, hit the start button (will appear shortly).",
 		];
-		//}
 
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, textBlock1, { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000', align: 'left'});
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.075, textBlock2, { fontFamily: "Arial", fontSize: '18px', color: '#000000', align: 'left'});
@@ -100,7 +90,6 @@ class StartScene extends Phaser.Scene {
 		setTimeout(function() {
 			// instatiate and add new stable scene with current data
 			var stableScene = undefined;
-			//this.scene.add('stableScene', stableScene);
 
 			// add button to start game and switch to fullscreen
 			var buttonStart = this.add.image(0, 0, 'buttonFeed').setScale(0.4)

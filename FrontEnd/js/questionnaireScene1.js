@@ -2,7 +2,6 @@ import QuestionnaireScene2 from './questionnaireScene2.js';
 
 class QuestionnaireScene1 extends Phaser.Scene {
 
-	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
 		super({ key: 'questionnaireScene1' });
 		this.varObj = varObj;
@@ -26,8 +25,6 @@ class QuestionnaireScene1 extends Phaser.Scene {
 
 	preload() {
 		// load button images
-		//this.load.image('checkboxEmpty', 'static/CheckBoxEmpty.png');
-		//this.load.image('checkboxClicked', 'static/CheckBoxClicked.png');
 		this.load.spritesheet('checkbox', 'static/CheckBoxSprites.png', { frameWidth: 51, frameHeight: 50 });
 	}
 
@@ -308,21 +305,6 @@ class QuestionnaireScene1 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		/*
-		// instatiate and add new end scene with current data
-		var endScene = undefined;
-		// add button to change to next page
-		var buttonContinue = this.add.image(0, 0, 'buttonFeed').setScale(0.5)
-			.setInteractive()
-			.on('pointerdown', () => endScene = new EndScene(this.varObj))
-			.on('pointerdown', () => this.scene.remove('endScene', endScene))
-			.on('pointerdown', () => this.scene.add('endScene', endScene))
-			.on('pointerdown', () => this.scene.start('endScene'));
-
-		var textContinue = this.add.text(-95, -20, 'Continue!', { fontSize: '25px', color: '#ffffff' })
-		var buttonContainer = this.add.container(window.innerWidth * 0.8, window.innerHeight * 0.5, [buttonContinue, textContinue])
-		*/
-
 		// instatiate and add new end scene with current data
 		var questionnaireScene2 = undefined;
 
@@ -345,7 +327,6 @@ class QuestionnaireScene1 extends Phaser.Scene {
 	onBtnContinue() {
 		if ([this.item1Var1Checked, this.item1Var2Checked, this.item1Var3Checked, this.item1Var4Checked, this.item1Var5Checked, this.item1Var6Checked].every(a => a == false) ||
 			[this.item2Var1Checked, this.item2Var2Checked, this.item2Var3Checked, this.item2Var4Checked, this.item2Var5Checked, this.item2Var6Checked].every(a => a == false)) {
-			//alert("Please answer all questions!");
 			// alerts cause issues in fullscreen mode, here's a workaround:
 
 			// background

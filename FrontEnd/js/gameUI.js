@@ -38,8 +38,8 @@ window.onload = function(){
                 createContainer: true
             },
             backgroundColor: '#ffffff',
-            width: window.innerWidth, //* window.devicePixelRatio
-            height: window.innerHeight, //* window.devicePixelRatio
+            width: window.innerWidth,
+            height: window.innerHeight,
             physics: {
               default: 'arcade',
               arcade: {
@@ -75,7 +75,7 @@ window.onload = function(){
       let maxFeedingNo = 6;
       let minFeedingNo = 0;
       // numbers of Shubs
-      let newNumber = 10; //Math.floor(Math.random() * 100);
+      let newNumber = 10;
       let oldNumber = newNumber;
       // button to start the Game
       var buttonStart;
@@ -160,21 +160,6 @@ window.onload = function(){
 
         return array;
       }
-
-      //
-      //
-      //
-      // // ***************************
-      // // THIS IS THE CODE RECEIVED FROM ANDRE, HOW WE COMMUNICATE asynchronously
-      // // ***************************
-      // var numShubs = 4;
-      // const newShubData = await api.computeNewShubNo(numShubs, trialCount, blockCount, 1, 1, 0, 0, 2);
-      // if (newShubData == undefined) {
-      //     throw "Error while computing new shub number"
-      // }
-      // console.log(newShubData);
-      // // ***************************
-
   })
   .catch((error) => {
       console.log("Smth. went wrong :(");

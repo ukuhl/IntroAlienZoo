@@ -2,7 +2,6 @@ import QuestionnaireScene4 from './questionnaireScene4.js';
 
 class QuestionnaireScene3 extends Phaser.Scene {
 
-	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
 		super({ key: 'questionnaireScene3' });
 		this.varObj = varObj;
@@ -33,8 +32,6 @@ class QuestionnaireScene3 extends Phaser.Scene {
 
 	preload() {
 		// load button images
-		//this.load.image('checkboxEmpty', 'static/CheckBoxEmpty.png');
-		//this.load.image('checkboxClicked', 'static/CheckBoxClicked.png');
 		this.load.spritesheet('checkbox', 'static/CheckBoxSprites.png', { frameWidth: 51, frameHeight: 50 });
 	}
 
@@ -55,15 +52,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
-		// if (this.varObj.api.controlGroup) {
-		// 	var item6 = [
-		// 		"6. I was able to use the feedback based on what other users tried at that point in time in the game to increase the number of Shubs."
-		// 	];
-		// } else {
 		var item6 = [
 			"6. I was able to use the feedback on what choice would have led to a better result to increase the number of Shubs."
 		];
-		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.25, item6, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -230,16 +221,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		// if (this.varObj.api.controlGroup) {
-		// 	var item7 = [
-		// 		"7. I did not find inconsistencies in the feedback based on what other users tried at that point in time in the game."
-		// 	];
-		// } else {
 		var item7 = [
 			"7. Are you still paying attention? If so, please select 'I prefer not to answer' for this question."
-			//"7. I found inconsistencies in the feedback on what choice would have led to a better result."
 		];
-		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, item7, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -406,16 +390,9 @@ class QuestionnaireScene3 extends Phaser.Scene {
 			}
 		}.bind(this));
 
-		// if (this.varObj.api.controlGroup) {
-		// 	var item8 = [
-		// 		"8. I think most people would learn to work with the feedback based on what other users tried at that point in time in the game very quickly."
-		// 	];
-		// } else {
 		var item8 = [
 			"8. I found inconsistencies in the feedback on what choice would have led to a better result."
-			//"8. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
 		];
-		// }
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6, item8, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -605,7 +582,6 @@ class QuestionnaireScene3 extends Phaser.Scene {
 		if ([this.item6Var1Checked, this.item6Var2Checked, this.item6Var3Checked, this.item6Var4Checked, this.item6Var5Checked, this.item6Var6Checked].every(a => a == false) ||
 			[this.item7Var1Checked, this.item7Var2Checked, this.item7Var3Checked, this.item7Var4Checked, this.item7Var5Checked, this.item7Var6Checked].every(a => a == false) ||
 			[this.item8Var1Checked, this.item8Var2Checked, this.item8Var3Checked, this.item8Var4Checked, this.item8Var5Checked, this.item8Var6Checked].every(a => a == false)) {
-			//alert("Please answer all questions!");
 			// alerts cause issues in fullscreen mode, here's a workaround:
 
 			// background

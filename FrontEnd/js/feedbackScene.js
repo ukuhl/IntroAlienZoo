@@ -3,7 +3,6 @@ import QuestionnaireScene1 from './questionnaireScene1.js';
 
 class FeedbackScene extends Phaser.Scene {
 
-	//constructor(plants, trialCount,this.varObj.clickCountVar1,this.varObj.clickCountVar2,this.varObj.clickCountVar3,this.varObj.clickCountVar4,this.varObj.clickCountVar5,oldNumber,newNumber,maxFeedingNo, minFeedingNo) {
 	constructor(varObj) {
 		super({ key: 'feedbackScene' });
 		this.varObj = varObj
@@ -30,131 +29,7 @@ class FeedbackScene extends Phaser.Scene {
 	create() {
 		this.startTime = new Date().getTime();
 
-		// if (this.varObj.api.controlGroup) {
-		// 	// 1st round:
-		// 	this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'In round 1, you selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.075, 'plant1').setScale(0.1);
-		// 	this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.075, 'x ' + this.varObj.in_array[1][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.075, 'plant2').setScale(0.1);
-		// 	this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.075, 'x ' + this.varObj.in_array[1][1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.075, 'plant3').setScale(0.1);
-		// 	this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.075, 'x ' + this.varObj.in_array[1][2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.075, 'plant4').setScale(0.1);
-		// 	this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.075, 'x ' + this.varObj.in_array[1][3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.075, 'plant5').setScale(0.1);
-		// 	this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.075, 'x ' + this.varObj.in_array[1][4], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 	this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1250, 'Result:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.1250, 'Before:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.1250, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-		// 	this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.1250, 'x ' + this.varObj.shubOldNo[1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 	this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.1250, 'After:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.1250, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-		// 	this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.1250, 'x ' + this.varObj.shubNewNo[1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		//
-		// 	if (this.varObj.cf_array[1][0] == -1000) {
-		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.200, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
-		// 	} else {
-		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.175, 'Plants other users selected this at this point in time:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.2250, 'plant1').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.2250, 'plant2').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.2250, 'plant3').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.2250, 'plant4').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.2250, 'plant5').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.2250, 'x ' + this.varObj.in_array[1][4], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 	}
-		//
-		// 	// 2nd round:
-		// 	if(this.varObj.numTrialsPerBlock >= 2) {
-		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.300, 'In round 2, you selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.35, 'plant1').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.35, 'plant2').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.35, 'plant3').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.35, 'plant4').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.35, 'plant5').setScale(0.1);
-		// 		this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.35, 'x ' + this.varObj.in_array[2][4], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.400, 'Result:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.400, 'Before:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-		// 		this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.400, 'x ' + this.varObj.shubOldNo[2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 		this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.400, 'After:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.400, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-		// 		this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.400, 'x ' + this.varObj.shubNewNo[2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 		if (this.varObj.cf_array[2][0] == -1000) {
-		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.475, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
-		// 		} else {
-		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.450, 'Plants other users selected this at this point in time:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.50, 'plant1').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.50, 'plant2').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.50, 'plant3').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.50, 'plant4').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.50, 'plant5').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.50, 'x ' + this.varObj.in_array[2][4], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 		}
-		//
-		// 		// 3rd round:
-		// 		if(this.varObj.numTrialsPerBlock == 3) {
-		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.575, 'In round 3, you selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 			this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.625, 'plant1').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.625, 'plant2').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.625, 'plant3').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.625, 'plant4').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.625, 'plant5').setScale(0.1);
-		// 			this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.625, 'x ' + this.varObj.in_array[3][4], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 			this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.6750, 'Result:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.text(window.innerWidth * 0.125, window.innerHeight * 0.6750, 'Before:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.sprite(window.innerWidth * 0.225, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-		// 			this.add.text(window.innerWidth * 0.250, window.innerHeight * 0.6750, 'x ' + this.varObj.shubOldNo[3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 			this.add.text(window.innerWidth * 0.325, window.innerHeight * 0.6750, 'After:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			this.add.sprite(window.innerWidth * 0.425, window.innerHeight * 0.6750, 'shub', 0, { frameWidth: 50, frameHeight: 46 }).setScale(0.8);
-		// 			this.add.text(window.innerWidth * 0.450, window.innerHeight * 0.6750, 'x ' + this.varObj.shubNewNo[3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 			if (this.varObj.cf_array[3][0] == -1000) {
-		// 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.75, 'Congrats! You were close to an optimal solution in this round!', { fontFamily: "Arial", fontSize: '18px', fontStyle: "bold", color: '#000000' });
-		// 			} else {
-		// 				this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.7250, 'Plants other users selected this at this point in time:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		//
-		// 				this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.775, 'plant1').setScale(0.1);
-		// 				this.add.text(window.innerWidth * 0.07, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][0], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 				this.add.image(window.innerWidth * 0.16, window.innerHeight * 0.775, 'plant2').setScale(0.1);
-		// 				this.add.text(window.innerWidth * 0.18, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][1], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 				this.add.image(window.innerWidth * 0.27, window.innerHeight * 0.775, 'plant3').setScale(0.1);
-		// 				this.add.text(window.innerWidth * 0.29, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][2], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 				this.add.image(window.innerWidth * 0.38, window.innerHeight * 0.775, 'plant4').setScale(0.1);
-		// 				this.add.text(window.innerWidth * 0.40, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][3], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 				this.add.image(window.innerWidth * 0.49, window.innerHeight * 0.775, 'plant5').setScale(0.1);
-		// 				this.add.text(window.innerWidth * 0.51, window.innerHeight * 0.775, 'x ' + this.varObj.in_array[3][4], { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
-		// 			}
-		// 		}
-		// 	}
-		// } else {
+		
 			// 1st round:
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.025, 'In round 1, you selected:', { fontFamily: "Arial", fontSize: '18px', color: '#000000' });
 		this.add.image(window.innerWidth * 0.05, window.innerHeight * 0.075, 'plant1').setScale(0.1);
