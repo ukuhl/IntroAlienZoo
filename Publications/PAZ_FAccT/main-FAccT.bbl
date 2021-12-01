@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{30}
+\begin{thebibliography}{33}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -76,6 +76,26 @@
 \urldef\tempurl%
 \url{https://doi.org/10.1016/j.neucom.2021.04.129}
 \showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Artelt, Vaquet, Velioglu, Hinder, Brinkrolf,
+  Schilling, and Hammer}{Artelt et~al\mbox{.}}{2021}]%
+        {artelt_evaluating_2021}
+\bibfield{author}{\bibinfo{person}{Andr{\'e} Artelt}, \bibinfo{person}{Valerie
+  Vaquet}, \bibinfo{person}{Riza Velioglu}, \bibinfo{person}{Fabian Hinder},
+  \bibinfo{person}{Johannes Brinkrolf}, \bibinfo{person}{Malte Schilling},
+  {and} \bibinfo{person}{Barbara Hammer}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Evaluating {Robustness} of {Counterfactual}
+  {Explanations}}.
+\newblock \bibinfo{journal}{\emph{arXiv:2103.02354 [cs]}} (\bibinfo{date}{July}
+  \bibinfo{year}{2021}).
+\newblock
+\urldef\tempurl%
+\url{http://arxiv.org/abs/2103.02354}
+\showURL{%
+\tempurl}
+\newblock
+\shownote{arXiv: 2103.02354.}
 
 
 \bibitem[\protect\citeauthoryear{Bansal, Nushi, Kamar, Weld, Lasecki, and
@@ -500,6 +520,42 @@
 \urldef\tempurl%
 \url{https://doi.org/10.1177/0146167296229005}
 \showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Schleich, Geng, Zhang, and Suciu}{Schleich
+  et~al\mbox{.}}{2021}]%
+        {schleich_geco_2021}
+\bibfield{author}{\bibinfo{person}{Maximilian Schleich},
+  \bibinfo{person}{Zixuan Geng}, \bibinfo{person}{Yihong Zhang}, {and}
+  \bibinfo{person}{Dan Suciu}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{{GeCo}: {Quality} {Counterfactual} {Explanations}
+  in {Real} {Time}}.
+\newblock \bibinfo{journal}{\emph{arXiv:2101.01292 [cs]}} (\bibinfo{date}{May}
+  \bibinfo{year}{2021}).
+\newblock
+\urldef\tempurl%
+\url{http://arxiv.org/abs/2101.01292}
+\showURL{%
+\tempurl}
+\newblock
+\shownote{arXiv: 2101.01292.}
+
+
+\bibitem[\protect\citeauthoryear{Smyth and Keane}{Smyth and Keane}{2021}]%
+        {smyth_few_2021}
+\bibfield{author}{\bibinfo{person}{Barry Smyth} {and} \bibinfo{person}{Mark~T.
+  Keane}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{A {Few} {Good} {Counterfactuals}: {Generating}
+  {Interpretable}, {Plausible} and {Diverse} {Counterfactual} {Explanations}}.
+\newblock \bibinfo{journal}{\emph{arXiv:2101.09056 [cs]}} (\bibinfo{date}{Jan.}
+  \bibinfo{year}{2021}).
+\newblock
+\urldef\tempurl%
+\url{http://arxiv.org/abs/2101.09056}
+\showURL{%
+\tempurl}
+\newblock
+\shownote{arXiv: 2101.09056.}
 
 
 \bibitem[\protect\citeauthoryear{Stepin, Catala, Pereira-Fari{\~n}a, and

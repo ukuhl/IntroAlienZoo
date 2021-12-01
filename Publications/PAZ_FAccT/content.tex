@@ -3,36 +3,32 @@
 % XAI is all the craze!
 Explaining one's behavior to another is a critical element in human social interaction. 
 A person depends on explanations to improve their understanding, ultimately building a stable mental model as basis for prediction and control~\citep{heider_psychology_1958}. 
-The need to effectively explain not just human action, but also the behavior of automated systems and their underlying \gls{ML} models has received increasing attention in recent years, leading to the advent of \gls{XAI} as a novel research field.
+The need to effectively explain not just human action, but also the behavior of automated systems and their underlying \gls{ML} models, has received increasing attention in recent years. This development gave rise to the advent of \gls{XAI} as a novel research field. Consequently, 
 % Supposed interpretable models are there, exp CFs, but user exaluations are often neglected.
-Consequently, the \gls{XAI} community has seen a varitable surge of technical accounts on how to realize explainability for \gls{ML}~\citep{guidotti_survey_2019}. 
+Consequently, the \gls{XAI} community has seen a veritable surge of technical accounts on how to realize explainability for \gls{ML}~\citep{guidotti_survey_2019}. 
+
 Motivated by a seminal review by~\citep{miller_explanation_2019} advocating a user-centered focus on explainability, \glspl{CFE} gained particular prominence as a supposedly useful, human-accessible solution~\citep{keane_if_2021}.
-\glspl{CFE} provide \textit{what-if} feedback to the user, \ie, information on what changes in the input are needed to elicit a change of an automated decision (\ie, ``if you had worn a mask, you would not have gotten ill''). 
-However, the emerging body of work on explainability of \gls{ML} and \glspl{CFE} specifically shows an alarming tendency to take the quality of the suggested explanation modes at face value \citep{doshi-velez_towards_2017, offert_i_2017}.
+\glspl{CFE} provide \textit{what-if} feedback to the user, \ie, information on what changes in the input elicit a change of an automated decision (\ie, ``if you had worn a mask, you would not have gotten ill''). 
+However, the emerging body of work on \glspl{CFE}, and explainability of \gls{ML} models more generally, shows an alarming tendency to take the quality of the suggested explanation modes at face value \citep{doshi-velez_towards_2017, offert_i_2017}.
 In a recent review of over 100 counterfactual XAI studies,~\citeauthor{keane_if_2021} criticize that only a third of these studies concern themselves with user-based evaluations, often with great limitations concerning statistical power and reproducibility~\citep{keane_if_2021}.
-\textcolor{ACMDarkBlue}{
+
 % A profound research gap: comparing different approaches:
-While gaining prominence at an astonishing pace, contributions proposing methods for generating \glspl{CFE} in \gls{XAI} often focus on technical accounts only, neglecting the need to empirically evaluate the quality of generated explanations in user-based evaluations~\citep{doshi-velez_towards_2017, offert_i_2017}.
-A profound research gap concerns the lack of studies comparing different approaches on how different versions of \glspl{CFE} may be computed. 
-INSERT: reference to one of these rare studies?
-The prevailing approach in the current literature is to compare different \glspl{CFE} approaches in terms of their robustness and fairness (REF REF REF: robustness - Artelt - 2021).
-In-depth evaluation of the user experiences, elucidating the usability of \glspl{CFE} is yet to be done.
+The lack of user-based evaluations affects not only assessments \glspl{CFE} per se, but more specifically also the evaluation of different conceptualizations for this kind of explanations.
+The prevailing approach in the current literature is to compare different \gls{CFE} approaches exclusively in terms of their robustness and theoretical fairness~\citep{artelt_evaluating_2021}, passing over the role of the user as eventual target.  
+Thus, in-depth evaluations of user experiences, elucidating the usability of \gls{CFE} variants, are yet to be done.
+
 % Our contribution! 
 %% TO DO: DEFINE CONTRIBUTION
-In this work, we set out to perform just that: comparing two ways of computing \glspl{CFE}, namely closest and plausible ones.
-The focus here is on the effect when we introduce the concept of plausibility (DETAILS!)
-To investigate differences, we perform a large-scale user study comparing the performance of novice users when receiving closest \glspl{CFE}, or plausible \glspl{CFE}.
-This is our major contribution: we present a user study directly comparing the usability of \glspl{CFE} and plausible \glspl{CFE} as defined by \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
-Thus, we address a vital gap in the literature with this second contribution: While comparative studies of different \gls{CFE} approaches are rare, no user study to date has directly compared different \gls{ML} methods for computing \gls{CFE} explanations with special regard to the impact of plausibility.
-} \textcolor{ACMDarkBlue}{
+The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
+While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
+Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to algorithmically plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
+
 % The structure of this paper
 The remainder of this paper is structured as follows: 
-We will first briefly outline \glspl{CFE} as a psychologically grounded mode of explanation. 
-Further, we will focus on the concept of plausibility from a psychological point of view in section \ref{sec:EffCompCFs}.
-Section \ref{sec:EffCompCFs} is dedicated to a more technical account of how closest and plausible \glspl{CFE} may be computed in a model agnostic way.
-Section \ref{sec:experimental-design} gives an in-depth account of our suggested experimental design, as well as the experimental procedure of our user study. 
-Results are depicted in section \ref{sec:results}, before closing with an in-depth discussion of insights drawn from this study, including limitations and avenues for future work in section \ref{sec:discussion}.
-}
+We will first briefly outline \glspl{CFE} as a psychologically grounded mode of explanation, with special regard to the impact of plausibility in terms of counterfactual thought (Section \ref{subsec:psychoCFs}).
+Section \ref{sec:EffCompCFs} gives a more technical account of conventional---henceforth referred to as close---and plausible model agnostic \gls{CFE} approaches.
+After delineating guiding questions and hypotheses for our research (Section \ref{sec:hypotheses}), we give an in-depth account of our suggested experimental design, as well as the experimental procedure of our user study (Section \ref{sec:experimental-design}). 
+Results are depicted in Section \ref{sec:results}, before closing with an in-depth discussion of insights drawn from this study, including limitations and avenues for future work in Section \ref{sec:discussion}.
 
 \section{Counterfactual explanations as a psychologically grounded solution for XAI}\label{subsec:psychoCFs}
 
