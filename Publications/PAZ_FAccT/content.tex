@@ -50,7 +50,7 @@ This evidence is the root for the common supposition in \gls{XAI} that explanati
 
 Decades of philosophical and psychological research has concerned itself with the question of how humans generate counterfactuals. 
 % how do humans generate CFEs? --> possible worlds account by Lewis
-Lewis' seminal work on the topic builds on a theory of possible worlds, postulating that counterfactual statements trigger a comparison between the actual circumstances and a conceivable world in which the counterfactual statement occurred~\citep{harper_counterfactuals_1973}.
+Lewis' seminal work on the topic builds on a theory of possible worlds, postulating that counterfactual statements trigger a comparison between the actual circumstances and a conceivable world in which the counterfactual statement occurred~\citep{lewis_counterfactuals_1973}.
 % how do humans generate CFEs? --> mental models view, Byrne
 Embedding this view into a cognitive framework of counterfactual thought, the Mental Models Theory emphasizes the human ability to entertain two parallel representations of reality: The factual conditional, corresponding to the true state of the world, and the concurrent non-factual possibility, temporarily assumed to be true~\citep{byrne_mental_2002,byrne_precis_2007,johnson-laird_conditionals_2002,walsh_mental_2005}.
 % Neuroscience evidence:
@@ -68,7 +68,7 @@ Variable interpretations of what constitutes a plausible counterfactual exist, r
 
 \citeauthor{kahneman_simulation_1982} refer to hypothetical events as plausible if they are easy to imagine~\citep{kahneman_simulation_1982}. 
 %%%%%%% plausibility as closeness / similarity / comparative similarity:
-In his seminal work,~\citeauthor{harper_counterfactuals_1973} supposes that plausible counterfactuals come from worlds that are minimally different from reality~\citep{harper_counterfactuals_1973}. 
+In his seminal work,~\citeauthor{lewis_counterfactuals_1973} supposes that plausible counterfactuals come from worlds that are minimally different from reality~\citep{lewis_counterfactuals_1973}. 
 Building up on this idea of comparative similarity, empirical research shows perceived plausibility of a counterfactual event to be proportional to the perceived similarity between said counterfactual and the factual state~\citep{stanley_counterfactual_2017, de_brigard_perceived_2021}.
 
 %%%%%%% plausibility as probability:
@@ -82,21 +82,21 @@ Thus, while it is difficult to pinpoint exactly what makes a counterfactuals psy
 Following the user-centered focus on explainability proposed by~\citeauthor{miller_explanation_2019}~\citep{miller_explanation_2019}, incorporating these concepts would be an important step towards automatic generation of plausible, and thus more human-friendly and usable, \gls{CFE}.
 
 \section{Computation of CFs and plausible CFs}\label{sec:EffCompCFs}
-Outside the causality domain~\citep{halpern_causality_2020,karimi_counterfactuals_survey_2020}, a counterfactual explanation $\xcf\in\RN^\dimsym$ of a Machine Learning model $\classifier:\RN^\dimsym\to\setY$ was introduced and modeled by~\citep{wachter_counterfactual_2017} as an optimization problem:
+Outside the causality domain~\citep{halpern_causes_2020,karimi_survey_2020}, a counterfactual explanation $\xcf\in\RN^\dimsym$ of a Machine Learning model $\classifier:\RN^\dimsym\to\setY$ was introduced and modeled by~\citep{wachter_counterfactual_2017} as an optimization problem:
 \begin{equation}\label{eq:counterfactual_opt_original}
 \underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x)
 \end{equation}
 where $\x\in\RN^\dimsym$ denotes the original input, the regularization $\regularization(\cdot)$ penalizes deviations from the original input $\x$ (weighted by a regularization strength $C>0$), $\ycf\in\setY$ denotes the requested output/behavior of the $\classifier(\cdot)$ under the counterfactual $\xcf$, and $\loss(\cdot)$ denotes a loss function penalizing deviations from the requested prediction.
-While~\refeq{eq:counterfactual_opt_original} was one of the first modelings of counterfactuals for classical Machine Learning, slightly similar, and often more model specific but more powerful, modelings were proposed as well as many different methods for solving these optimization problems~\citep{verma_counterfactual_2020,artelt_counterfactuals_survey_2019,karimi_counterfactuals_survey_2020}.
+While~\refeq{eq:counterfactual_opt_original} was one of the first modelings of counterfactuals for classical Machine Learning, slightly similar, and often more model specific but more powerful, modelings were proposed as well as many different methods for solving these optimization problems~\citep{verma_counterfactual_2020,artelt_counterfactuals_survey_2019,karimi_survey_2020}.
 
-However, over time it became clear that the original modeling~\refeq{eq:counterfactual_opt_original} (also called \textit{closest counterfactuals}) does not necessarily yield plausible/realistic counterfactuals -- indeed, it turned out that often (depending on the model, loss function and regularization) the counterfactual looked like an adversarial which might be less suited as an explanation~\citep{laugel_counterfactuals_2019}. It is therefore natural to add an additional plausibility constraint:
+However, over time it became clear that the original modeling~\refeq{eq:counterfactual_opt_original} (also called \textit{closest counterfactuals}) does not necessarily yield plausible/realistic counterfactuals -- indeed, it turned out that often (depending on the model, loss function and regularization) the counterfactual looked like an adversarial which might be less suited as an explanation~\citep{laugel_issues_2019}. It is therefore natural to add an additional plausibility constraint:
 \begin{equation}
 \begin{split}
 \underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x) \quad\quad \text{s.t. } \xcf \in \set{P}
 \end{split}
 \end{equation}
 where $\set{P}$ denotes the set of all plausible counterfactual explanations.
-Similar to the modeling of closest counterfactual explanation~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of plausibility have been proposed~\citep{looveren_counterfactuals_2019,poyiadzi_face_2019,farkas_convex_2020}-Survey. One particular prominent instance, are density based approaches~\citep{farkas_convex_2020} in which the counterfactual $\xcf$ is required to be in a region of high density (a density function might be estimated from the training data or from somewhere else available). Another, straight forward, approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019} -- this is the approach we use in this work for ensuring plausibility of the counterfactual explanations.
+Similar to the modeling of closest counterfactual explanation~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of plausibility have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}-Survey. One particular prominent instance, are density based approaches~\citep{artelt_convex_2020} in which the counterfactual $\xcf$ is required to be in a region of high density (a density function might be estimated from the training data or from somewhere else available). Another, straight forward, approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019} -- this is the approach we use in this work for ensuring plausibility of the counterfactual explanations.
 
 %In the computer science world, generating a CFs translates into showing what input pertubations alter a model's prediction. Additionally, some authors use the constraint that these pertubations need ot be minimal (REF REF REF).
 %Changes need to be actionable to make a good explanation (REF), i.e. to also foster trust in the system (REF).
@@ -116,6 +116,10 @@ The main research question of the current work is: Can plausible \glspl{CFE} hel
 
 \textcolor{ACMDarkBlue}{
 We posit: yes! Maybe being repeateldy exposed to exemplars that are more representative of the real distribution enables humans to build a more appropriate mental model more quickly. While no background knowledge exsists at the start, the real life situation may be really clear for people after seeing these examples (more than CFs that are just minimally different, but not representative of the real data distribution)
+}
+
+\textcolor{ACMDarkBlue}{
+The design is key - we usean abstract domain - if plausibility as probability is key, humans should have a hard time...
 }
 
 \textcolor{ACMDarkBlue}{
@@ -144,6 +148,9 @@ To test hypothesis1,hypothesis2,hypothesis3, ... from \ref{sec:hypotheses}, we..
 
 \subsection{The plausible Alien Zoo paradigm}
 
+\textcolor{ACMDarkBlue}{
+We developed a game-like experimental design based on a web-based interface, to facilitate access for users from all over the world and diverse backgrounds, enabling large-scale and easy participant recruitment.
+}
 \textcolor{ACMDarkBlue}{
 In the current study, be relied on the novel Alien Zoo paradigm (REF to arxiv paper).
 } \textcolor{ACMDarkBlue}{
@@ -179,7 +186,7 @@ We measure understanding and usability of explanations in terms of two objective
 In terms of behavior, we assess the development of pack size in the Alien Zoo game over trials. 
 As a measure of task performance, this value indicates the extend of user's understanding of relevant in irrelevant features in the underlying dataset, assuming that a solid understanding leads to better feeding choices. 
 } \textcolor{ACMDarkBlue}{
-Second, we measure time needed to reach a feeding decision over trials. As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing time required to reach a feeding decision~\citep{logan_shapes_1992}.
+Second, we measure time needed to reach a feeding decision over trials. As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing time required to reach a feeding decision~\citep{logan_shapes_1992}. 
 } \textcolor{ACMDarkBlue}{
 We acquired self-reported measurements using the post-game survey, testing different aspects of participant’s system understanding. 
 } \textcolor{ACMDarkBlue}{
@@ -194,19 +201,15 @@ Given that structure and presentation mode of \glspl{CFE} is kept constant for b
 }
 
 \subsection{ML model and implementation}
-While the back end of the system is written in Python3 using the sklearn package~\citep{scikit-learn} for the machine leaning part , the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
+While the back end of the system is written in Python3 using the sklearn package~\citep{pedregosa_scikit-learn_2011} for the machine leaning part , the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
 We use a decision tree regression model for predicting the growth rate given the fed plants selected by the user. We choose a decision tree because computing counterfactuals of a decision is fairly simple~\citep{artelt_counterfactuals_survey_2019} but still the model if powerful enough to model our synthetic data set sufficiently well.
-The code for computing the counterfactual explanation is taken from the ceml package~\citep{ceml}.
+The code for computing the counterfactual explanation is taken from the ceml package~\citep{artelt_ceml_2019}.
 Note that, in the interest of reproducible research, all source code is made available.
 For the data set, we sample from all possible combination of plants (including the number of plants) and compute the ground truth growth rate according to the following scheme:
 The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4.
 
 
 \subsection{Participants}
-
-\textcolor{ACMDarkBlue}{
-We developed a game-like experimental design based on a web-based interface, to facilitate access for users from all over the world and diverse backgrounds, enabling large-scale and easy participant recruitment.
-}
 
 The study ran in early November 2021 on \gls{AMT}.
 After performing three pilots with 10 users each to refine the experimental design, we recruited a total of 100 participants for the final assessment. % Batch info neccesary? % report that users were excluded if the done it before?
@@ -287,11 +290,11 @@ We report effect sizes for all survey data comparisons as \textit{r}.
 
 We performed an a priori sample size estimation based on data obtained from the third pilot. 
 To do so, we set up two linear mixed effects models with shub number and reaction time as described above. 
-For each of these models, we run a simulation-based power analyses for samples of 20--100 participants with fixed effects of group and trial number over 1000 simulations (mixedpower v.0.1.0) \citep{kumle_estimating_2021}. 
-Inspecting the results, we choose to acquire data from 100 participants to reach a power $>$ 80\% for at least one combination of trial number and group.
+For each of these models, we run a simulation-based power analysis for samples of 20--100 participants with fixed effects of group and trial number over 1000 simulations (mixedpower v.0.1.0) \citep{kumle_estimating_2021}. 
+Inspecting the results, we choose to acquire data from 100 participants to reach a power $>$ 80\% for at least one combination of trial number and group, while also accounting for potential participant attrition.
 
 As a web-based study, we run the risk that some participants attempt to game the system to collect the reward without providing proper answers. 
-Thus, we implemented a number of data quality checks that were planned a priori.
+Thus, we implement a number of data quality checks that were planned a priori.
 We identify speeders based on the time needed to reach a feeding decision, flagging users that spent less than 2s in the padlock scene in 4 or more trials.
 We flag participants that fail to respond with the correct number of shubs in both attention trials during the game.
 Furthermore, we included a catch item (item 7) in the survey, asking users to tick the ``I prefer not to answer.'' option, flagging users that did not pay attention to the survey items.
@@ -375,80 +378,162 @@ Our explanatory analysis revealed that more than half of all users in both group
 
 \section{Discussion}\label{sec:discussion}
 
-% re structure along the main questions:
-%\subsection{Do plausible \gls{CFE} facilitate learning?}
+In this work, we investigate potential effects of implementing a plausibility constraint on computed \glspl{CFE} for \gls{ML} models, on user performance in an iterative learning task in an abstract domain. 
+The employed constraint limits the set of possible solutions to the training data.
+Through the experimental design of our study, we measure understanding and usability of explanations in terms of two objective behavioral variables, \ie, task performance and decision time, and several subjective self-reports. 
+Our results reveal a range of valuable insights with important implications for \gls{XAI} in application.
 
-\textcolor{ACMDarkBlue}{
-% for our case: %%%%%% MOVE TO DISCUSSION: %%%%%%%%%
-Why is closer better? since we are in an abstract domain - no matter which definition of psychological plausibility we take (likeliness, ease of imagining it) - it deviates seems to be pointless given the abstract domain; all CFEs should be equally likely, all should be equally likely to imagine (MAYBE NOT, THOUGH: plausible CFEs induce larger jumps, larger difference, maybe increasing the mental load on users, making it more difficult to apply them) -- in fact, according to the mental models view, the closest CFEs may be more psychologically plausible than the algorithmically plausible version.  
-when people naturally generate counterfactual thoughts, they tend to contrast a template mental representation of what is thought to be true or normal against another mental representation that is thought to be false but deviates minimally from the template. 
-THIS MIGHT BE AN "AFFECTIVE ACCOUNT" as interpretation: in fact, semantic closeness is related to human plausibility -- this is the debate about "just making it" - "just missing the better option" -- this has shown to lead to more negative emotions--thus leading to greater drive to improve? CHECK LIT AGAIN!
-} \textcolor{ACMDarkBlue}{
-Here's a thing:
-It is notable that a considerable proportion of both groups responded positively about understanding the feedback, supporting the general notion that \glspl{CFE} are very human friendly.
-The highest agreement is inpresentation of feedback (timely and efficiently), which is a win for our design!
-} \textcolor{ACMDarkBlue}{
-What we can also show: the framework of the alien Zoo is suitable to test the usability of a particular CF method. We could also use it to test different CF methods agains each other! Such comparative user studies are sparse: Akula, et al., 2020; Förster et al., 2020a, 2020b (referenced in Keane, 2021)
-} \textcolor{ACMDarkBlue}{
-Lim 2019 writes: ''Our results may suggest the ineffectiveness of How To and What If explanations, but these intelligibility types may be more useful for other types of tasks, particularly those relating to figuring out how to execute certain system functionality, rather than interpreting or evaluating.'' - are we better? Why?
-} \textcolor{ACMDarkBlue}{
-What could lead to problems? From Lage, 2019: ''Kulesza et al. (2013) performed a qualitative study in which they varied the soundness and the completeness of an explanation of a recommendation system. They found completeness was important for participants to build accurate mental models of the system.'' -- Are CFs really complete? Is it guaranteed that user's get the complete picture given a subset of explanations highly dependent on their own input?
-} \textcolor{ACMDarkBlue}{
-Lage et al., 2019: CF evaluation is harder than mere simulation or verification tasks (i.e., users need significantly longer and were judged as being significantly harder to do than simple simulations)
-} \textcolor{ACMDarkBlue}{
-Check out: improved task performance are contingent on both system understanding and appropriate trust (CHEF REF: R.R. Hoffman, S.T. Mueller, G. Klein, J. Litman, Metrics for explainable AI: challenges and prospects, arXiv preprint arXiv:1812.04608.)
-} \textcolor{ACMDarkBlue}{
-in van der Waa 2021: explanations did not improve task performance (choosing the correct dosage of insulin) - why did it (hopefully) work for us?
-} \textcolor{ACMDarkBlue}{
-Building upon work by Isabel Valera: in our case, plausibility corresponds to algorithmic recourse, as all changes in features are independent (user can change leaf 1, and this will have no long-time effect on leaf 2), and all changes are feasible (i.e., doable for the participant). In real life, this is not always the case (a bank customer might never be able to get younger to get a loan; yearly income also affects savings) - thus, our example is more artificial
-} \textcolor{ACMDarkBlue}{
-Our findings are a replication of a phenomenon observed by van der Waa, 2021: in a recent study, van der Waa showed that perceived system understandability did not correlate with any objective measure of performance, shedding profound doubt onto whether we should just assume something to be understandable.
-}
+%%%% Hypothesis 1 - Do plausible CFEs facilitate learning?
+First, we cannot verify our initial supposition that plausible \glspl{CFE} facilitate learning in the current setting. 
+Intriguingly, we observe the opposite effect: In terms of task performance measured as pack size, users in the closest condition performed statistically better than users in the plausible condition.
+A likely reason for this observation may be that the current study revolves around an abstract scenario of feeding aliens. 
+Given psychological interpretations of plausibility as probability~\citep{pezdek_is_2006, de_brigard_remembering_2013}, simply restricting \glspl{CFE} to items from the training set cannot help participants that lack an informed mental representation of the current state of this alien world. 
+For a novice user at the onset of the study, any counterfactual is equally likely.
+
+% Why is closer better - maybe higher comparative similarity!
+To find a possible explanation why users in the closest group showed significantly superior performance, we may turn to the definition of psychological plausibility as comparative similarity~\citep{lewis_counterfactuals_1973, stanley_counterfactual_2017}. 
+Classically, computed CFEs are penalized if they deviate from the requested prediction~\citep{wachter_counterfactual_2017}, resulting in what we refer to as close counterfactuals, differing minimally from the user’s input.
+This concept resembles the view that psychologically plausible counterfactuals come from worlds that are minimally different from reality~\citep{lewis_counterfactuals_1973}.
+Empirical evidence highlighting the close relation between perceived plausibility and perceived similarity between counterfactual and factual state supports this notion~\citep{stanley_counterfactual_2017, de_brigard_perceived_2021}.
+In contrast, the algorithmic plausibility constraint rejects counterfactuals that are not part of the training set, even if they are minimal.
+Consequently, users in the plausible condition encounter larger differences between provided explanations and their input, at odds with the idea of plausibility as comparative similarity.
+Conversely, users in the closest condition might have experienced their \glspl{CFE} as more psychologically plausible than the algorithmically plausible version.
+Further, an emotional effect is conceivable: Upon seeing close \glspl{CFE}, users might get a feeling of ``just missing the better option'', inducing negative affect, strongly motivating the need for improvement~\citep{medvec_when_1997, markman_reflection_2003}.
+Additionally, we may speculate that the larger discrepancies between factual and counterfactual state in the plausible condition may increase the mental load on users, hampering learning.
+Future studies need to disentangle contributions of these potential factors.
+
+% Refer to Lim, 2009 - they did not find any effects for What-if explanations, 
+Intriguingly, our results are at odds with empirical findings indicating that \glspl{CFE} for intelligent systems do not improve user's task performance~\citep{lim_why_2009, van_der_waa_evaluating_2021}.
+~\citeauthor{lim_why_2009} assessed the effectiveness of different explanation modes for context-aware systems~\citep{lim_why_2009}. 
+In their study, performance of users receiving counterfactual style \textit{what-if}-explanations was indistinguishable from that of users getting no explanations what-so-ever.
+In contrast, users in our study indeed show learning after receiving \glspl{CFE}.
+Interestingly, their task resembles ours in so far that they also employed an abstract domain: users chose values of non-specific features (labelled \textit{A}, \textit{B} and \textit{C}), relating to a non-specific prediction (\textit{a} or \textit{b}).
+However, while also dealing with an abstract task (\ie, feeding aliens), users have a tangible goal (\ie, make the pack grow).
+Further, we refrain from separating learning and testing as in ~\citeauthor{lim_why_2009}, where users went through an initial evaluation section receiving explanation after explanation.
+Our design is far more interactive, with different rounds of user action and feedback.
+This is in line with evidence from educational science, suggesting that learner's level of engagement relates to final learning outcomes, with interactive activities granting deepest understanding \citep{chi_icap_2014}.
+%These vital differences may make our design more effective.
+Thus, including goal-directed and interactive settings may potentially be vital facets of an effective usability studies. 
+We suggest that future research designs need to pay special attention to these aspects in order to accurately evaluate \gls{XAI} approaches.
+
+% We did not find timing differences
+Beyond task performance, we quantify learning success in terms of user's decision time and their ability to explicitly state which plants were crucial for their pack to prosper. % (survey items 1 and 2).
+Both measures do not reveal significant group differences.
+In terms of user's decision time, both groups show significant speed-up already after Trial 1 (Figure \ref{fig:hyp1}a).
+This initial time decrease likely reflects how participants learn to work with the game interface efficiently.
+Increased reaction time as a marker of learning is a classical insight from experimental psychology \citep{logan_shapes_1992}, indicating that both groups did indeed learn in the current setting. 
+It is possible that the complex task we devised with its elaborate game-like setting was not sensitive enough or too short to pick up in subtle group differences usually linked to more simple, extensive reaction time experiments.
+
+% We did not find differences in relevance judgements
+It is interesting that participants in the closest group show superior task performance, however, they are not able to state more explicitly which plants were relevant or irrelevant for the given task, respectively. 
+With this, our study replicates a recent observation that objective measures (here: task performance) do not necessarily correlate with self-reports reflecting system understanding~\citep{van_der_waa_evaluating_2021}.
+Participants in both groups made three out of five correct choices on average (Figure \ref{fig:hyp1}c).
+Thus, both groups showed some--yet imperfect--explicit understanding of the underlying system.
+Potentially, users may rely on their initial mental model of the appropriate alien diet, allowing them to make advantageous feeding choices relatively quickly. However, in this initial stage, it may still be insufficient to allow clear and explicit differentiation between relevant and irrelevant features at the end of the study.
+
+%%%% Hypothesis 2 - Do plausible CFEs increase user's subjective understanding?
+Besides our comparison of task performance, we do not detect any statistically meaningful differences between the two groups under investigation, predominantly affecting the evaluation of user judgements in the survey. 
+It is clear that these observations have to be taken with the care generally devoted to null effects, calling for cautious interpretation. 
+Still, regarding the general trends for individual survey items is informative.
+We cannot verify our second hypothesis, as users did not differ depending on group in terms of subjective helpfulness and usability. 
+Still, we note that the majority of users in both groups respond with agreement or strong agreement in the respective items (Figure \ref{fig:survey}a).
+This supports the notion that \glspl{CFE} are indeed subjectively intuitive and usable for lay users, also when used in an abstract setting.
+
+%%%% Hypothesis 3 - Does mode of presentation have an impact?
+A major challenge for effective user designs comparing different approaches is keeping conditions highly comparable, with the sole exception of the experimental manipulation.
+User judgements of general understandability and presentation mode of \glspl{CFE} inspire confidence that we achieved this level of control with our Alien Zoo design. 
+In fact, the respective items elicit the highest user judgements out of all survey responses, with agreement values close to 90\%.% (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
+~High agreement across both groups leads us to conclude that mode of \gls{CFE} presentation does not have an impact when comparing users experience close vs. plausible \glspl{CFE}, validating our hypothesis 3.
+Thus, the Alien Zoo design as proposed here is suitable for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}~\citep{keane_if_2021}.
+
+%%%% Exploratory Analysis
+Finally, the majority of users across groups indicate that they fail to find inconsistencies in the explanations provided.
+Thus, we can rule out that the CEML toolbox generated irregular or even contradictory explanations, confounding the observed group differences.
 
 \subsection{Limitations \& Future Work}\label{subsec:limitations-future-work}
-\textcolor{ACMDarkBlue}{
-Two critical design decisions need to be considered are the reason for explaining, and who the given explanation targets. Thus, it is important to keep in mind, that ganeralizability of results of user based studies is likely limited to the current reason (to 'explore') as well as the current target audience (novice users). 
-Our experimental design caters to one need for explanation only. 
-We can only make statements as to how CFs are useful when ML predictions are used to learn something about the system. 
-This might prove super helpful for ML tutoring systems. 
-However, there are more reasons to explain (debugging, etc., see Adadi again) that the current design cannot cover. Future work and other settings are needed.
-} \textcolor{ACMDarkBlue}{
-Out design has the advantage to be very generall, addressing the lay user. For CFs that are supposed to assist experts in very specific applications, e.g., in the medical (REF) field or so (others?) need more specific user assessments and experimental designs targeting experts.
-} \textcolor{ACMDarkBlue}{
-From a psychological standpoint, it is important to note that definitions of CFs slightly diverge. Many computer science definitions consider a CF as valid only if it represents a ''minimal set of features to change'' (Ref?). In Psychology, however, any combination of changes leading to a different outcome can be considered a counterfactual (true, there are better and worse ones, but still...)
-} \textcolor{ACMDarkBlue}{
-Out study was set up to be engaging - but it is also complex; there is a chance that users could have been overwhelmed with the user interface
-} \textcolor{ACMDarkBlue}{
-Impact of individiual traits on performance here could not be tested (see Gleaves et al., 2020). Future work!
-} \textcolor{ACMDarkBlue}{
-Abstract domain - probably not suitable for other specific domain such as CFs for image classification
-} \textcolor{ACMDarkBlue}{
-Many XAI studies supposedly suffer from confirmation bias - does our do so, too?: Rosenfeld, A. (2021, May). Better Metrics for Evaluating Explainable Artificial Intelligence. In Proceedings of the 20th International Conference on Autonomous Agents and MultiAgent Systems (pp. 45-50).
-} \textcolor{ACMDarkBlue}{
-Another cool design worth looking at: chatbot use! Chat-XAI: A New Chatbot to Explain Artificial Intelligence, 2021; \url{Gao, M., Liu, X., Xu, A., \& Akkiraju, R. (2021, September). Chat-XAI: A New Chatbot to Explain Artificial Intelligence. In Proceedings of SAI Intelligent Systems Conference (pp. 125-134). Springer, Cham.}
-} \textcolor{ACMDarkBlue}{
-Future work:
-Our design has tremendous potential to be adapted to answer more questions...
-} \textcolor{ACMDarkBlue}{
-Lim, 2009: ''Another issue with real systems is that users may not like to receive explanations all the time, but on demand instead, because the former may be too obtrusive. We would like to run a future study to compare if users can still benefit sufficiently from explanations if they get to choose when and how often they can receive explanations, and if explicit effort in asking for explanations can improve learning.'' Adapt this point for our purpose as well!
-} \textcolor{ACMDarkBlue}{
-Whithin-subject study would be cool!
-} \textcolor{ACMDarkBlue}{
-Look at various age groups (including kids!) and explore the effect other 
-}
-\textcolor{ACMDarkBlue}{
-Did we use an unsuitable design / setting?
-One thing in our case: "plausibility is usually confounded with degree of background knowledge." (PEZDEK, 2006,  Memory \& Cognition) - none of our people had background knowledge (sold as an advatage so far)  
-}
-\textcolor{ACMDarkBlue}{
-Future work: plausibility may be dangerous: one may assume that something is true, just because it is plausible (i.e., the plausibility fallacy)
-}
+
+We need to address several limitations that warrant caution for interpreting the results beyond the scope of this work.
+%What are limitations?
+%% does it generalize? NOT beyond the setting (nocive users with an abstract domain, trying to learn something)
+Critical design choices in any \gls{XAI} evaluation include the reason for explaining, and the target group~\cite{adadi_peeking_2018}.
+Following the taxonomy of~\citeauthor{adadi_peeking_2018}, the current results may only be generalized to cases with the same motivation for explaining (\ie, to `explore') as well as the intended audience (\ie, novice users).
+Other motives and applications addressing more specific target groups call for independent studies.
+
+%% sample size: we pre-computed it, but had to throw out a portion - does it still hold up?
+From the originally recruited 100 participants, we excluded data from 26 individuals that did not meet our a priori data quality criteria.
+Such participant attrition common, especially in web-based studies. 
+As smaller sample sizes always mean a loss of statistical power, we factored in this issue early on, based on our a priori power analysis. 
+Yet, the effect size of the significant interaction between factors \textit{trial number} and \textit{group} remains relatively small. 
+Hence, the results from this work await confirmation in larger follow-up studies.
+
+%% confirmation bias?
+A further cautionary note regards the problem of users falling victim to confirmation bias after receiving the first round of \gls{CFE} feedback~\citep{wang_designing_2019}. 
+In essence, we cannot rule out that some users generate a faulty initial hypothesis, and subsequently look for confirming evidence for that faulty initial hypothesis only. 
+Such a strategy would hamper learning profoundly, irrespective of the explanation provided, and we cannot rule out that some lower performing users did indeed follow it.
+While exploring the impact of confirmation bias for \glspl{CFE} in \gls{XAI} was outside the scope of this work, the issue deserves more careful attention in future work.
+
+% was our survey suitable? 
+None of the user judgements differ for users receiving close and plausible \glspl{CFE}, respectively.
+This is in line with a previous report of diverging trends between objective measures and self-reports~\citep{van_der_waa_evaluating_2021}, and may actually reflect a more general tendency in human evaluation of system understanding.
+As an alternative explanation, however, we may also call into question the efficacy of instruments applied to assess user experience. 
+To date, there is no standard inventory for assessing subjective usability in \gls{XAI} research.
+We applied an adapted version of the System Causability Scale \cite{holzinger_measuring_2020}, to quickly determine to what extent users found the presented \gls{CFE} feedback suitable.
+However, to our knowledge, there is no large scale validation of this measure yet.
+Thus, one potential shortcoming of the applied measure is a lack of sensitivity to potentially small group differences.
+
+%% difficult to durectly translate for real world applications
+Moreover, we would like to note that the current scenario in its present condition may be difficult to translate to specific real-world applications.
+The lack of realism offers full algorithmic recourse~\citep{karimi_survey_2020}: all changes are feasible (\ie, doable for the participant), and all changes in features are independent (\ie, a user can change plant 1, and this will have no long-time effect on plant 2).
+In real life scenarios, this is barely the case (\eg, a bank customer might never be able to get younger to get a loan; yearly income also affects savings). 
+Thus, our example is much more artificial, and we suggest applying iterative learning designs in more realistic, real-world scenarios as an exciting avenue for future work.
+%Despite its "abstractness", a similar scenario could appear when users interact with a tutor system, where the aim is to learn new stuff - or in everyday situations like interacting with household assistants that integrate data from various sources, where humans do not really fathom how these sources interact (how about smart meters, controlling heating?) 
+
+%% What did ppl do that did not show high levels of learning?
+Lastly, users in our study play an elaborate online game, with a detailed user interface, and several scenes building up on each other.
+Designed to be maximally engaging as to ensure participant compliance, we have to consider the possibility that the amount of information displayed may overwhelm some participants.
+This could explain inferior performance of a small proportion of participants, like those who disagree with the notion that feedback presentation was timely and efficiently.
+
+% FUTURE WORK
+The Alien Zoo design lends itself to be easily modified. 
+Possible adaptations may incorporate data with different dynamics, use other underlying models, or rely on other approaches for generating \glspl{CFE}.
+Thus, the design has tremendous potential to be altered to answer various open questions in the domain of \gls{XAI}.
+
+For instance, future work may explore the impact of distinct psychometric properties on performance. 
+A small-scale user study based on data from 38 participants suggests an influence of individual personality traits on user's ability to make sense of an \gls{ML} system's output, and understanding the generation process, respectively~\citep{gleaves_role_2020}.
+It remains to be shown how personal attributes relate to usability judgements of \glspl{CFE}.
+
+Further, it is conceivable that users may prefer to receive explanations on demand, rather than obtaining them continuously at regular intervals.
+There is abundant room for further progress in determining whether explicitly requesting \glspl{CFE} may improve task performance, and how users would make use of their control over the explanation intervals.
+
+Finally, we successfully demonstrate that users can make use of provided \glspl{CFE} in the current task, indicating a certain degree of intuitiveness or plausibility connected to them. 
+Future investigations may tackle whether \glspl{CFE} cause users to fall prey to a plausibility fallacy, coming to trust ML models even if they are biased and unfair, just because they are coupled with intuitive explanations.
 
 \subsection{Conclusion}\label{subsec:conclusion}
 \textcolor{ACMDarkBlue}{
-In this work, we present a large controlled study of...
+In this work, we present a controlled study of...
 We developed a game-like experimental design based on a web-based interface...
 The code of this is available, making it easy to adapt to other approaches to compute CFs and other underlying ML models. We welcome its use by other research groups and practitioners, to further advance the currently limited insights into the field.
+It supports the view of plausibility as comparative similarity
 } \textcolor{ACMDarkBlue}{
+Keep the scenario, application, etc, always in mind
 Our findings suggest that providing (plausible) counterfactuals explanations to novice users...
+Sometimes, what is inteded to be plausible from a modelling side reveals to be implausible from the user side.
+Compared to previous evaluations, Goal-directedness / interactiveness might be a thing.
+Thus, the Alien Zoo design as proposed here is suitable for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}~\citep{keane_if_2021}.
+NICE PHRASING??? "Our work motivates the design of systems that explicitly take users’ mental representations into account during the design process to more effectively support end user requirements."
 }
+
+\subsection{Out for now}
+%% Out for now
+\textcolor{ACMDarkBlue}{
+Lage et al., 2019: CF evaluation is harder than mere simulation or verification tasks (i.e., users need significantly longer and were judged as being significantly harder to do than simple simulations)
+} 
+\textcolor{ACMDarkBlue}{
+Check out: improved task performance are contingent on both system understanding and appropriate trust (CHEF REF: R.R. Hoffman, S.T. Mueller, G. Klein, J. Litman, Metrics for explainable AI: challenges and prospects, arXiv preprint arXiv:1812.04608.)
+} 
+\textcolor{ACMDarkBlue}{
+NO ACCESS YET: Another cool design worth looking at: chatbot use! Chat-XAI: A New Chatbot to Explain Artificial Intelligence, 2021; \url{Gao, M., Liu, X., Xu, A., \& Akkiraju, R. (2021, September). Chat-XAI: A New Chatbot to Explain Artificial Intelligence. In Proceedings of SAI Intelligent Systems Conference (pp. 125-134). Springer, Cham.}
+}  
+\textcolor{ACMDarkBlue}{
+From a psychological standpoint, it is important to note that definitions of CFs slightly diverge. Many computer science definitions consider a CF as valid only if it represents a ''minimal set of features to change'' (Ref?). In Psychology, however, any combination of changes leading to a different outcome can be considered a counterfactual (true, there are better and worse ones, but still...)
+} 
