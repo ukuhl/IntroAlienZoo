@@ -110,6 +110,8 @@ Similar to the modeling of closest counterfactual explanation~\refeq{eq:counterf
 % Here: Make a connection why it would be sensible to assume so.
 % Plausibility is an important feauture for human-generated CFEs, so why not also for machine learning ones?
 
+% TO DO: bring in the advantages of an iterative learning design
+
 \textcolor{ACMDarkBlue}{
 The main research question of the current work is: Can plausible \glspl{CFE} help users?
 }
@@ -508,32 +510,27 @@ There is abundant room for further progress in determining whether explicitly re
 Finally, we successfully demonstrate that users can make use of provided \glspl{CFE} in the current task, indicating a certain degree of intuitiveness or plausibility connected to them. 
 Future investigations may tackle whether \glspl{CFE} cause users to fall prey to a plausibility fallacy, coming to trust ML models even if they are biased and unfair, just because they are coupled with intuitive explanations.
 
-\subsection{Conclusion}\label{subsec:conclusion}
-\textcolor{ACMDarkBlue}{
-In this work, we present a controlled study of...
-We developed a game-like experimental design based on a web-based interface...
-The code of this is available, making it easy to adapt to other approaches to compute CFs and other underlying ML models. We welcome its use by other research groups and practitioners, to further advance the currently limited insights into the field.
-It supports the view of plausibility as comparative similarity
-} \textcolor{ACMDarkBlue}{
-Keep the scenario, application, etc, always in mind
-Our findings suggest that providing (plausible) counterfactuals explanations to novice users...
-Sometimes, what is inteded to be plausible from a modelling side reveals to be implausible from the user side.
-Compared to previous evaluations, Goal-directedness / interactiveness might be a thing.
-Thus, the Alien Zoo design as proposed here is suitable for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}~\citep{keane_if_2021}.
-NICE PHRASING??? "Our work motivates the design of systems that explicitly take users’ mental representations into account during the design process to more effectively support end user requirements."
-}
+\subsection{Conclusions}\label{subsec:conclusion}
+In this work, we present a controlled study comparing user performance and usability judgements of \glspl{CFE} in an iterative learning design.
+We focus on potential group effects driven by receiving either close \glspl{CFE} that are minimally different from the user’s input, compared to algorithmically plausible ones, limited the set of possible counterfactuals to the training data.
+We develop a game-like experimental design based on a web-based interface, revolving around an abstract scenario, suitable for novice users.
+The effectiveness of our design demonstrating learning in both groups highlights the power of interactive and goal-directed tasks for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}.
+Our findings suggest that novice users actually benefit more from receiving close than algorithmically plausible \glspl{CFE}.
+It supports the view of plausibility as comparative similarity rather than probability, potentially more beneficial for users if they lack an accurate mental model to build on.
+In sum, our work emphasizes yet again that theoretical approaches proposing explanation techniques for \gls{ML} models and user-based validations thereof need to go hand in hand.
+Researchers designing \gls{XAI} approaches need to bear in mind human behavior, preferences and mental models, to build on a solid foundation to effectively benefit the end user.
 
-\subsection{Out for now}
-%% Out for now
-\textcolor{ACMDarkBlue}{
-Lage et al., 2019: CF evaluation is harder than mere simulation or verification tasks (i.e., users need significantly longer and were judged as being significantly harder to do than simple simulations)
-} 
-\textcolor{ACMDarkBlue}{
-Check out: improved task performance are contingent on both system understanding and appropriate trust (CHEF REF: R.R. Hoffman, S.T. Mueller, G. Klein, J. Litman, Metrics for explainable AI: challenges and prospects, arXiv preprint arXiv:1812.04608.)
-} 
-\textcolor{ACMDarkBlue}{
-NO ACCESS YET: Another cool design worth looking at: chatbot use! Chat-XAI: A New Chatbot to Explain Artificial Intelligence, 2021; \url{Gao, M., Liu, X., Xu, A., \& Akkiraju, R. (2021, September). Chat-XAI: A New Chatbot to Explain Artificial Intelligence. In Proceedings of SAI Intelligent Systems Conference (pp. 125-134). Springer, Cham.}
-}  
-\textcolor{ACMDarkBlue}{
-From a psychological standpoint, it is important to note that definitions of CFs slightly diverge. Many computer science definitions consider a CF as valid only if it represents a ''minimal set of features to change'' (Ref?). In Psychology, however, any combination of changes leading to a different outcome can be considered a counterfactual (true, there are better and worse ones, but still...)
-} 
+%\subsection{Out for now}
+%%% Out for now
+%\textcolor{ACMDarkBlue}{
+%Lage et al., 2019: CF evaluation is harder than mere simulation or verification tasks (i.e., users need significantly longer and were judged as being significantly harder to do than simple simulations)
+%} 
+%\textcolor{ACMDarkBlue}{
+%Check out: improved task performance are contingent on both system understanding and appropriate trust (CHEF REF: R.R. Hoffman, S.T. Mueller, G. Klein, J. Litman, Metrics for explainable AI: challenges and prospects, arXiv preprint arXiv:1812.04608.)
+%} 
+%\textcolor{ACMDarkBlue}{
+%NO ACCESS YET: Another cool design worth looking at: chatbot use! Chat-XAI: A New Chatbot to Explain Artificial Intelligence, 2021; \url{Gao, M., Liu, X., Xu, A., \& Akkiraju, R. (2021, September). Chat-XAI: A New Chatbot to Explain Artificial Intelligence. In Proceedings of SAI Intelligent Systems Conference (pp. 125-134). Springer, Cham.}
+%}  
+%\textcolor{ACMDarkBlue}{
+%From a psychological standpoint, it is important to note that definitions of CFs slightly diverge. Many computer science definitions consider a CF as valid only if it represents a ''minimal set of features to change'' (Ref?). In Psychology, however, any combination of changes leading to a different outcome can be considered a counterfactual (true, there are better and worse ones, but still...)
+%} 
