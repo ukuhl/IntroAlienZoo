@@ -45,8 +45,7 @@ Empirical evidence demonstrates that humans show this \textit{what-if} mentality
 In their \textit{Functional Theory of Counterfactual Thinking},~\citeauthor{roese_functional_2017} suggest a crucial role of counterfactual thought to guide to formation of future intentions, thus regulating subsequent behavior~\citep{roese_functional_2017,epstude_functional_2008}.
 This evidence is the root for the common supposition in \gls{XAI} that explanations formulated as counterfactuals are naturally intuitive, easy to understand, and helpful for users, often discounting the need for user evaluations~\citep{stepin_paving_2019, dandl_multi-objective_2020, guidotti_local_2018, artelt_counterfactual_2020, artelt_efficient_2022}.
 
-\subsection{Humans generate plausible CFEs}\label{subsubsec:psychoCFs_plausible}
-
+%\subsection{Humans generate plausible CFEs}\label{subsubsec:psychoCFs_plausible}
 Decades of philosophical and psychological research has concerned itself with the question of how humans generate counterfactuals. 
 % how do humans generate CFEs? --> possible worlds account by Lewis
 Lewis' seminal work on the topic builds on a theory of possible worlds, postulating that counterfactual statements trigger a comparison between the actual circumstances and a conceivable world in which the counterfactual statement occurred~\citep{lewis_counterfactuals_1973}.
@@ -100,7 +99,7 @@ To circumvent these issues, it is sensible to expand the original definition in 
 \end{equation}
 where $\set{P}$ denotes the set of all plausible \glspl{CFE}.
 
-To distinguish these explanations from their psychologically plausible counterparts defined in the previous section, we will henceforth refer to these solutions as \textit{computationally plausible \glspl{CFE}}.
+To distinguish these explanations from their psychologically plausible counterparts discussed in the previous section, we will henceforth refer to these solutions as \textit{computationally plausible \glspl{CFE}}.
 Similar to the modeling of \textit{close \glspl{CFE}} ~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of \textit{computational plausibility} have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}. 
 One particular prominent instance are density based approaches~\citep{artelt_convex_2020} that restrict a counterfactual $\xcf$ to regions of high density. 
 The respective density function may for instance be estimated from the training data.
@@ -144,16 +143,21 @@ This analysis tests the comparability of conditions, a key feature in any experi
 %Thus, we do not expect users in different conditions to differ in their understanding of the explanations as such, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation .
 % (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
 
-
 Finally, we do not formulate a prediction whether groups will differ in uncovering inconsistencies in the explanations presented. This will be investigated in an additional exploratory analysis.% (maybe that happens in case of “closest” CFEs when we’re in the areas of “no training data“?) (questionnaire item 8). 
 
 \section{Experimental Design}\label{sec:experimental-design}
 
-To assess Hypotheses 1--3, we use a novel iterative learning design revolving around an abstract scenario.
+To assess Hypotheses 1--3, we use a novel iterative learning design revolving around an abstract scenario. Figure \ref{fig:StudyStructure} conveys the overall two-part structure of the study.
+
+\begin{figure}
+   \centering
+   \includegraphics[width=\textwidth]{./media/FigureStudyStructure.pdf}
+   \Description[TO DO: insert short description]{TO DO: insert description}
+   \caption{General overvie of study procedure. \textbf{a} The plausible Alien Zoo game is an iterative design with blocks containing two trials calling for user input, and finishing with a feedback scene that provides either \textit{close} or \textit{computational plausible \glspl{CFE}} computed on user's previous input. \textbf{b} After 6 blocks, users enter a post-game survey collecting self-report information from participants. The lower part of both subfigures shows measures evaluates from respective parts; $^\dag$ objective measure, $^\ddag$ subjective measure.}
+   \label{fig:StudyStructure}
+ \end{figure}
 
 \subsection{The plausible Alien Zoo scenario}
-
-\textbf{HERE: FIGURE OF ROUGH EXPERIMENTAL DESIGN}
 
 We developed a game-like experimental design on a web-based interface, to facilitate access for users from all over the world and diverse backgrounds, enabling large-scale and easy participant recruitment.
 
@@ -185,12 +189,14 @@ Further, our setting falls under the ``explaining to discover'' category for exp
 \subsection{Post-Game Survey}
 
 A final post-game survey collect self-report information from participants.
-We use an adapted version of the System Usability Scale~\citep{holzinger_measuring_2020}, designed to measure the quality of explanations elicited by an explainable \gls{ML} system.
+Besides explicitly asking participants to point out which plants were relevant and irrelevant for the task, we use an adapted version of the System Usability Scale~\citep{holzinger_measuring_2020}, designed to measure the quality of explanations elicited by an explainable \gls{ML} system.
 Participants answer a series of Likert-scale items, assessing how users feel about using our system with a focus on perceived understandibility and usability of \glspl{CFE}.
+The survey closes with asking for participants' gender and age.
+Figure \ref{fig:StudyStructure}b gives a complete overview of all items in the survey part, in the order participants encounter them.
 
 \subsection{Constructs and Measurements}
 
-We measure understanding and usability of explanations in terms of two objective behavioral variables and several subjective self-reports. 
+We measure understanding and usability of explanations in terms of two objective behavioral variables and several subjective self-reports (Figure \ref{fig:StudyStructure} bottom). 
 
 In terms of task performance, we assess the development of pack size in the Alien Zoo game over trials. 
 As a measure of task performance, this value indicates the extent of user's understanding of relevant and irrelevant features in the underlying dataset, as a solid understanding leads to better feeding choices. 
@@ -217,8 +223,7 @@ The code for computing the counterfactual explanation is taken from the ceml pac
 For the data set, we sample from all possible combination of plants (including the number of plants) and compute the ground truth growth rate according to the following scheme:
 The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4.
 Growth rate may take a value between 0 and 2, used as a factor for pack size in the previous round to compute the new pack size.
-Note that pack size can never shrink below 2 to circumvent the pack vanishing completely.
-\textbf{HERE: FIGURE OF DATA DISTRIBUTION?}
+Note that pack size can never shrink below 2.
 
 \subsection{Participants}
 
@@ -232,8 +237,6 @@ Game instructions informed participants about the possibility of a bonus to moti
 The study was approved by the Ethics Committee of the University Bielefeld, Germany.
 
 \subsection{Experimental Procedure}\label{subsec:experimental-procedure}
-
-\textbf{Here: insert image(s) of game UI and study flow.}
 
 After accepting the task on \gls{AMT}, participants are forwarded to our web server hosting the alien zoo game.
 They first encounter a page informing them about purpose, procedure and expected duration of the study, their right to withdraw, confidentiality and contact details of the primary investigator.
@@ -249,7 +252,16 @@ Participants are also informed that they will receive feedback on what choice wo
 Users may indicate that they are ready to begin the game by clicking a ``Start'' button at the end of the page.
 To prevent participants from skipping the instructions, this button appears with a delay of 20s.
 
+\begin{figure}
+   \centering
+   \includegraphics[width=\textwidth]{./media/FigureGameInterface.pdf}
+   \Description[TO DO: insert short description]{TO DO: insert description}
+   \caption{Exemplary user journey through the first block of the plausible Alien Zoo game. Bold arrows indicate temporal succession of respective scenes. The figure highlights the iterative nature of the game with repeated user input and end-of-block presentation of \glspl{CFE}. For this manuscript, font size in images of scenes was increased to improve visibility.}
+   \label{fig:StudyStructure}
+ \end{figure}
+
 Upon hitting ``Start'', participants encounter a padlock scene where they can make their feeding choice.
+Figure \ref{}.
 The right side of the screen displays leaves from all plant types next to upward/downward arrow buttons. 
 In the first feeding round, the top of the page shows written information that clicking on the upward arrows increases the number of leaves per plant, while clicking the downward arrows has the reverse effect.
 In each succeeding feeding round, the top of the page shows the current number of Shubs, the number of Shubs in the previous round, and the choice made in the previous round.
@@ -342,8 +354,8 @@ Hypothesis 1 postulates that users in the plausible condition outperform users i
 To statistically assess this hypothesis, we compare data from participants in both groups in terms of pack size produced over time, time needed to reach a feeding decision, and matches between ground truth and indicated plants.
 Figure \ref{fig:hyp1}a shows the development of average pack size as well as average time spent to reach a feeding decision per group. 
 Strikingly, the data suggests that participants in the closest, not the plausible, condition performed better. 
-This effect is confirmed by the significant interaction of factors \textit{trial number} and \textit{group} (\textit{F}(11,792) = 2.1193, \textit{p} = 0.017, $\eta_{\text{p}}^{2}$ = 0.0286) in the corresponding linear mixed effects model. The follow-up analysis reveals significant differences between groups in trial 11 (\textit{t}(472) = 4.040, \textit{p} = .0.012, \textit{d} = 0.6929) and trial 12 (\textit{t}(472) = 2.530, \textit{p} \textless .001, \textit{d} = 1.1010).
-Additionally, there is a highly significant main effect of trial number (\textit{F}(11,792) = 7.5851, \textit{p} \textless .001, $\eta_{\text{p}}^{2}$ = 0.0953), but no significant main effect of group (\textit{F}(11,72) = 2.5857, \textit{p} = .112, $\eta_{\text{p}}^{2}$ = 0.0347).
+This effect is confirmed by the significant interaction of factors \textit{trial number} and \textit{group} (\textit{F}(11,792) = 2.119, \textit{p} = 0.017, $\eta_{\text{p}}^{2}$ = 0.029) in the corresponding linear mixed effects model. The follow-up analysis reveals significant differences between groups in trial 11 (\textit{t}(472) = 4.040, \textit{p} = 0.012, \textit{d} = 0.693) and trial 12 (\textit{t}(472) = 2.530, \textit{p} \textless .001, \textit{d} = 1.101).
+Additionally, there is a highly significant main effect of trial number (\textit{F}(11,792) = 7.585, \textit{p} \textless .001, $\eta_{\text{p}}^{2}$ = 0.095), but no significant main effect of group (\textit{F}(11,72) = 2.586, \textit{p} = .112, $\eta_{\text{p}}^{2}$ = 0.035).
 
 Participants in both groups showed a marked decrease in time needed to reach a feeding decision over the curse of the study, already apparent after the very first trial (Figure \ref{fig:hyp1}b).
 The significant main effect of factor \textit{trial number} (\textit{F}(11,792) = 14.8177, \textit{p} \textless .001, $\eta_{\text{p}}^{2}$ = 0.1707) confirms this observation.
