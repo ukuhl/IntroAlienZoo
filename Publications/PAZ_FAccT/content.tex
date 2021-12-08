@@ -13,7 +13,7 @@ However, the emerging body of work on \glspl{CFE}, and explainability of \gls{ML
 In a recent review of over 100 counterfactual XAI studies,~\citeauthor{keane_if_2021} criticize that only a third of these studies concern themselves with user-based evaluations, often with great limitations concerning statistical power and reproducibility~\citep{keane_if_2021}.
 
 % A profound research gap: comparing different approaches:
-The lack of user-based evaluations affects not only assessments \glspl{CFE} per se, but more specifically also the evaluation of different conceptualizations for this kind of explanations.
+The lack of user-based evaluations affects not only assessments \glspl{CFE} as such, but more specifically also the evaluation of different conceptualizations for this kind of explanations.
 The prevailing approach in the current literature is to compare different \gls{CFE} approaches exclusively in terms of their robustness and theoretical fairness~\citep{artelt_evaluating_2021}, passing over the role of the user as eventual target.  
 Thus, in-depth evaluations of user experiences, elucidating the usability of \gls{CFE} variants, are yet to be done.
 
@@ -131,7 +131,7 @@ Furthermore, we posit that users imagine plausible CFEs to be more helpful for o
 
 \paragraph{Hypothesis 3} We evaluate users' understanding of the explanations themselves, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation. As structure and presentation mode of \glspl{CFE} is kept constant across conditions, we expect not to find any differences.
 This analysis tests the comparability of conditions, a key feature in any experimental user design.
-%Thus, we do not expect users in different conditions to differ in their understanding of the explanations per se, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation .
+%Thus, we do not expect users in different conditions to differ in their understanding of the explanations as such, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation .
 % (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
 
 
@@ -174,33 +174,30 @@ Further, our setting falls under the ``explaining to discover'' category for exp
 
 \subsection{Post-Game Survey}
 
-A final post-game questionnaire collect self-report information from participants.
+A final post-game survey collect self-report information from participants.
 We use an adapted version of the System Usability Scale~\citep{holzinger_measuring_2020}, designed to measure the quality of explanations elicited by an explainable \gls{ML} system.
-Participants answer a series of Likert-scale questions, assessing how users feel about using our system with a focus on perceived understandibility and usability of \glspl{CFE}.
+Participants answer a series of Likert-scale items, assessing how users feel about using our system with a focus on perceived understandibility and usability of \glspl{CFE}.
 
 \subsection{Constructs, Expected Relations and Measurements}
 
-\textcolor{ACMDarkBlue}{
-\textbf{Maybe here: set up and add a causal diagram of our study as in van der Waa (2021)?}
-} \textcolor{ACMDarkBlue}{
+\textbf{HERE: causal diagram of our study as in van der Waa (2021)(?)}
+
 We measure understanding and usability of explanations in terms of two objective behavioral variables and several subjective self-reports. 
-} \textcolor{ACMDarkBlue}{
-In terms of behavior, we assess the development of pack size in the Alien Zoo game over trials. 
-As a measure of task performance, this value indicates the extend of user's understanding of relevant in irrelevant features in the underlying dataset, assuming that a solid understanding leads to better feeding choices. 
-} \textcolor{ACMDarkBlue}{
-Second, we measure time needed to reach a feeding decision over trials. As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing time required to reach a feeding decision~\citep{logan_shapes_1992}. 
-} \textcolor{ACMDarkBlue}{
-We acquired self-reported measurements using the post-game survey, testing different aspects of participant’s system understanding. 
-} \textcolor{ACMDarkBlue}{
+
+In terms of task performance, we assess the development of pack size in the Alien Zoo game over trials. 
+As a measure of task performance, this value indicates the extent of user's understanding of relevant and irrelevant features in the underlying dataset, as a solid understanding leads to better feeding choices. 
+
+Second, we measure time needed to reach a feeding decision over trials (henceforth referred to as decision time). As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing time required to reach a feeding decision~\citep{logan_shapes_1992}. 
+
+We acquire self-reported measurements using the post-game survey, testing different aspects of participant’s system understanding. 
 The first two survey items explicitly ask users to identify plants they think are relevant and irrelevant for task success. 
-Replies from these items allow us to measure to shich extend users in different groups formed explicit knowledge of the underlying data structure. 
-} \textcolor{ACMDarkBlue}{
-Further, users indicate how far they find the explanations useful, in how far they can make use of it, and in how far they imagine the presented \glspl{CFE} to be helpful for others users, too. These items assess users subjective understanding.
-} \textcolor{ACMDarkBlue}{
+Replies from these items allow us to measure to which extent users in different groups formed explicit knowledge of the underlying data structure.
+
+Further, users indicate in how far they find the explanations useful, to which degree they can make use of it, and in how far they imagine the presented \glspl{CFE} to be helpful for other users, too. These items assess users' subjective understanding.
+
 Finally, three self-reported measurements check for potential confounds. 
-These are items that ask users to indicate their understanding of the explanations per se, whether they feel the need for support for understanding, and their evaluation of timing and efficacy of \gls{CFE} presentation.
-Given that structure and presentation mode of \glspl{CFE} is kept constant for both groups, differences would uncover unexpected variation in terms of answer style across groups, which would be a confounding variable. 
-}
+These are items that ask users to indicate their understanding of the explanations as such, whether they feel the need for support for understanding, and their evaluation of timing and efficacy of \gls{CFE} presentation.
+Given that structure and presentation mode of \glspl{CFE} is kept constant for both groups, differences would uncover unexpected variation in terms of answer style, a potential confounding variable.
 
 \subsection{ML model and implementation}
 While the back end of the system is written in Python3 using the sklearn package~\citep{pedregosa_scikit-learn_2011} for the machine leaning part , the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
@@ -370,7 +367,7 @@ In addition, there is no significant difference between groups for estimated use
  \end{figure}
 
 \subsection{Does mode of presentation have an impact?}
-As postulated in hypothesis 3, we do not observe group differences between conditions in terms of understanding the explanations per se (Figure \ref{fig:survey}b). 
+As postulated in hypothesis 3, we do not observe group differences between conditions in terms of understanding the explanations as such (Figure \ref{fig:survey}b). 
 A considerable proportion of both groups responded positively about understanding the feedback, not differing significantly in their responses (closest condition: \textit{M} = 3.9750 $\pm$ 0.1843 \textit{SE}; plausible condition: \textit{M} = 4.1176 $\pm$ 0.1622 \textit{SE}; \textit{U} = 773.5, \textit{p} = .200 \textit{r} = 0.1489).
 In terms of needing support for understanding, both groups reply with a similar response pattern (closest condition: \textit{M} = 3.2000 $\pm$ 0.2298 \textit{SE}; plausible condition: \textit{M} = 3.1471 $\pm$ 0.2573 \textit{SE}; \textit{U} = 667, \textit{p} = .890 \textit{r} = 0.0161).
 Similarly, user judgements on timing and efficacy of  CFE presentation are consistently high across groups (closest condition: \textit{M} = 4.1000$\pm$0.1747 \textit{SE}; plausible condition: \textit{M} = 4.1471$\pm$0.1696 \textit{SE}; \textit{U} = 680.5, \textit{p} = 1 \textit{r} = 0.0000).
