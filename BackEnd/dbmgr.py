@@ -5,7 +5,7 @@ from crypt import load_key, encrypt
 
 database = "alienzoo"   # CREATE DATABASE alienzoo;
 user_name = "user_alienzoo"  # CREATE USER 'user_alienzoo'@'localhost' IDENTIFIED BY 'useralienzoopw123456'; GRANT ALL PRIVILEGES ON alienzoo. * TO 'user_alienzoo'@'localhost';
-user_pw = ""
+user_pw = "useralienzoopw123456"
 
 public_key_file = "public_key.bin"
 
