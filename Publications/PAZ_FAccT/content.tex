@@ -20,7 +20,7 @@ Thus, in-depth evaluations of user experiences, elucidating the usability of \gl
 % Our contribution! 
 The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
 While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
-Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to algorithmically plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
+Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
 
 % The structure of this paper
 The remainder of this paper is structured as follows: 
@@ -80,39 +80,49 @@ In their Plausibility Analysis Model,~\citeauthor{connell_model_2006} expand on 
 Thus, while it is difficult to pinpoint exactly what makes a counterfactuals psychologically plausible, we may recognize pivotal roles of concepts like comparative similarity and probability.
 Following the user-centered focus on explainability proposed by~\citeauthor{miller_explanation_2019}~\citep{miller_explanation_2019}, incorporating these concepts would be an important step towards automatic generation of plausible, and thus more human-friendly and usable, \gls{CFE}.
 
-\section{Computation of CFs and plausible CFs}\label{sec:EffCompCFs}
-Outside the causality domain~\citep{halpern_causes_2020,karimi_survey_2020}, a counterfactual explanation $\xcf\in\RN^\dimsym$ of a Machine Learning model $\classifier:\RN^\dimsym\to\setY$ was introduced and modeled by~\citep{wachter_counterfactual_2017} as an optimization problem:
+\section{Computation of CFEs and Plausible CFEs}\label{sec:EffCompCFs}
+Outside the causality domain~\citep{halpern_causes_2020,karimi_survey_2020},~\citeauthor{wachter_counterfactual_2017} introduced a \gls{CFE} $\xcf\in\RN^\dimsym$ of an \gls{ML} model $\classifier:\RN^\dimsym\to\setY$ as an optimization problem~\citep{wachter_counterfactual_2017} :
 \begin{equation}\label{eq:counterfactual_opt_original}
 \underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x)
 \end{equation}
 where $\x\in\RN^\dimsym$ denotes the original input, the regularization $\regularization(\cdot)$ penalizes deviations from the original input $\x$ (weighted by a regularization strength $C>0$), $\ycf\in\setY$ denotes the requested output/behavior of the $\classifier(\cdot)$ under the counterfactual $\xcf$, and $\loss(\cdot)$ denotes a loss function penalizing deviations from the requested prediction.
-While~\refeq{eq:counterfactual_opt_original} was one of the first modelings of counterfactuals for classical Machine Learning, slightly similar, and often more model specific but more powerful, modelings were proposed as well as many different methods for solving these optimization problems~\citep{verma_counterfactual_2020,artelt_counterfactuals_survey_2019,karimi_survey_2020}.
 
-However, over time it became clear that the original modeling~\refeq{eq:counterfactual_opt_original} (also called \textit{closest counterfactuals}) does not necessarily yield plausible/realistic counterfactuals -- indeed, it turned out that often (depending on the model, loss function and regularization) the counterfactual looked like an adversarial which might be less suited as an explanation~\citep{laugel_issues_2019}. It is therefore natural to add an additional plausibility constraint:
+Thus, computing \glspl{CFE} translates to finding minimal perturbations to a model's input that alter the final prediction. Given the regularization term $\regularization(\cdot)$, generated \glspl{CFE} based on this definition remain as close to the original input $\x$ as possible. Consequently, we will refer to them as \textit{close \glspl{CFE}} for the remainder of this work.
+As one of the first approaches to model \glspl{CFE} for classical \gls{ML},~\refeq{eq:counterfactual_opt_original} is the 
+forerunner of more powerful, model specific variations, as well as many methods for solving these optimization problems~\citep{verma_counterfactual_2020,artelt_computation_2019,karimi_survey_2020}.
+However, it is important to note that \textit{close \glspl{CFE}} do not necessarily yield plausible or even realistic counterfactuals.
+As a matter of fact, \textit{close \glspl{CFE}} may look like adversarials depending on the model, loss function and regularization, diminishing their suitability as explanation technique~\citep{laugel_issues_2019}.
+To circumvent these issues, it is sensible to expand the original definition in \refeq{eq:counterfactual_opt_original} by an additional plausibility constraint:
 \begin{equation}
 \begin{split}
 \underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x) \quad\quad \text{s.t. } \xcf \in \set{P}
 \end{split}
 \end{equation}
-where $\set{P}$ denotes the set of all plausible counterfactual explanations.
-Similar to the modeling of closest counterfactual explanation~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of plausibility have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}-Survey. One particular prominent instance, are density based approaches~\citep{artelt_convex_2020} in which the counterfactual $\xcf$ is required to be in a region of high density (a density function might be estimated from the training data or from somewhere else available). Another, straight forward, approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019} -- this is the approach we use in this work for ensuring plausibility of the counterfactual explanations.
+where $\set{P}$ denotes the set of all plausible \glspl{CFE}.
+
+To distinguish these explanations from their psychologically plausible counterparts defined in the previous section, we will henceforth refer to these solutions as \textit{computationally plausible \glspl{CFE}}.
+Similar to the modeling of \textit{close \glspl{CFE}} ~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of \textit{computational plausibility} have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}. 
+One particular prominent instance are density based approaches~\citep{artelt_convex_2020} that restrict a counterfactual $\xcf$ to regions of high density. 
+The respective density function may for instance be estimated from the training data.
+Another, straight forward approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019}. 
+In the current work, we follow this approach when providing \textit{computationally plausible \glspl{CFE}}.
 
 %In the computer science world, generating a CFs translates into showing what input pertubations alter a model's prediction. Additionally, some authors use the constraint that these pertubations need ot be minimal (REF REF REF).
 %Changes need to be actionable to make a good explanation (REF), i.e. to also foster trust in the system (REF).
-%Counterfactuals are a good means to provide these explanations, as they do not require models themselves to be interpretable, and do not disclose details about an algorithms's internal logic, or other data samples in the training set~\citep{Wachter2017}.
+%Counterfactuals are a good means to provide these explanations, as they do not require models themselves to be interpretable, and do not disclose details about an rithms's internal logic, or other data samples in the training set~\citep{Wachter2017}.
 %Given the surge of CF methods lately, there are a lot of ways CFs are computed (REFs REFs REFs)...
 %Importantly: there is some variation in terms of how CFs are defined: Sahil Verma, John Dickerson, and Keegan Hines. 2020. Counterfactual Explanations for Machine Learning: A Review. (2020).
 %In the current paper, we rely on the work of Artelt et al, and they do it like this...
 
-\section{Do novice users profit from algorithmic plausibility in an abstract domain?}\label{sec:hypotheses}
+\section{Do novice users profit from computational plausibility in an abstract domain?}\label{sec:hypotheses}
 
 % Here: Make a connection why it would be sensible to assume so.
 % Plausibility is an important feauture for human-generated CFEs, so why not also for machine learning ones?
 % TO DO: bring in the advantages of an iterative learning design
 
-The guiding question of the current work is whether algorithmically plausible \glspl{CFE} have an advantage over close \glspl{CFE} in helping users to learn from an \gls{ML} model.
+The guiding question of the current work is whether computationally plausible \glspl{CFE} have an advantage over close \glspl{CFE} in helping users to learn from an \gls{ML} model.
 To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for an \gls{ML} model.
-At regular intervals, they receive either algorithmically plausible or close \glspl{CFE}, highlighting how changes in the user's previous input would have lead to better results.
+At regular intervals, they receive either computationally plausible or close \glspl{CFE}, highlighting how changes in the user's previous input would have lead to better results.
 The main advantage of this approach is that the interplay between repeated user action and corrective feedback enables us to assess user understanding at each stage of the process objectively through task performance.
 
 We find it conceivable that implementing a plausibility constraint indeed improves user performance and experience. 
@@ -169,7 +179,7 @@ Further, our setting falls under the ``explaining to discover'' category for exp
 %Unlike most real-life applications, systems investigated in user studies typically focus on applications for expert users trying to gain expert knowledge of a domain. 
 %In contrast, we 
 %Thus, 
-%Specifically, we focus on the question whether \glspl{CFE} computed according to algorithmic plausibility prove to be more useful for novice users in this setting than providing closest \glspl{CFE}, independent of domain.
+%Specifically, we focus on the question whether \glspl{CFE} computed according to computational plausibility prove to be more useful for novice users in this setting than providing closest \glspl{CFE}, independent of domain.
 %}
 
 \subsection{Post-Game Survey}
@@ -178,9 +188,7 @@ A final post-game survey collect self-report information from participants.
 We use an adapted version of the System Usability Scale~\citep{holzinger_measuring_2020}, designed to measure the quality of explanations elicited by an explainable \gls{ML} system.
 Participants answer a series of Likert-scale items, assessing how users feel about using our system with a focus on perceived understandibility and usability of \glspl{CFE}.
 
-\subsection{Constructs, Expected Relations and Measurements}
-
-\textbf{HERE: causal diagram of our study as in van der Waa (2021)(?)}
+\subsection{Constructs and Measurements}
 
 We measure understanding and usability of explanations in terms of two objective behavioral variables and several subjective self-reports. 
 
@@ -199,14 +207,18 @@ Finally, three self-reported measurements check for potential confounds.
 These are items that ask users to indicate their understanding of the explanations as such, whether they feel the need for support for understanding, and their evaluation of timing and efficacy of \gls{CFE} presentation.
 Given that structure and presentation mode of \glspl{CFE} is kept constant for both groups, differences would uncover unexpected variation in terms of answer style, a potential confounding variable.
 
-\subsection{ML model and implementation}
-While the back end of the system is written in Python3 using the sklearn package~\citep{pedregosa_scikit-learn_2011} for the machine leaning part , the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
-We use a decision tree regression model for predicting the growth rate given the fed plants selected by the user. We choose a decision tree because computing counterfactuals of a decision is fairly simple~\citep{artelt_counterfactuals_survey_2019} but still the model if powerful enough to model our synthetic data set sufficiently well.
+\subsection{ML Model and Implementation}
+While the back end of the system is written in Python3 using the sklearn package~\citep{pedregosa_scikit-learn_2011} for the \gls{ML} part, the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
+We use a decision tree regression model for predicting the growth rate given the plants selected by the user. 
+We choose a decision tree because computing counterfactuals for this model is fairly simple~\citep{artelt_computation_2019}.
+Yet, it is powerful enough to model our synthetic data set sufficiently well.
 The code for computing the counterfactual explanation is taken from the ceml package~\citep{artelt_ceml_2019}.
-Note that, in the interest of reproducible research, all source code is made available.
+\textbf{Note that, in the interest of reproducible research, all source code is made available. -- ANONYMITY?}
 For the data set, we sample from all possible combination of plants (including the number of plants) and compute the ground truth growth rate according to the following scheme:
 The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4.
-
+Growth rate may take a value between 0 and 2, used as a factor for pack size in the previous round to compute the new pack size.
+Note that pack size can never shrink below 2 to circumvent the pack vanishing completely.
+\textbf{HERE: FIGURE OF DATA DISTRIBUTION?}
 
 \subsection{Participants}
 
@@ -242,6 +254,7 @@ The right side of the screen displays leaves from all plant types next to upward
 In the first feeding round, the top of the page shows written information that clicking on the upward arrows increases the number of leaves per plant, while clicking the downward arrows has the reverse effect.
 In each succeeding feeding round, the top of the page shows the current number of Shubs, the number of Shubs in the previous round, and the choice made in the previous round.
 The page additionally shows a padlock with the current number of animated Shubs.
+Each participant starts of with a pack of 10 aliens.
 After making their choice, participants continue by clicking a button stating ``Feeding time!'' in the bottom right corner of the screen.
 
 Upon committing their choice, a progress scene displaying the current choice of plants and three animated Shubs is shown. 
@@ -394,9 +407,9 @@ To find a possible explanation why users in the closest group showed significant
 Classically, computed CFEs are penalized if they deviate from the requested prediction~\citep{wachter_counterfactual_2017}, resulting in what we refer to as close counterfactuals, differing minimally from the user’s input.
 This concept resembles the view that psychologically plausible counterfactuals come from worlds that are minimally different from reality~\citep{lewis_counterfactuals_1973}.
 Empirical evidence highlighting the close relation between perceived plausibility and perceived similarity between counterfactual and factual state supports this notion~\citep{stanley_counterfactual_2017, de_brigard_perceived_2021}.
-In contrast, the algorithmic plausibility constraint rejects counterfactuals that are not part of the training set, even if they are minimal.
+In contrast, the computational plausibility constraint rejects counterfactuals that are not part of the training set, even if they are minimal.
 Consequently, users in the plausible condition encounter larger differences between provided explanations and their input, at odds with the idea of plausibility as comparative similarity.
-Conversely, users in the closest condition might have experienced their \glspl{CFE} as more psychologically plausible than the algorithmically plausible version.
+Conversely, users in the closest condition might have experienced their \glspl{CFE} as more psychologically plausible than the computationally plausible version.
 Further, an emotional effect is conceivable: Upon seeing close \glspl{CFE}, users might get a feeling of ``just missing the better option'', inducing negative affect, strongly motivating the need for improvement~\citep{medvec_when_1997, markman_reflection_2003}.
 Additionally, we may speculate that the larger discrepancies between factual and counterfactual state in the plausible condition may increase the mental load on users, hampering learning.
 Future studies need to disentangle contributions of these potential factors.
@@ -509,10 +522,10 @@ Future investigations may tackle whether \glspl{CFE} cause users to fall prey to
 
 \subsection{Conclusions}\label{subsec:conclusion}
 In this work, we present a controlled study comparing user performance and usability judgements of \glspl{CFE} in an iterative learning design.
-We focus on potential group effects driven by receiving either close \glspl{CFE} that are minimally different from the user’s input, compared to algorithmically plausible ones, limited the set of possible counterfactuals to the training data.
+We focus on potential group effects driven by receiving either close \glspl{CFE} that are minimally different from the user’s input, compared to computationally plausible ones, limited the set of possible counterfactuals to the training data.
 We develop a game-like experimental design based on a web-based interface, revolving around an abstract scenario, suitable for novice users.
 The effectiveness of our design demonstrating learning in both groups highlights the power of interactive and goal-directed tasks for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}.
-Our findings suggest that novice users actually benefit more from receiving close than algorithmically plausible \glspl{CFE}.
+Our findings suggest that novice users actually benefit more from receiving close than computationally plausible \glspl{CFE}.
 It supports the view of plausibility as comparative similarity rather than probability, potentially more beneficial for users if they lack an accurate mental model to build on.
 In sum, our work emphasizes yet again that theoretical approaches proposing explanation techniques for \gls{ML} models and user-based validations thereof need to go hand in hand.
 Researchers designing \gls{XAI} approaches need to bear in mind human behavior, preferences and mental models, to build on a solid foundation to effectively benefit the end user.
