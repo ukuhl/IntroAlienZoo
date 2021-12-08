@@ -20,7 +20,7 @@ Thus, in-depth evaluations of user experiences, elucidating the usability of \gl
 % Our contribution! 
 The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
 While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
-Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
+Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional close \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
 
 % The structure of this paper
 The remainder of this paper is structured as follows: 
@@ -86,11 +86,11 @@ Outside the causality domain~\citep{halpern_causes_2020,karimi_survey_2020},~\ci
 \end{equation}
 where $\x\in\RN^\dimsym$ denotes the original input, the regularization $\regularization(\cdot)$ penalizes deviations from the original input $\x$ (weighted by a regularization strength $C>0$), $\ycf\in\setY$ denotes the requested output/behavior of the $\classifier(\cdot)$ under the counterfactual $\xcf$, and $\loss(\cdot)$ denotes a loss function penalizing deviations from the requested prediction.
 
-Thus, computing \glspl{CFE} translates to finding minimal perturbations to a model's input that alter the final prediction. Given the regularization term $\regularization(\cdot)$, generated \glspl{CFE} based on this definition remain as close to the original input $\x$ as possible. Consequently, we will refer to them as \textit{close \glspl{CFE}} for the remainder of this work.
+Thus, computing \glspl{CFE} translates to finding minimal perturbations to a model's input that alter the final prediction. Given the regularization term $\regularization(\cdot)$, generated \glspl{CFE} based on this definition remain as close to the original input $\x$ as possible. Consequently, we will refer to them as \textit{closest \glspl{CFE}} for the remainder of this work.
 As one of the first approaches to model \glspl{CFE} for classical \gls{ML},~\refeq{eq:counterfactual_opt_original} is the 
 forerunner of more powerful, model specific variations, as well as many methods for solving these optimization problems~\citep{verma_counterfactual_2020,artelt_computation_2019,karimi_survey_2020}.
-However, it is important to note that \textit{close \glspl{CFE}} do not necessarily yield plausible or even realistic counterfactuals.
-As a matter of fact, \textit{close \glspl{CFE}} may look like adversarials depending on the model, loss function and regularization, diminishing their suitability as explanation technique~\citep{laugel_issues_2019}.
+However, it is important to note that \textit{closest \glspl{CFE}} do not necessarily yield plausible or even realistic counterfactuals.
+As a matter of fact, \textit{closest \glspl{CFE}} may look like adversarials depending on the model, loss function and regularization, diminishing their suitability as explanation technique~\citep{laugel_issues_2019}.
 To circumvent these issues, it is sensible to expand the original definition in \refeq{eq:counterfactual_opt_original} by an additional plausibility constraint:
 \begin{equation}
 \begin{split}
@@ -100,7 +100,7 @@ To circumvent these issues, it is sensible to expand the original definition in 
 where $\set{P}$ denotes the set of all plausible \glspl{CFE}.
 
 To distinguish these explanations from their psychologically plausible counterparts discussed in the previous section, we will henceforth refer to these solutions as \textit{computationally plausible \glspl{CFE}}.
-Similar to the modeling of \textit{close \glspl{CFE}} ~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of \textit{computational plausibility} have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}. 
+Similar to the modeling of \textit{closest \glspl{CFE}} ~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of \textit{computational plausibility} have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}. 
 One particular prominent instance are density based approaches~\citep{artelt_convex_2020} that restrict a counterfactual $\xcf$ to regions of high density. 
 The respective density function may for instance be estimated from the training data.
 Another, straight forward approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019}. 
@@ -153,7 +153,7 @@ To assess Hypotheses 1--3, we use a novel iterative learning design revolving ar
    \centering
    \includegraphics[width=\textwidth]{./media/FigureStudyStructure.pdf}
    \Description[TO DO: insert short description]{TO DO: insert description}
-   \caption{General overvie of study procedure. \textbf{a} The plausible Alien Zoo game is an iterative design with blocks containing two trials calling for user input, and finishing with a feedback scene that provides either \textit{close} or \textit{computational plausible \glspl{CFE}} computed on user's previous input. \textbf{b} After 6 blocks, users enter a post-game survey collecting self-report information from participants. The lower part of both subfigures shows measures evaluates from respective parts; $^\dag$ objective measure, $^\ddag$ subjective measure.}
+   \caption{General overvie of study procedure. \textbf{a} The plausible Alien Zoo game is an iterative design with blocks containing two trials calling for user input, and finishing with a feedback scene that provides either \textit{closest} or \textit{computational plausible \glspl{CFE}} computed on user's previous input. \textbf{b} After 6 blocks, users enter a post-game survey collecting self-report information from participants. The lower part of both subfigures shows measures evaluates from respective parts; $^\dag$ objective measure, $^\ddag$ subjective measure.}
    \label{fig:StudyStructure}
  \end{figure}
 
@@ -201,7 +201,7 @@ We measure understanding and usability of explanations in terms of two objective
 In terms of task performance, we assess the development of pack size in the Alien Zoo game over trials. 
 As a measure of task performance, this value indicates the extent of user's understanding of relevant and irrelevant features in the underlying dataset, as a solid understanding leads to better feeding choices. 
 
-Second, we measure time needed to reach a feeding decision over trials (henceforth referred to as decision time). As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing time required to reach a feeding decision~\citep{logan_shapes_1992}. 
+Second, we measure time needed to reach a feeding decision over trials (henceforth referred to as decision time). As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing decision time~\citep{logan_shapes_1992}. 
 
 We acquire self-reported measurements using the post-game survey, testing different aspects of participant’s system understanding. 
 The first two survey items explicitly ask users to identify plants they think are relevant and irrelevant for task success. 
@@ -219,7 +219,7 @@ We use a decision tree regression model for predicting the growth rate given the
 We choose a decision tree because computing counterfactuals for this model is fairly simple~\citep{artelt_computation_2019}.
 Yet, it is powerful enough to model our synthetic data set sufficiently well.
 The code for computing the counterfactual explanation is taken from the ceml package~\citep{artelt_ceml_2019}.
-\textbf{Note that, in the interest of reproducible research, all source code is made available. -- ANONYMITY?}
+%In the interest of reproducible research, all source code of the current study is made available. % taken out to ensure anonymity
 For the data set, we sample from all possible combination of plants (including the number of plants) and compute the ground truth growth rate according to the following scheme:
 The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4.
 Growth rate may take a value between 0 and 2, used as a factor for pack size in the previous round to compute the new pack size.
@@ -234,7 +234,8 @@ All participants gave informed electronic consent by providing clickwrap agreeme
 All participants received a reward of US\$ 4 for participation. 
 The ten best performing users received an additional bonus of US\$ 2. 
 Game instructions informed participants about the possibility of a bonus to motivate compliance with the experimental task \citep{bansal_updates_2019}.
-The study was approved by the Ethics Committee of the University Bielefeld, Germany.
+%The study was approved by the Ethics Committee of the University Bielefeld, Germany.
+The study was approved by the Ethics Committee of the author's home university.
 
 \subsection{Experimental Procedure}\label{subsec:experimental-procedure}
 
@@ -242,12 +243,12 @@ After accepting the task on \gls{AMT}, participants are forwarded to our web ser
 They first encounter a page informing them about purpose, procedure and expected duration of the study, their right to withdraw, confidentiality and contact details of the primary investigator.
 Users may decline to participate by closing this window.
 Otherwise, they indicate their agreement via button press, opening a new page.
-Unbeknownst to the user, they are randomly assigned to either the ``closest'' or the ``plausible'' condition when they indicate agreement.
+Unbeknownst to the user, they are randomly assigned to either the \textit{closest} or the \textit{plausible} condition when they indicate agreement.
 
 The succeeding page provides detailed instructions to the game. 
 Specifically, it shows images of the aliens, as well as the selection of plants they may choose to feed from.
 Written instructions detail that it is possible to choose up to six leaves per plant in whatever combination seems desirable, and that choosing healthy or unhealthy combinations lead to increases or decreases in pack size, respectively.
-Further instructions emphasize the user's task to maximize the number of shubs, with the best players qualifying for a monetary bonus.
+Further instructions emphasize the user's task to maximize the number of aliens, so-called shubs, with the best players qualifying for a monetary bonus.
 Participants are also informed that they will receive feedback on what choice would have led to a better result after two rounds of feeding.
 Users may indicate that they are ready to begin the game by clicking a ``Start'' button at the end of the page.
 To prevent participants from skipping the instructions, this button appears with a delay of 20s.
@@ -264,23 +265,23 @@ Upon hitting ``Start'', participants encounter a padlock scene where they can ma
 Figure \ref{}.
 The right side of the screen displays leaves from all plant types next to upward/downward arrow buttons. 
 In the first feeding round, the top of the page shows written information that clicking on the upward arrows increases the number of leaves per plant, while clicking the downward arrows has the reverse effect.
-In each succeeding feeding round, the top of the page shows the current number of Shubs, the number of Shubs in the previous round, and the choice made in the previous round.
-The page additionally shows a padlock with the current number of animated Shubs.
+In each succeeding feeding round, the top of the page shows the current pack size, the pack size in the previous round, and the choice made in the previous round.
+The page additionally shows a padlock with the current number of animated shubs.
 Each participant starts of with a pack of 10 aliens.
 After making their choice, participants continue by clicking a button stating ``Feeding time!'' in the bottom right corner of the screen.
 
-Upon committing their choice, a progress scene displaying the current choice of plants and three animated Shubs is shown. 
-Meanwhile, the underlying \gls{ML} model uses the user input to generate the new growth rate and pack size, together with either a closest or a plausible counterfactual.
+Upon committing their choice, a progress scene displaying the current choice of plants and three animated aliens is shown. 
+Meanwhile, the underlying \gls{ML} model uses the user input to generate the new growth rate and pack size, together with either a \textit{closest} or a \textit{computationally plausible \gls{CFE}}.
 After 3s, the padlock scene appears again to show the results of their last choice. 
 Following odd trials, the user may make a new selection. 
 After even trials, a single ``Get feedback!'' button replaces the choice panel on the right-hand side of the screen.
-Hitting the feedback button forwards a user to an overview scene displaying the feeding choices in the last two runs, the resulting changes in number of shubs and the counterfactuals that indicate what choices would have led to better results. 
+Hitting the feedback button forwards a user to an overview scene displaying the feeding choices in the last two runs, the resulting changes in pack size and the counterfactuals that indicate what choices would have led to better results. 
 When users made a choice that led to maximal increase in pack size such that no counterfactual could be computed, they are told that they were close to an optimal solution in that round. 
 Users may move on to the next round by hitting a ``Continue!'' button appearing after 10s on the right-hand side of the screen. This delay forces users to spend some time with the information to study it. Upon continuing, users make their new choice in a new padlock scene.
 
 The study runs over 12 feeding rounds (trials) with feedback interspersed after each second trial. 
 To ensure attentiveness of users during the game, we included two additional attention trials.
-After feeding rounds 3 and 7, users face a new page requesting to type in the current number of shubs in their respective packs.
+After feeding rounds 3 and 7, users face a new page requesting to type in the current number of aliens in their respective packs.
 Immediate feedback informs participants whether their entry was correct or not, and reminds users to pay close attention to all aspects of the game at any given time.
 Subsequently, the next progress scene appears and the game continues. 
 
@@ -295,10 +296,10 @@ On average, participants needed 13m:43s ($\pm$ 00m:23s SEM) from accepting the H
 
 \subsubsection{Statistical Analysis, Sample Size Calculation and Data Quality Measures}
 
-We perform all statistical analyses using R–4.1.1 \citep{r_core_team_r_2021}, using \gls{CFE} variant (closest or plausible) as independent variable.
+We perform all statistical analyses using R–4.1.1 \citep{r_core_team_r_2021}, using \gls{CFE} variant (\textit{closest} or \textit{computationally plausible}) as independent variable.
 Changes in performance over 12 trials as a measure of learning rate per group (lme4 v.4\textunderscore 1.1-27.1) \citep{bates_fitting_2015}.
-In the model testing for differences in terms of user performance, the dependent variable is number of Shubs generated. 
-In the assessment of user's reaction time, we use time needed to reach a feeding decision in each trial as dependent variable.
+In the model testing for differences in terms of user performance, the dependent variable is number of aliens generated. 
+In the assessment of user's reaction time, we use decision time in each trial as dependent variable.
 The final models include the fixed effects of group, trial number and their interaction. The random-effect structure includes a by-subjects random intercept. 
 Advantages of using this approach include that these models account for correlations of data drawn from the same participant and missing data \citep{detry_analyzing_2016,muth_alternative_2016}.
 The analysis of variance function of the stats package in base R serves to compare model fits.
@@ -313,14 +314,14 @@ To analyse group differences of ordinal data from the likert-style items, we rel
 We report effect sizes for all survey data comparisons as \textit{r}.
 
 We performed an a priori sample size estimation based on data obtained from the third pilot. 
-To do so, we set up two linear mixed effects models with shub number and reaction time as described above. 
+To do so, we set up two linear mixed effects models with pack size and reaction time as described above. 
 For each of these models, we run a simulation-based power analysis for samples of 20--100 participants with fixed effects of group and trial number over 1000 simulations (mixedpower v.0.1.0) \citep{kumle_estimating_2021}. 
 Inspecting the results, we choose to acquire data from 100 participants to reach a power $>$ 80\% for at least one combination of trial number and group, while also accounting for potential participant attrition.
 
 As a web-based study, we run the risk that some participants attempt to game the system to collect the reward without providing proper answers. 
 Thus, we implement a number of data quality checks that were planned a priori.
-We identify speeders based on the time needed to reach a feeding decision, flagging users that spent less than 2s in the padlock scene in 4 or more trials.
-We flag participants that fail to respond with the correct number of shubs in both attention trials during the game.
+We identify speeders based on the decision time, flagging users that spent less than 2s in the padlock scene in 4 or more trials.
+We flag participants that fail to respond with the correct number of aliens in both attention trials during the game.
 Furthermore, we included a catch item (item 7) in the survey, asking users to tick the ``I prefer not to answer.'' option, flagging users that did not pay attention to the survey items.
 Finally, we identify straight-lining participants who keep choosing the same plant combination despite not improving in at least two blocks, or answer with only positive or negative valence in the survey.
 To uphold a high threshold for data quality, we follow a conservative approach of excluding participants that were flagged for at least one of these reasons.
@@ -336,7 +337,7 @@ From 100 participants recruited via \gls{AMT}, we exclude data from participants
 \toprule
     & \multicolumn{4}{l}{Before quality assurance measures (\textit{N} = 100)} && \multicolumn{4}{l}{After quality assurance measures (\textit{N} = 74)} \\
 \cline{2-5}\cline{7-10}
-    & Closest & Plausible & \textit{U} value$^a$ & \textit{p} value && Closest & Plausible & \textit{U} value$^a$ & \textit{p} value\\ 
+    & \textit{closest} & \textit{Plausible} & \textit{U} value$^a$ & \textit{p} value && \textit{closest} & \textit{Plausible} & \textit{U} value$^a$ & \textit{p} value\\ 
 \hline
 \textit{N}   &  50 & 50 & .. & .. && 40 & 34 & .. & .. \\
 Gender$^b$ & 17f/33m & 22f/26m/1nb/1na & 1108 & .339 && 13f/27m & 18f/15m/1nb & 554.4 & .116 \\
@@ -350,38 +351,38 @@ Age (\textit{Mdn})$^c$ & 25--34y & 25--34y & 1234 & .950 && 25--34y & 35--44y & 
 
 \subsection{Do Computationally Plausible CFEs Facilitate Learning?}
 
-Hypothesis 1 postulates that users in the plausible condition outperform users in the closest condition.
-To statistically assess this hypothesis, we compare data from participants in both groups in terms of pack size produced over time, time needed to reach a feeding decision, and matches between ground truth and indicated plants.
-Figure \ref{fig:hyp1}a shows the development of average pack size as well as average time spent to reach a feeding decision per group. 
-Strikingly, the data suggests that participants in the closest, not the plausible, condition performed better. 
+Hypothesis 1 postulates that users in the \textit{plausible} condition outperform users in the \textit{closest} condition.
+To statistically assess this hypothesis, we compare data from participants in both groups in terms of pack size produced over time, decision time, and matches between ground truth and indicated plants.
+Figure \ref{fig:hyp1}a shows the development of average pack size as well as average decision time per group. 
+Strikingly, the data suggests that participants in the \textit{closest}, not the \textit{plausible}, condition performed better. 
 This effect is confirmed by the significant interaction of factors \textit{trial number} and \textit{group} (\textit{F}(11,792) = 2.119, \textit{p} = 0.017, $\eta_{\text{p}}^{2}$ = 0.029) in the corresponding linear mixed effects model. The follow-up analysis reveals significant differences between groups in trial 11 (\textit{t}(472) = 4.040, \textit{p} = 0.012, \textit{d} = 0.693) and trial 12 (\textit{t}(472) = 2.530, \textit{p} \textless .001, \textit{d} = 1.101).
 Additionally, there is a highly significant main effect of trial number (\textit{F}(11,792) = 7.585, \textit{p} \textless .001, $\eta_{\text{p}}^{2}$ = 0.095), but no significant main effect of group (\textit{F}(11,72) = 2.586, \textit{p} = .112, $\eta_{\text{p}}^{2}$ = 0.035).
 
-Participants in both groups showed a marked decrease in time needed to reach a feeding decision over the curse of the study, already apparent after the very first trial (Figure \ref{fig:hyp1}b).
+Participants in both groups showed a marked decrease in decision time over the curse of the study, already apparent after the very first trial (Figure \ref{fig:hyp1}b).
 The significant main effect of factor \textit{trial number} (\textit{F}(11,792) = 14.818, \textit{p} \textless .001, $\eta_{\text{p}}^{2}$ = 0.171) confirms this observation.
 Corresponding post-hoc analyses show significant differences between trial 1 and all other trials (all \textit{t}(792) \textgreater 5.900, \textit{p} \textless .001, \textit{d} \textgreater 1.200), between trial 3 and 4 (\textit{t}(792) = 3.765, \textit{p} = 0.012, \textit{d} = 0.621), and between trials 4 and 5 (\textit{t}(792) = 3.395, \textit{p} = 0.048, \textit{d} = 0.560).
 Neither the main effect of factor \textit{group} (\textit{F}(11,72) = 0.235, \textit{p} = .630, $\eta_{\text{p}}^{2}$ = 0.003), nor the interaction between factors \textit{trial number} and \textit{group} (\textit{F}(11,792) = 0.897, \textit{p} = .543, $\eta_{\text{p}}^{2}$ = 0.012) reach significance.
 
 In terms of mean number of matches between user judgements of plant relevance for task success and the ground truth, users in both groups performed comparably both for relevant 
-(closest: mean number of matches = 2.850 $\pm$ 0.198 \textit{SE}; plausible: mean number of matches = 3.206 $\pm$ 0.178 \textit{SE}; \textit{U} = 781, \textit{p} = 0.255, \textit{r} = 0.054)
+(\textit{closest}: mean number of matches = 2.850 $\pm$ 0.198 \textit{SE}; \textit{plausible}: mean number of matches = 3.206 $\pm$ 0.178 \textit{SE}; \textit{U} = 781, \textit{p} = 0.255, \textit{r} = 0.054)
 and irrelevant plants (closest: mean number of matches = 3.125 $\pm$ 0.157 \textit{SE}), plausible: mean number of matches = 3.177 $\pm$ 0.217 \textit{SE}; \textit{U} = 721.5, \textit{p} = .643, \textit{r} = 0.054).
 
-Thus, we cannot verify our hypothesis that plausible \glspl{CFE} facilitate learning. On the contrary, the development of pack size between the groups points to the opposite effect of closest \glspl{CFE} being more beneficial for users than plausible ones.
+Thus, we cannot verify our hypothesis that \textit{computationally plausible \glspl{CFE}} facilitate learning. On the contrary, the development of pack size between the groups points to the opposite effect of \textit{closest \glspl{CFE}} being more beneficial for users than \textit{computationally plausible} ones.
 
 \begin{figure}
    \centering
    \includegraphics[width=\textwidth]{./media/H1_p_ShubsPerTrial_RTPertrial_PAZ_FINAL.pdf}
    \Description[TO DO: insert short description]{TO DO: insert description}
-   \caption{Development of \textbf{a} mean pack size per group by trial, \textbf{b} mean time needed to reach a feeding decision per group by trial, and \textbf{c} mean number of matches between user judgements and ground truth for survey items assessing relevant plants and irrelevant plants, respecively. Shaded areas in \textbf{a} and \textbf{b}, and error bars in \textbf{c} denote the standard error of the mean. Asterisks denote statistical significance at \textit{p} < 0.05 (*) and \textit{p} < .001 (***), respectively.}
+   \caption{Development of \textbf{a} mean pack size per group by trial, \textbf{b} mean decision time per group by trial, and \textbf{c} mean number of matches between user judgements and ground truth for survey items assessing relevant plants and irrelevant plants, respecively. Shaded areas in \textbf{a} and \textbf{b}, and error bars in \textbf{c} denote the standard error of the mean. Asterisks denote statistical significance at \textit{p} < 0.05 (*) and \textit{p} < .001 (***), respectively.}
    \label{fig:hyp1}
  \end{figure}
 
 \subsection{Do Computationally Plausible CFEs Increase User's Subjective Understanding?}
 To assess hypothesis 2, we analyze participant judgements on relevant survey items.
 Visual assessment suggests that there is very little variation in terms of user responses between groups (Figure \ref{fig:survey}a), confirmed by our statistical assessment. 
-Groups do not statistically differ when judging whether presented \gls{CFE} feedback was helpful to increase pack size (closest condition: \textit{M} = 3.700 $\pm$ 1.285 \textit{SE}; plausible condition: \textit{M} = 3.636 $\pm$ 0.242 \textit{SE}; \textit{U} = 656, \textit{p} = .968, \textit{r} = 0.005).
-Likewise, we do not detect significant group differences in terms of subjective usability (closest condition: \textit{M} = 3.775 $\pm$ 0.216 \textit{SE}; plausible condition: \textit{M} = 3.606 $\pm$ 0.230 \textit{SE}; \textit{U} = 603, \textit{p} = .513, \textit{r} = 0.077).
-In addition, there is no significant difference between groups for estimated usefulness of explanations for others (closest condition: \textit{M} = 3.750 $\pm$ 0.208 \textit{SE}; plausible condition: \textit{M} = 3.647 $\pm$ 0.206 \textit{SE}; \textit{U} = 637, \textit{p} = .631, \textit{r} = 0.056).
+Groups do not statistically differ when judging whether presented \gls{CFE} feedback was helpful to increase pack size (\textit{closest} condition: \textit{M} = 3.700 $\pm$ 1.285 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.636 $\pm$ 0.242 \textit{SE}; \textit{U} = 656, \textit{p} = .968, \textit{r} = 0.005).
+Likewise, we do not detect significant group differences in terms of subjective usability (\textit{closest} condition: \textit{M} = 3.775 $\pm$ 0.216 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.606 $\pm$ 0.230 \textit{SE}; \textit{U} = 603, \textit{p} = .513, \textit{r} = 0.077).
+In addition, there is no significant difference between groups for estimated usefulness of explanations for others (\textit{closest} condition: \textit{M} = 3.750 $\pm$ 0.208 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.647 $\pm$ 0.206 \textit{SE}; \textit{U} = 637, \textit{p} = .631, \textit{r} = 0.056).
 
 \begin{figure}
    \centering
@@ -393,12 +394,12 @@ In addition, there is no significant difference between groups for estimated use
 
 \subsection{Does Mode of Presentation have an Impact?}
 As postulated in hypothesis 3, we do not observe group differences between conditions in terms of understanding the explanations as such (Figure \ref{fig:survey}b). 
-A considerable proportion of both groups responded positively about understanding the feedback, not differing significantly in their responses (closest condition: \textit{M} = 3.975 $\pm$ 0.184 \textit{SE}; plausible condition: \textit{M} = 4.118 $\pm$ 0.162 \textit{SE}; \textit{U} = 773.5, \textit{p} = .200 \textit{r} = 0.149).
-In terms of needing support for understanding, both groups reply with a similar response pattern (closest condition: \textit{M} = 3.200 $\pm$ 0.230 \textit{SE}; plausible condition: \textit{M} = 3.147 $\pm$ 0.257 \textit{SE}; \textit{U} = 667, \textit{p} = .890 \textit{r} = 0.016).
-Similarly, user judgements on timing and efficacy of  CFE presentation are consistently high across groups (closest condition: \textit{M} = 4.100$\pm$0.175 \textit{SE}; plausible condition: \textit{M} = 4.147$\pm$0.170 \textit{SE}; \textit{U} = 680.5, \textit{p} = 1 \textit{r} = 0.000).
+A considerable proportion of both groups responded positively about understanding the feedback, not differing significantly in their responses (\textit{closest} condition: \textit{M} = 3.975 $\pm$ 0.184 \textit{SE}; \textit{plausible} condition: \textit{M} = 4.118 $\pm$ 0.162 \textit{SE}; \textit{U} = 773.5, \textit{p} = .200 \textit{r} = 0.149).
+In terms of needing support for understanding, both groups reply with a similar response pattern (\textit{closest} condition: \textit{M} = 3.200 $\pm$ 0.230 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.147 $\pm$ 0.257 \textit{SE}; \textit{U} = 667, \textit{p} = .890 \textit{r} = 0.016).
+Similarly, user judgements on timing and efficacy of  CFE presentation are consistently high across groups (\textit{closest} condition: \textit{M} = 4.100$\pm$0.175 \textit{SE}; \textit{plausible} condition: \textit{M} = 4.147$\pm$0.170 \textit{SE}; \textit{U} = 680.5, \textit{p} = 1 \textit{r} = 0.000).
 
 \subsection{Exploratory Analysis}
-Our explanatory analysis revealed that more than half of all users in both groups did not detect inconsistencies in the \glspl{CFE} provided (closest condition: \textit{M} = 2.675 $\pm$ 0.166 \textit{SE}; plausible condition: \textit{M} = 2.853 $\pm$ 0.207 \textit{SE}; \textit{U} = 743, \textit{p} = 0.480, \textit{r} = 0.082).
+Our explanatory analysis revealed that more than half of all users in both groups did not detect inconsistencies in the \glspl{CFE} provided (\textit{closest} condition: \textit{M} = 2.675 $\pm$ 0.166 \textit{SE}; \textit{plausible} condition: \textit{M} = 2.853 $\pm$ 0.207 \textit{SE}; \textit{U} = 743, \textit{p} = 0.480, \textit{r} = 0.082).
 
 \section{Discussion}\label{sec:discussion}
 
@@ -408,8 +409,8 @@ Through the experimental design of our study, we measure understanding and usabi
 Our results reveal a range of valuable insights with important implications for \gls{XAI} in application.
 
 %%%% Hypothesis 1 - Do plausible CFEs facilitate learning?
-First, we cannot verify our initial supposition that plausible \glspl{CFE} facilitate learning in the current setting. 
-Intriguingly, we observe the opposite effect: In terms of task performance measured as pack size, users in the closest condition performed statistically better than users in the plausible condition.
+First, we cannot verify our initial supposition that \textit{computationally plausible} \glspl{CFE} facilitate learning in the current setting. 
+Intriguingly, we observe the opposite effect: In terms of task performance measured as pack size, users in the \textit{closest} condition performed statistically better than users in the \textit{plausible} condition.
 A likely reason for this observation may be that the current study revolves around an abstract scenario of feeding aliens. 
 Given psychological interpretations of plausibility as probability~\citep{pezdek_is_2006, de_brigard_remembering_2013}, simply restricting \glspl{CFE} to items from the training set cannot help participants that lack an informed mental representation of the current state of this alien world. 
 For a novice user at the onset of the study, any counterfactual is equally likely.
@@ -420,10 +421,10 @@ Classically, computed CFEs are penalized if they deviate from the requested pred
 This concept resembles the view that psychologically plausible counterfactuals come from worlds that are minimally different from reality~\citep{lewis_counterfactuals_1973}.
 Empirical evidence highlighting the close relation between perceived plausibility and perceived similarity between counterfactual and factual state supports this notion~\citep{stanley_counterfactual_2017, de_brigard_perceived_2021}.
 In contrast, the computational plausibility constraint rejects counterfactuals that are not part of the training set, even if they are minimal.
-Consequently, users in the plausible condition encounter larger differences between provided explanations and their input, at odds with the idea of plausibility as comparative similarity.
+Consequently, users in the \textit{plausible} condition encounter larger differences between provided explanations and their input, at odds with the idea of plausibility as comparative similarity.
 Conversely, users in the closest condition might have experienced their \glspl{CFE} as more psychologically plausible than the computationally plausible version.
 Further, an emotional effect is conceivable: Upon seeing close \glspl{CFE}, users might get a feeling of ``just missing the better option'', inducing negative affect, strongly motivating the need for improvement~\citep{medvec_when_1997, markman_reflection_2003}.
-Additionally, we may speculate that the larger discrepancies between factual and counterfactual state in the plausible condition may increase the mental load on users, hampering learning.
+Additionally, we may speculate that the larger discrepancies between factual and counterfactual state in the \textit{plausible} condition may increase the mental load on users, hampering learning.
 Future studies need to disentangle contributions of these potential factors.
 
 % Refer to Lim, 2009 - they did not find any effects for What-if explanations, 
@@ -467,7 +468,7 @@ This supports the notion that \glspl{CFE} are indeed subjectively intuitive and 
 A major challenge for effective user designs comparing different approaches is keeping conditions highly comparable, with the sole exception of the experimental manipulation.
 User judgements of general understandability and presentation mode of \glspl{CFE} inspire confidence that we achieved this level of control with our Alien Zoo design. 
 In fact, the respective items elicit the highest user judgements out of all survey responses, with agreement values close to 90\%.% (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
-~High agreement across both groups leads us to conclude that mode of \gls{CFE} presentation does not have an impact when comparing users experience close vs. plausible \glspl{CFE}, validating our hypothesis 3.
+~High agreement across both groups leads us to conclude that mode of \gls{CFE} presentation does not have an impact when comparing users experience \textit{closest} vs. \textit{plausible} \glspl{CFE}, validating our hypothesis 3.
 Thus, the Alien Zoo design as proposed here is suitable for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}~\citep{keane_if_2021}.
 
 %%%% Exploratory Analysis
@@ -497,7 +498,7 @@ Such a strategy would hamper learning profoundly, irrespective of the explanatio
 While exploring the impact of confirmation bias for \glspl{CFE} in \gls{XAI} was outside the scope of this work, the issue deserves more careful attention in future work.
 
 % was our survey suitable? 
-None of the user judgements differ for users receiving close and plausible \glspl{CFE}, respectively.
+None of the user judgements differ for users receiving \textit{closest} and \textit{computationally plausible \glspl{CFE}}, respectively.
 This is in line with a previous report of diverging trends between objective measures and self-reports~\citep{van_der_waa_evaluating_2021}, and may actually reflect a more general tendency in human evaluation of system understanding.
 As an alternative explanation, however, we may also call into question the efficacy of instruments applied to assess user experience. 
 To date, there is no standard inventory for assessing subjective usability in \gls{XAI} research.
@@ -537,7 +538,7 @@ In this work, we present a controlled study comparing user performance and usabi
 We focus on potential group effects driven by receiving either close \glspl{CFE} that are minimally different from the user’s input, compared to computationally plausible ones, limited the set of possible counterfactuals to the training data.
 We develop a game-like experimental design based on a web-based interface, revolving around an abstract scenario, suitable for novice users.
 The effectiveness of our design demonstrating learning in both groups highlights the power of interactive and goal-directed tasks for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}.
-Our findings suggest that novice users actually benefit more from receiving close than computationally plausible \glspl{CFE}.
+Our findings suggest that novice users actually benefit more from receiving \textit{closest} than \textit{computationally plausible \glspl{CFE}}.
 It supports the view of plausibility as comparative similarity rather than probability, potentially more beneficial for users if they lack an accurate mental model to build on.
 In sum, our work emphasizes yet again that theoretical approaches proposing explanation techniques for \gls{ML} models and user-based validations thereof need to go hand in hand.
 Researchers designing \gls{XAI} approaches need to bear in mind human behavior, preferences and mental models, to build on a solid foundation to effectively benefit the end user.
