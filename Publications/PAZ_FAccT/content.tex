@@ -18,7 +18,6 @@ The prevailing approach in the current literature is to compare different \gls{C
 Thus, in-depth evaluations of user experiences, elucidating the usability of \gls{CFE} variants, are yet to be done.
 
 % Our contribution! 
-%% TO DO: DEFINE CONTRIBUTION
 The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
 While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
 Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to algorithmically plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
@@ -105,43 +104,37 @@ Similar to the modeling of closest counterfactual explanation~\refeq{eq:counterf
 %Importantly: there is some variation in terms of how CFs are defined: Sahil Verma, John Dickerson, and Keegan Hines. 2020. Counterfactual Explanations for Machine Learning: A Review. (2020).
 %In the current paper, we rely on the work of Artelt et al, and they do it like this...
 
-\section{Do users profit from algorithmic plausibility in an abstract domain?}\label{sec:hypotheses}
+\section{Do novice users profit from algorithmic plausibility in an abstract domain?}\label{sec:hypotheses}
 
 % Here: Make a connection why it would be sensible to assume so.
 % Plausibility is an important feauture for human-generated CFEs, so why not also for machine learning ones?
-
 % TO DO: bring in the advantages of an iterative learning design
 
-\textcolor{ACMDarkBlue}{
-The main research question of the current work is: Can plausible \glspl{CFE} help users?
-}
+The guiding question of the current work is whether algorithmically plausible \glspl{CFE} have an advantage over close \glspl{CFE} in helping users to learn from an \gls{ML} model.
+To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for an \gls{ML} model.
+At regular intervals, they receive either algorithmically plausible or close \glspl{CFE}, highlighting how changes in the user's previous input would have lead to better results.
+The main advantage of this approach is that the interplay between repeated user action and corrective feedback enables us to assess user understanding at each stage of the process objectively through task performance.
 
-\textcolor{ACMDarkBlue}{
-We posit: yes! Maybe being repeateldy exposed to exemplars that are more representative of the real distribution enables humans to build a more appropriate mental model more quickly. While no background knowledge exsists at the start, the real life situation may be really clear for people after seeing these examples (more than CFs that are just minimally different, but not representative of the real data distribution)
-}
+We find it conceivable that implementing a plausibility constraint indeed improves user performance and experience. 
+Specifically, we assume that repeated exposure to items representative of the training set enables humans to build a more appropriate mental model of the real underlying data distribution.
+To obtain general insights about the usability of different types of \glspl{CFE} as such, we recruited novice users and designed the task around an abstract scenario.
+This approach has the additional advantage of reducing the impact of pre-existing background knowledge, potentially confounding task performance~\citep{van_der_waa_evaluating_2021}. Thus, we formulated the following three hypotheses.
 
-\textcolor{ACMDarkBlue}{
-The design is key - we usean abstract domain - if plausibility as probability is key, humans should have a hard time...
-}
+\paragraph{Hypothesis 1} We expect plausible \glspl{CFE} to be more helpful to users tasked to discover unknown relationships in data than close ones, both in terms of objective and subjective understandability. 
+Specifically, we anticipate that participants in the plausible condition a) show greater learning success, b) become more automatic and thus quicker in the task, and c) are able to explicitly identify relevant and irrelevant input features.
+%Specifically, we expect participants in the plausible condition a) to produce larger packs over time, b) to become more automatic and thus quicker in choosing their plants, and c) to clearly state which plants were crucial for their pack to prosper. % (survey items 1 and 2).
 
-\textcolor{ACMDarkBlue}{
-Further Guiding questions:
-Do plausible \gls{CFE} facilitate learning?
-Do plausible \glspl{CFE} increase user's subjective understanding?
-Given the robustness advantage of plausible \glspl{CFE} over closest \glspl{CFE}, and given that we know that plausibility helps users understand (TO DO!), we formulated the following 4 hypotheses.
-}
-First, we expect plausible \glspl{CFE} to be more helpful to users tasked to discover unknown relationships in data than closest ones, both in terms of objective and subjective understandability (hypothesis 1). 
-Specifically, we expect participants in the plausible condition a) to produce larger packs over time, b) to become more automatic and thus quicker in choosing their plants, and c) to clearly state which plants were crucial for their pack to prosper. % (survey items 1 and 2).
-
-Second, we expect to see difference in terms of subjective understanding between both groups (hypothesis 2).
+\paragraph{Hypothesis 2} We expect to see difference in terms of subjective understanding between both groups.
 We predict that users will differ in how far they find the explanations useful, and in how far they can make use of it, with an advantage of plausible CFEs. %(survey items 5, 6).
-We also posit that users imagine plausible CFEs to be more helpful for others users. %(survey item 9).
+Furthermore, we posit that users imagine plausible CFEs to be more helpful for others users. %(survey item 9).
 
-An important feature of the current design is the high comparability of conditions, as structure and presentation mode of \glspl{CFE} is kept constant for both groups.
-Thus, we do not expect users in different conditions to differ in their understanding of the explanations per se, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation (hypothesis 3).
+\paragraph{Hypothesis 3} We evaluate users' understanding of the explanations themselves, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation. As structure and presentation mode of \glspl{CFE} is kept constant across conditions, we expect not to find any differences.
+This analysis tests the comparability of conditions, a key feature in any experimental user design.
+%Thus, we do not expect users in different conditions to differ in their understanding of the explanations per se, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation .
 % (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
 
-Finally, we do not formulate a prediction whether groups with differ in uncovering inconsistencies in the explanations presented. This will be investigated in an exploratory analysis.% (maybe that happens in case of “closest” CFEs when we’re in the areas of “no training data“?) (questionnaire item 8). 
+
+Finally, we do not formulate a prediction whether groups will differ in uncovering inconsistencies in the explanations presented. This will be investigated in an additional exploratory analysis.% (maybe that happens in case of “closest” CFEs when we’re in the areas of “no training data“?) (questionnaire item 8). 
 
 \section{Experimental Design}\label{sec:experimental-design}
 \textcolor{ACMDarkBlue}{
@@ -149,6 +142,8 @@ To test hypothesis1,hypothesis2,hypothesis3, ... from \ref{sec:hypotheses}, we..
 }
 
 \subsection{The plausible Alien Zoo paradigm}
+
+\textbf{HERE: FIGURE OF ROUGH EXPERIMENTAL DESIGN}
 
 \textcolor{ACMDarkBlue}{
 We developed a game-like experimental design based on a web-based interface, to facilitate access for users from all over the world and diverse backgrounds, enabling large-scale and easy participant recruitment.
