@@ -10,7 +10,7 @@ Consequently, the \gls{XAI} community has seen a veritable surge of technical ac
 Motivated by a seminal review by~\citep{miller_explanation_2019} advocating a user-centered focus on explainability, \glspl{CFE} gained particular prominence as a supposedly useful, human-accessible solution~\citep{keane_if_2021}.
 \glspl{CFE} provide \textit{what-if} feedback to the user, \ie, information on what changes in the input elicit a change of an automated decision (\ie, ``if you had worn a mask, you would not have gotten ill''). 
 However, the emerging body of work on \glspl{CFE}, and explainability of \gls{ML} models more generally, shows an alarming tendency to take the quality of the suggested explanation modes at face value \citep{doshi-velez_towards_2017, offert_i_2017}.
-In a recent review of over 100 counterfactual XAI studies,~\citeauthor{keane_if_2021} criticize that only a third of these studies concern themselves with user-based evaluations, often with great limitations concerning statistical power and reproducibility~\citep{keane_if_2021}.
+In a recent review of over 100 counterfactual XAI studies,~\citeauthor{keane_if_2021} criticize that only a third of these studies concern themselves with user-based evaluations, often with limitations concerning statistical power and reproducibility~\citep{keane_if_2021}.
 
 % A profound research gap: comparing different approaches:
 The lack of user-based evaluations affects not only assessments \glspl{CFE} as such, but more specifically also the evaluation of different conceptualizations for this kind of explanations.
@@ -21,13 +21,6 @@ Thus, in-depth evaluations of user experiences, elucidating the usability of \gl
 The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
 While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
 Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional close \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
-
-% The structure of this paper
-The remainder of this paper is structured as follows: 
-We will first briefly outline \glspl{CFE} as a psychologically grounded mode of explanation, with special regard to the impact of plausibility in terms of counterfactual thought (Section \ref{subsec:psychoCFs}).
-Section \ref{sec:EffCompCFs} gives a more technical account of conventional---henceforth referred to as close---and plausible model agnostic \gls{CFE} approaches.
-After delineating guiding questions and hypotheses for our research (Section \ref{sec:hypotheses}), we give an in-depth account of our suggested experimental design, as well as the experimental procedure of our user study (Section \ref{sec:experimental-design}). 
-Results are depicted in Section \ref{sec:results}, before closing with an in-depth discussion of insights drawn from this study, including limitations and avenues for future work in Section \ref{sec:discussion}.
 
 \section{Counterfactual Explanations as a Psychologically Grounded Solution for XAI}\label{subsec:psychoCFs}
 
@@ -130,15 +123,18 @@ To obtain general insights about the usability of different types of \glspl{CFE}
 This approach has the additional advantage to mitigate any difference in domain knowledge and possible misconceptions about the task setting, potentially confounding task performance~\citep{van_der_waa_evaluating_2021}.
 Thus, we formulated the following three hypotheses.
 
-\paragraph{Hypothesis 1} We expect plausible \glspl{CFE} to be more helpful to users tasked to discover unknown relationships in data than close ones, both in terms of objective and subjective understandability. 
+%\paragraph{Hypothesis 1} 
+\textit{Hypothesis 1.} We expect plausible \glspl{CFE} to be more helpful to users tasked to discover unknown relationships in data than close ones, both in terms of objective and subjective understandability. 
 Specifically, we anticipate that participants in the plausible condition a) show greater learning success, b) become more automatic and thus quicker in the task, and c) are able to explicitly identify relevant and irrelevant input features.
 %Specifically, we expect participants in the plausible condition a) to produce larger packs over time, b) to become more automatic and thus quicker in choosing their plants, and c) to clearly state which plants were crucial for their pack to prosper. % (survey items 1 and 2).
 
-\paragraph{Hypothesis 2} We expect to see difference in terms of subjective understanding between both groups.
+%\paragraph{Hypothesis 2}
+\textit{Hypothesis 2.} We expect to see difference in terms of subjective understanding between both groups.
 We predict that users will differ in how far they find the explanations useful, and in how far they can make use of it, with an advantage of plausible CFEs. %(survey items 5, 6).
 Furthermore, we posit that users imagine plausible CFEs to be more helpful for others users. %(survey item 9).
 
-\paragraph{Hypothesis 3} We evaluate users' understanding of the explanations themselves, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation. As structure and presentation mode of \glspl{CFE} is kept constant across conditions, we expect not to find any differences.
+%\paragraph{Hypothesis 3} 
+\textit{Hypothesis 3.} We evaluate users' understanding of the explanations themselves, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation. As structure and presentation mode of \glspl{CFE} is kept constant across conditions, we expect not to find any differences.
 This analysis tests the comparability of conditions, a key feature in any experimental user design.
 %Thus, we do not expect users in different conditions to differ in their understanding of the explanations as such, their need for support to understand, and their evaluation of timing and efficacy of \gls{CFE} presentation .
 % (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
@@ -207,7 +203,7 @@ We acquire self-reported measurements using the post-game survey, testing differ
 The first two survey items explicitly ask users to identify plants they think are relevant and irrelevant for task success. 
 Replies from these items allow us to measure to which extent users in different groups formed explicit knowledge of the underlying data structure.
 
-Further, users indicate in how far they find the explanations useful, to which degree they can make use of it, and in how far they imagine the presented \glspl{CFE} to be helpful for other users, too. These items assess users' subjective understanding.
+Further, users indicate in how far they find the explanations useful, to which degree they can make use of them, and in how far they imagine the presented \glspl{CFE} to be helpful for other users, too. These items assess users' subjective understanding.
 
 Finally, three self-reported measurements check for potential confounds. 
 These are items that ask users to indicate their understanding of the explanations as such, whether they feel the need for support for understanding, and their evaluation of timing and efficacy of \gls{CFE} presentation.
@@ -491,12 +487,6 @@ As smaller sample sizes always mean a loss of statistical power, we factored in 
 Yet, the effect size of the significant interaction between factors \textit{trial number} and \textit{group} remains relatively small. 
 Hence, the results from this work await confirmation in larger follow-up studies.
 
-%% confirmation bias?
-A further cautionary note regards the problem of users falling victim to confirmation bias after receiving the first round of \gls{CFE} feedback~\citep{wang_designing_2019}. 
-In essence, we cannot rule out that some users generate a faulty initial hypothesis, and subsequently look for confirming evidence for that faulty initial hypothesis only. 
-Such a strategy would hamper learning profoundly, irrespective of the explanation provided, and we cannot rule out that some lower performing users did indeed follow it.
-While exploring the impact of confirmation bias for \glspl{CFE} in \gls{XAI} was outside the scope of this work, the issue deserves more careful attention in future work.
-
 % was our survey suitable? 
 None of the user judgements differ for users receiving \textit{closest} and \textit{computationally plausible \glspl{CFE}}, respectively.
 This is in line with a previous report of diverging trends between objective measures and self-reports~\citep{van_der_waa_evaluating_2021}, and may actually reflect a more general tendency in human evaluation of system understanding.
@@ -527,7 +517,7 @@ For instance, future work may explore the impact of distinct psychometric proper
 A small-scale user study based on data from 38 participants suggests an influence of individual personality traits on user's ability to make sense of an \gls{ML} system's output, and understanding the generation process, respectively~\citep{gleaves_role_2020}.
 It remains to be shown how personal attributes relate to usability judgements of \glspl{CFE}.
 
-Further, it is conceivable that users may prefer to receive explanations on demand, rather than obtaining them continuously at regular intervals.
+Further, it is conceivable that users may prefer to receive explanations on demand, rather than continuously at prescribed intervals.
 There is abundant room for further progress in determining whether explicitly requesting \glspl{CFE} may improve task performance, and how users would make use of their control over the explanation intervals.
 
 Finally, we successfully demonstrate that users can make use of provided \glspl{CFE} in the current task, indicating a certain degree of intuitiveness or plausibility connected to them. 
