@@ -118,7 +118,8 @@ The main advantage of this approach is that the interplay between repeated user 
 We find it conceivable that implementing a plausibility constraint indeed improves user performance and experience. 
 Specifically, we assume that repeated exposure to items representative of the training set enables humans to build a more appropriate mental model of the real underlying data distribution.
 To obtain general insights about the usability of different types of \glspl{CFE} as such, we recruited novice users and designed the task around an abstract scenario.
-This approach has the additional advantage of reducing the impact of pre-existing background knowledge, potentially confounding task performance~\citep{van_der_waa_evaluating_2021}. Thus, we formulated the following three hypotheses.
+This approach has the additional advantage to mitigate any difference in domain knowledge and possible misconceptions about the task setting, potentially confounding task performance~\citep{van_der_waa_evaluating_2021}.
+Thus, we formulated the following three hypotheses.
 
 \paragraph{Hypothesis 1} We expect plausible \glspl{CFE} to be more helpful to users tasked to discover unknown relationships in data than close ones, both in terms of objective and subjective understandability. 
 Specifically, we anticipate that participants in the plausible condition a) show greater learning success, b) become more automatic and thus quicker in the task, and c) are able to explicitly identify relevant and irrelevant input features.
@@ -137,35 +138,39 @@ This analysis tests the comparability of conditions, a key feature in any experi
 Finally, we do not formulate a prediction whether groups will differ in uncovering inconsistencies in the explanations presented. This will be investigated in an additional exploratory analysis.% (maybe that happens in case of “closest” CFEs when we’re in the areas of “no training data“?) (questionnaire item 8). 
 
 \section{Experimental Design}\label{sec:experimental-design}
-\textcolor{ACMDarkBlue}{
-To test hypothesis1,hypothesis2,hypothesis3, ... from \ref{sec:hypotheses}, we... used the AlienZoo paradigm (REF to arxiv when it's there). 
-}
 
-\subsection{The plausible Alien Zoo paradigm}
+To assess Hypotheses 1--3, we use a novel iterative learning design revolving around an abstract scenario.
+
+\subsection{The plausible Alien Zoo scenario}
 
 \textbf{HERE: FIGURE OF ROUGH EXPERIMENTAL DESIGN}
 
-\textcolor{ACMDarkBlue}{
-We developed a game-like experimental design based on a web-based interface, to facilitate access for users from all over the world and diverse backgrounds, enabling large-scale and easy participant recruitment.
-}
-\textcolor{ACMDarkBlue}{
-In the current study, be relied on the novel Alien Zoo paradigm (REF to arxiv paper).
+We developed a game-like experimental design on a web-based interface, to facilitate access for users from all over the world and diverse backgrounds, enabling large-scale and easy participant recruitment.
 } \textcolor{ACMDarkBlue}{
-In this scenario, participants are asked to imagine themselves as zoo keepers in a zoo for aliens. Several alien plants may be chosen to feed to the aliens, but it is not clear what plants make up a nutritious diet for the aliens. Thus, participants are tasked to find how to best feed the aliens.
-Participants go through several feeding cycles, choosing a combination of plants for feeding. After each cycle, the pack of aliens either decreases (given a bad combination of plants) or increases (given a good combination). 
-In regular intervals, participants receive a summary of their past choices, together with feedback on what choice would have led to a better result (\ie, a counterfactual explanation). 
-(For details on the procedure, see \ref{subsec:experimental-procedure}).
-} \textcolor{ACMDarkBlue}{
-Advantages of this approach is control for individual domain knowledge by relying on an abstract domain, evaluating the objective as well as subjective usability of automatically generated explanations directly (REF to arxiv paper).
-} \textcolor{ACMDarkBlue}{
-Thus, this current use case corresponds to a human grounded evaluation following the taxonomy by~\citeauthor{doshi-velez_towards_2017}, assessing perforemance of real users in an abstract task setting.
-} \textcolor{ACMDarkBlue}{
-Unlike most real-life applications, systems investigated in user studies typically focus on applications for expert users trying to gain expert knowledge of a domain. 
-In contrast, we investigate whether providing \glspl{CFE} to novice users improves their understanding of relationships in a yet unknown dataset. 
-Thus, our setting falls under the explaining to discover reasons for explainability defined by~\citeauthor{adadi_peeking_2018}~\citep{adadi_peeking_2018}.
-Specifically, we focus on the question whether \glspl{CFE} computed according to algorithmic plausibility prove to be more useful for novice users in this setting than providing closest \glspl{CFE}, independent of domain.
-Relying on novice users in an abstract context, we mitigate any difference in domain knowledge and possible misconceptions about the task setting~\citep{van_der_waa_evaluating_2021}.
-}
+%\textcolor{ACMDarkBlue}{
+%In the current study, be relied on the novel Alien Zoo paradigm (REF to arxiv paper).
+%} \textcolor{ACMDarkBlue}{
+In the Alien Zoo scenario, participants imagine themselves as zookeepers for aliens. 
+To feed to the aliens, participants may choose from different plants. 
+However, it is not clear what plants make up a nutritious diet. 
+Thus, participants need to find how to best feed the aliens. 
+Participants go through several feeding cycles, choosing a combination of plants. 
+After each cycle, the pack of aliens either decreases (given a bad combination of plants) or increases (given a good combination). 
+In regular intervals, participants receive a summary of their past choices, together with feedback on what choice would have led to a better result (\ie, a \gls{CFE}).
+
+%\textcolor{ACMDarkBlue}{
+%Advantages of this approach is control for individual domain knowledge by relying on an abstract domain, evaluating the objective as well as subjective usability of automatically generated explanations directly (REF to arxiv paper).
+%} 
+
+This use case, assessing performance of real users in an abstract task setting, corresponds to a human grounded evaluation~\citep{doshi-velez_towards_2017}.
+Further, our setting falls under the ``explaining to discover'' category for explainability defined by~\citeauthor{adadi_peeking_2018}, investigating whether providing \glspl{CFE} to novice users improves their understanding of relationships in a yet unknown dataset~\citep{adadi_peeking_2018}.
+
+%} \textcolor{ACMDarkBlue}{
+%Unlike most real-life applications, systems investigated in user studies typically focus on applications for expert users trying to gain expert knowledge of a domain. 
+%In contrast, we 
+%Thus, 
+%Specifically, we focus on the question whether \glspl{CFE} computed according to algorithmic plausibility prove to be more useful for novice users in this setting than providing closest \glspl{CFE}, independent of domain.
+%}
 
 \subsection{Post-Game survey}
 \textcolor{ACMDarkBlue}{
