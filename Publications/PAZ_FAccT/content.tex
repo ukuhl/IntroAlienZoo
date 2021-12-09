@@ -111,9 +111,9 @@ Another, straight forward approach is to limit the set of possible counterfactua
 % Plausibility is an important feauture for human-generated CFEs, so why not also for machine learning ones?
 % TO DO: bring in the advantages of an iterative learning design
 
-The guiding question of the current work is whether computationally plausible \glspl{CFE} have an advantage over close \glspl{CFE} in helping users to learn from an \gls{ML} model.
+The guiding question of the current work is whether computationally plausible \glspl{CFE} have an advantage over closest \glspl{CFE} in helping users to learn from an \gls{ML} model.
 To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for an \gls{ML} model.
-At regular intervals, they receive either computationally plausible or close \glspl{CFE}, highlighting how changes in the user's previous input would have lead to better results.
+At regular intervals, they receive either computationally plausible or closest \glspl{CFE}, highlighting how changes in the user's previous input would have lead to better results.
 The main advantage of this approach is that the interplay between repeated user action and corrective feedback enables us to assess user understanding at each stage of the process objectively through task performance.
 
 We find it conceivable that implementing a plausibility constraint indeed improves user performance and experience. 
@@ -148,7 +148,7 @@ To assess Hypotheses 1--3, we use a novel iterative learning design revolving ar
    \centering
    \includegraphics[width=\textwidth]{./media/FigureStudyStructure.pdf}
    \Description[TO DO: insert short description]{TO DO: insert description}
-   \caption{General overvie of study procedure. \textbf{a} The plausible Alien Zoo game is an iterative design with blocks containing two trials calling for user input, and finishing with a feedback scene that provides either \textit{closest} or \textit{computational plausible \glspl{CFE}} computed on user's previous input. \textbf{b} After 6 blocks, users enter a post-game survey collecting self-report information from participants. The lower part of both subfigures shows measures evaluates from respective parts; $^\dag$ objective measure, $^\ddag$ subjective measure.}
+   \caption{General overview of study procedure. \textbf{a} The plausible Alien Zoo game is an iterative design with blocks containing two trials calling for user input, and finishing with a feedback scene that provides either \textit{closest} or \textit{computational plausible \glspl{CFE}} computed on user's previous input. \textbf{b} After 6 blocks, users enter a post-game survey collecting self-report information from participants. The lower part of both subfigures shows measures evaluates from respective parts; $^\dag$ objective measure, $^\ddag$ subjective measure.}
    \label{fig:StudyStructure}
  \end{figure}
 
@@ -165,7 +165,7 @@ However, it is not clear what plants make up a nutritious diet.
 Thus, participants need to find how to best feed the aliens. 
 Participants go through several feeding cycles, choosing a combination of plants. 
 After each cycle, the pack of aliens either decreases (given a bad combination of plants) or increases (given a good combination). 
-In regular intervals, participants receive a summary of their past choices, together with feedback on what choice would have led to a better result (\ie, a \gls{CFE}).
+In regular intervals, participants receive a summary of their past choices, together with feedback on what choice would have led to a better result (\ie a \gls{CFE}).
 
 %\textcolor{ACMDarkBlue}{
 %Advantages of this approach is control for individual domain knowledge by relying on an abstract domain, evaluating the objective as well as subjective usability of automatically generated explanations directly (REF to arxiv paper).
@@ -183,7 +183,7 @@ Further, our setting falls under the ``explaining to discover'' category for exp
 
 \subsection{Post-Game Survey}
 
-A final post-game survey collect self-report information from participants.
+A final post-game survey collects self-report information from participants.
 Besides explicitly asking participants to point out which plants were relevant and irrelevant for the task, we use an adapted version of the System Usability Scale~\citep{holzinger_measuring_2020}, designed to measure the quality of explanations elicited by an explainable \gls{ML} system.
 Participants answer a series of Likert-scale items, assessing how users feel about using our system with a focus on perceived understandibility and usability of \glspl{CFE}.
 The survey closes with asking for participants' gender and age.
@@ -194,15 +194,15 @@ Figure \ref{fig:StudyStructure}b gives a complete overview of all items in the s
 We measure understanding and usability of explanations in terms of two objective behavioral variables and several subjective self-reports (Figure \ref{fig:StudyStructure} bottom). 
 
 In terms of task performance, we assess the development of pack size in the Alien Zoo game over trials. 
-As a measure of task performance, this value indicates the extent of user's understanding of relevant and irrelevant features in the underlying dataset, as a solid understanding leads to better feeding choices. 
+As a measure of task performance, this value indicates the extent of user's understanding of relevant and irrelevant features in the underlying data set, as a solid understanding leads to better feeding choices. 
 
 Second, we measure time needed to reach a feeding decision over trials (henceforth referred to as decision time). As we assume participants to become more automatic in making their plant choice, we expect this practice effect to be reflected in terms of decreasing decision time~\citep{logan_shapes_1992}. 
 
-We acquire self-reported measurements using the post-game survey, testing different aspects of participant’s system understanding. 
+We acquire self-reported measurements using the post-game survey, testing different aspects of participant's system understanding. 
 The first two survey items explicitly ask users to identify plants they think are relevant and irrelevant for task success. 
 Replies from these items allow us to measure to which extent users in different groups formed explicit knowledge of the underlying data structure.
 
-Further, users indicate in how far they find the explanations useful, to which degree they can make use of them, and in how far they imagine the presented \glspl{CFE} to be helpful for other users, too. These items assess users' subjective understanding.
+Further, users indicate in how far they find the explanations useful, to which degree they can make use of them, and in how far they imagine the presented \glspl{CFE} to be helpful for other users, too. These items assess user's subjective understanding.
 
 Finally, three self-reported measurements check for potential confounds. 
 These are items that ask users to indicate their understanding of the explanations as such, whether they feel the need for support for understanding, and their evaluation of timing and efficacy of \gls{CFE} presentation.
@@ -253,11 +253,11 @@ To prevent participants from skipping the instructions, this button appears with
    \includegraphics[width=\textwidth]{./media/FigureGameInterface.pdf}
    \Description[TO DO: insert short description]{TO DO: insert description}
    \caption{Exemplary user journey through the first block of the plausible Alien Zoo game. Bold arrows indicate temporal succession of respective scenes. The figure highlights the iterative nature of the game with repeated user input and end-of-block presentation of \glspl{CFE}. For this manuscript, font size in images of scenes was increased to improve visibility.}
-   \label{fig:StudyStructure}
+   \label{fig:StudyStructure2}
  \end{figure}
 
 Upon hitting ``Start'', participants encounter a padlock scene where they can make their feeding choice.
-Figure \ref{}.
+Figure \ref{fig:StudyStructure2}.
 The right side of the screen displays leaves from all plant types next to upward/downward arrow buttons. 
 In the first feeding round, the top of the page shows written information that clicking on the upward arrows increases the number of leaves per plant, while clicking the downward arrows has the reverse effect.
 In each succeeding feeding round, the top of the page shows the current pack size, the pack size in the previous round, and the choice made in the previous round.
