@@ -35,7 +35,7 @@ A central insight from classical psychological literature is that human explanat
 % from contrastive explanations to counterfactual thinking / counterfactural reasoning / CF explanations
 This contrastive nature relates to the more general human tendency to reflect upon past events by generating possible alternatives, \ie, counterfactual thinking ~\citep{roese_counterfactual_1997}.
 Empirical evidence demonstrates that humans show this \textit{what-if} mentality spontaneously~\citep{goldinger_blaming_2003}, and increasingly when facing negative outcomes or unexpected results~\citep{sanna_antecedents_1996}.
-In their functional theory of counterfactual thinking,~\citeauthor{roese_functional_2017} suggest a crucial role of counterfactual thought to guide to formation of future intentions, thus regulating subsequent behavior~\citep{roese_functional_2017,epstude_functional_2008}.
+In their functional theory of counterfactual thinking,~\citeauthor{roese_functional_2017} suggest a crucial role of counterfactual thoughts to guide to formation of future intentions, thus regulating subsequent behavior~\citep{roese_functional_2017,epstude_functional_2008}.
 This evidence is the root for the common supposition in \gls{XAI} that explanations formulated as counterfactuals are naturally intuitive, easy to understand, and helpful for users, often discounting the need for user evaluations~\citep{stepin_paving_2019, dandl_multi-objective_2020, guidotti_local_2018, artelt_counterfactual_2020, artelt_efficient_2022}.
 
 %\subsection{Humans generate plausible CFEs}\label{subsubsec:psychoCFs_plausible}
@@ -96,8 +96,7 @@ To distinguish these explanations from their psychologically plausible counterpa
 Similar to the modeling of \textit{closest \glspl{CFE}} ~\refeq{eq:counterfactual_opt_original}, different realizations and implementations of \textit{computational plausibility} have been proposed~\citep{looveren_interpretable_2019,poyiadzi_face_2019,artelt_convex_2020}. 
 One particular prominent instance are density based approaches~\citep{artelt_convex_2020} that restrict a counterfactual $\xcf$ to regions of high density. 
 The respective density function may for instance be estimated from the training data.
-Another, straight forward approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019}. 
-In the current work, we follow this approach when providing \textit{computationally plausible \glspl{CFE}}.
+Another, straight forward approach is to limit the set of possible counterfactuals to the training data~\citep{poyiadzi_face_2019} -- in the current work, we follow this approach when providing \textit{computationally plausible \glspl{CFE}}.
 
 %In the computer science world, generating a CFs translates into showing what input pertubations alter a model's prediction. Additionally, some authors use the constraint that these pertubations need ot be minimal (REF REF REF).
 %Changes need to be actionable to make a good explanation (REF), i.e. to also foster trust in the system (REF).
