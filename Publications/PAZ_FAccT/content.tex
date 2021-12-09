@@ -3,12 +3,12 @@
 % XAI is all the craze!
 Explaining one's behavior to another is a critical element in human social interaction. 
 A person depends on explanations to improve their understanding, ultimately building a stable mental model as basis for prediction and control~\citep{heider_psychology_1958}. 
-The need to effectively explain not just human action, but also the behavior of automated systems and their underlying \gls{ML} models, has received increasing attention in recent years. This development gave rise to the advent of \gls{XAI} as a novel research field. Consequently, 
+The need to effectively explain not just human action, but also the behavior of automated systems and their underlying \gls{ML} models, has received increasing attention in recent years. This development gave rise to the advent of \gls{XAI} as a novel research field. 
 % Supposed interpretable models are there, exp CFs, but user exaluations are often neglected.
 Consequently, the \gls{XAI} community has seen a veritable surge of technical accounts on how to realize explainability for \gls{ML}~\citep{guidotti_survey_2019}. 
 
 Motivated by a seminal review by~\citep{miller_explanation_2019} advocating a user-centered focus on explainability, \glspl{CFE} gained particular prominence as a supposedly useful, human-accessible solution~\citep{keane_if_2021}.
-\glspl{CFE} provide \textit{what-if} feedback to the user, \ie, information on what changes in the input elicit a change of an automated decision (\ie, ``if you had worn a mask, you would not have gotten ill''). 
+\glspl{CFE} provide \textit{what-if} feedback to the user, \ie, information on what changes in the input elicit a change of an automated decision (\ie, ``if you had worn a mask, you would not have gotten ill''). % Counterfactuals can be interpreted as a recommendations of actions
 However, the emerging body of work on \glspl{CFE}, and explainability of \gls{ML} models more generally, shows an alarming tendency to take the quality of the suggested explanation modes at face value \citep{doshi-velez_towards_2017, offert_i_2017}.
 In a recent review of over 100 counterfactual XAI studies,~\citeauthor{keane_if_2021} criticize that only a third of these studies concern themselves with user-based evaluations, often with limitations concerning statistical power and reproducibility~\citep{keane_if_2021}.
 
@@ -20,7 +20,7 @@ Thus, in-depth evaluations of user experiences, elucidating the usability of \gl
 % Our contribution! 
 The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
 While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
-Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional close \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
+Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional closest \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_counterfactual_2020, artelt_efficient_2022}.
 
 \section{Counterfactual Explanations as a Psychologically Grounded Solution for XAI}\label{subsec:psychoCFs}
 
