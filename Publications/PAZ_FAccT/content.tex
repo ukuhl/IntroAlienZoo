@@ -291,7 +291,7 @@ On average, participants needed 13m:43s ($\pm$ 00m:23s SEM) from accepting the H
 
 \subsubsection{Statistical Analysis, Sample Size Calculation and Data Quality Measures}
 
-We perform all statistical analyses using R–4.1.1 \citep{r_core_team_r_2021}, using \gls{CFE} variant (\textit{closest} or \textit{computationally plausible}) as independent variable.
+We perform all statistical analyses using R-4.1.1 \citep{r_core_team_r_2021}, using \gls{CFE} variant (\textit{closest} or \textit{computationally plausible}) as independent variable.
 Changes in performance over 12 trials as a measure of learning rate per group (lme4 v.4\textunderscore 1.1-27.1) \citep{bates_fitting_2015}.
 In the model testing for differences in terms of user performance, the dependent variable is number of aliens generated. 
 In the assessment of user's reaction time, we use decision time in each trial as dependent variable.
@@ -299,8 +299,8 @@ The final models include the fixed effects of group, trial number and their inte
 Advantages of using this approach include that these models account for correlations of data drawn from the same participant and missing data \citep{detry_analyzing_2016,muth_alternative_2016}.
 The analysis of variance function of the stats package in base R serves to compare model fits.
 $\eta_{\text{p}}^{2}$ values denote effect sizes (effectsize v.0.5) \citep{ben-shachar_effectsize_2020}.
-Computation of pairwise estimated marginal means follow up significant main effects or interactions, with respective effect sizes reported in terms of Cohen’s \textit{d}.
-All post-hoc analyses reported are bonerroni corrected to account for multiple comparisons.
+Computation of pairwise estimated marginal means follow up significant main effects or interactions, with respective effect sizes reported in terms of Cohen's \textit{d}.
+All post-hoc analyses reported are bonferroni corrected to account for multiple comparisons.
 
 We evaluate data gathered from the post-game survey depending on question type.
 For the first two items assessing user's explicit knowledge of plant relevance, we test data for normality of distributions using the Shapiro-Wilk test, followed up by the non-parametric Wilcoxon-Mann-Whitney \textit{U} test in case of non-normality, and the Welch two-sample t-test otherwise. 
@@ -373,7 +373,7 @@ Thus, we cannot verify our hypothesis that \textit{computationally plausible \gl
  \end{figure}
 
 \subsection{Do Computationally Plausible CFEs Increase User's Subjective Understanding?}
-To assess hypothesis 2, we analyze participant judgements on relevant survey items.
+To assess hypothesis 2, we analyze participant judgments on relevant survey items.
 Visual assessment suggests that there is very little variation in terms of user responses between groups (Figure \ref{fig:survey}a), confirmed by our statistical assessment. 
 Groups do not statistically differ when judging whether presented \gls{CFE} feedback was helpful to increase pack size (\textit{closest} condition: \textit{M} = 3.700 $\pm$ 1.285 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.636 $\pm$ 0.242 \textit{SE}; \textit{U} = 656, \textit{p} = .968, \textit{r} = 0.005).
 Likewise, we do not detect significant group differences in terms of subjective usability (\textit{closest} condition: \textit{M} = 3.775 $\pm$ 0.216 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.606 $\pm$ 0.230 \textit{SE}; \textit{U} = 603, \textit{p} = .513, \textit{r} = 0.077).
@@ -412,13 +412,13 @@ For a novice user at the onset of the study, any counterfactual is equally likel
 
 % Why is closer better - maybe higher comparative similarity!
 To find a possible explanation why users in the closest group showed significantly superior performance, we may turn to the definition of psychological plausibility as comparative similarity~\citep{lewis_counterfactuals_1973, stanley_counterfactual_2017}. 
-Classically, computed CFEs are penalized if they deviate from the requested prediction~\citep{wachter_counterfactual_2017}, resulting in what we refer to as close counterfactuals, differing minimally from the user’s input.
+Classically, computed CFEs are penalized if they deviate from the requested prediction~\citep{wachter_counterfactual_2017}, resulting in what we refer to as closest counterfactuals, differing minimally from the user's input.
 This concept resembles the view that psychologically plausible counterfactuals come from worlds that are minimally different from reality~\citep{lewis_counterfactuals_1973}.
 Empirical evidence highlighting the close relation between perceived plausibility and perceived similarity between counterfactual and factual state supports this notion~\citep{stanley_counterfactual_2017, de_brigard_perceived_2021}.
 In contrast, the computational plausibility constraint rejects counterfactuals that are not part of the training set, even if they are minimal.
 Consequently, users in the \textit{plausible} condition encounter larger differences between provided explanations and their input, at odds with the idea of plausibility as comparative similarity.
 Conversely, users in the closest condition might have experienced their \glspl{CFE} as more psychologically plausible than the computationally plausible version.
-Further, an emotional effect is conceivable: Upon seeing close \glspl{CFE}, users might get a feeling of ``just missing the better option'', inducing negative affect, strongly motivating the need for improvement~\citep{medvec_when_1997, markman_reflection_2003}.
+Further, an emotional effect is conceivable: Upon seeing closest \glspl{CFE}, users might get a feeling of ``just missing the better option'', inducing negative affect, strongly motivating the need for improvement~\citep{medvec_when_1997, markman_reflection_2003}.
 Additionally, we may speculate that the larger discrepancies between factual and counterfactual state in the \textit{plausible} condition may increase the mental load on users, hampering learning.
 Future studies need to disentangle contributions of these potential factors.
 
@@ -452,7 +452,7 @@ Thus, both groups showed some--yet imperfect--explicit understanding of the unde
 Potentially, users may rely on their initial mental model of the appropriate alien diet, allowing them to make advantageous feeding choices relatively quickly. However, in this initial stage, it may still be insufficient to allow clear and explicit differentiation between relevant and irrelevant features at the end of the study.
 
 %%%% Hypothesis 2 - Do plausible CFEs increase user's subjective understanding?
-Besides our comparison of task performance, we do not detect any statistically meaningful differences between the two groups under investigation, predominantly affecting the evaluation of user judgements in the survey. 
+Besides our comparison of task performance, we do not detect any statistically meaningful differences between the two groups under investigation, predominantly affecting the evaluation of user judgments in the survey. 
 It is clear that these observations have to be taken with the care generally devoted to null effects, calling for cautious interpretation. 
 Still, regarding the general trends for individual survey items is informative.
 We cannot verify our second hypothesis, as users did not differ depending on group in terms of subjective helpfulness and usability. 
@@ -461,14 +461,14 @@ This supports the notion that \glspl{CFE} are indeed subjectively intuitive and 
 
 %%%% Hypothesis 3 - Does mode of presentation have an impact?
 A major challenge for effective user designs comparing different approaches is keeping conditions highly comparable, with the sole exception of the experimental manipulation.
-User judgements of general understandability and presentation mode of \glspl{CFE} inspire confidence that we achieved this level of control with our Alien Zoo design. 
-In fact, the respective items elicit the highest user judgements out of all survey responses, with agreement values close to 90\%.% (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
+User judgments of general understandability and presentation mode of \glspl{CFE} inspire confidence that we achieved this level of control with our Alien Zoo design. 
+In fact, the respective items elicit the highest user judgments out of all survey responses, with agreement values close to 90\%.% (questionnaire items 3, 4 + 10). So this is also control to make sure groups don’t differ in a weird way.
 ~High agreement across both groups leads us to conclude that mode of \gls{CFE} presentation does not have an impact when comparing users experience \textit{closest} vs. \textit{plausible} \glspl{CFE}, validating our hypothesis 3.
 Thus, the Alien Zoo design as proposed here is suitable for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}~\citep{keane_if_2021}.
 
 %%%% Exploratory Analysis
 Finally, the majority of users across groups indicate that they fail to find inconsistencies in the explanations provided.
-Thus, we can rule out that the CEML toolbox generated irregular or even contradictory explanations, confounding the observed group differences.
+Thus, we can rule out that the code from the CEML toolbox~\cite{artelt_ceml_2019} generated irregular or even contradictory explanations, confounding the observed group differences.
 
 \subsection{Limitations \& Future Work}\label{subsec:limitations-future-work}
 
@@ -487,7 +487,7 @@ Yet, the effect size of the significant interaction between factors \textit{tria
 Hence, the results from this work await confirmation in larger follow-up studies.
 
 % was our survey suitable? 
-None of the user judgements differ for users receiving \textit{closest} and \textit{computationally plausible \glspl{CFE}}, respectively.
+None of the user judgments differ for users receiving \textit{closest} and \textit{computationally plausible \glspl{CFE}}, respectively.
 This is in line with a previous report of diverging trends between objective measures and self-reports~\citep{van_der_waa_evaluating_2021}, and may actually reflect a more general tendency in human evaluation of system understanding.
 As an alternative explanation, however, we may also call into question the efficacy of instruments applied to assess user experience. 
 To date, there is no standard inventory for assessing subjective usability in \gls{XAI} research.
@@ -514,7 +514,7 @@ Thus, the design has tremendous potential to be altered to answer various open q
 
 For instance, future work may explore the impact of distinct psychometric properties on performance. 
 A small-scale user study based on data from 38 participants suggests an influence of individual personality traits on user's ability to make sense of an \gls{ML} system's output, and understanding the generation process, respectively~\citep{gleaves_role_2020}.
-It remains to be shown how personal attributes relate to usability judgements of \glspl{CFE}.
+It remains to be shown how personal attributes relate to usability judgments of \glspl{CFE}.
 
 Further, it is conceivable that users may prefer to receive explanations on demand, rather than continuously at prescribed intervals.
 There is abundant room for further progress in determining whether explicitly requesting \glspl{CFE} may improve task performance, and how users would make use of their control over the explanation intervals.
@@ -523,8 +523,8 @@ Finally, we successfully demonstrate that users can make use of provided \glspl{
 Future investigations may tackle whether \glspl{CFE} cause users to fall prey to a plausibility fallacy, coming to trust ML models even if they are biased and unfair, just because they are coupled with intuitive explanations.
 
 \subsection{Conclusions}\label{subsec:conclusion}
-In this work, we present a controlled study comparing user performance and usability judgements of \glspl{CFE} in an iterative learning design.
-We focus on potential group effects driven by receiving either close \glspl{CFE} that are minimally different from the user’s input, compared to computationally plausible ones, limited the set of possible counterfactuals to the training data.
+In this work, we present a controlled study comparing user performance and usability judgments of \glspl{CFE} in an iterative learning design.
+We focus on potential group effects driven by receiving either close \glspl{CFE} that are minimally different from the user's input, compared to computationally plausible ones, limited the set of possible counterfactuals to the training data.
 We develop a game-like experimental design based on a web-based interface, revolving around an abstract scenario, suitable for novice users.
 The effectiveness of our design demonstrating learning in both groups highlights the power of interactive and goal-directed tasks for user evaluations of \gls{CFE} methods, a yet vastly understudied aspect in the field of \gls{XAI}.
 Our findings suggest that novice users actually benefit more from receiving \textit{closest} than \textit{computationally plausible \glspl{CFE}}.
