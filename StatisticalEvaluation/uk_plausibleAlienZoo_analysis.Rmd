@@ -1396,9 +1396,13 @@ H1.3_figure2_UserResponseMatches = ggplot(df_survey_relevantPlants_plot, aes(x=g
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`1`="Which plants are relevant?",`2`="Which plants are not relevant?")))+
   labs(title="Mean no. of matches (judgements vs. truth)",x="Group", y = "Mean number of matches")+
   theme_bw(base_size = 10)+
-  scale_y_continuous(expand = c(0,0),limits = c(0,5),breaks=c(1:5))+
+  scale_y_continuous(expand = c(0,0),limits = c(0,5.5),breaks=c(1:5))+
   scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  theme(plot.title = element_text(hjust = 0.5))
+  geom_hline(aes(yintercept=5, linetype="Max. no.\nof possible\nmatches"), color = "black", size=0.5)+
+  geom_hline(aes(yintercept=2.5, linetype="Mean no.\nof matches for\n random choice"), color = "black", size=0.5)+
+  scale_linetype_manual(name = "", values = c(5, 3), 
+                      guide = guide_legend(override.aes = list(color = c("black", "black"))))+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",legend.box="vertical")
 
 # save
 ggsave("Figures/H1.3_figure2_UserResponseMatches_PAZ_FINAL.pdf",width = 5, height = 6,)
@@ -1452,6 +1456,51 @@ The analysis revealed:
   <!-- + for ttest: t(`r item2test$parameter `)=`r item2test$statistic `, p=`r item2test$p.value `, cohen's d = `r item2effsize ` -->
   + for wilcoxon test: U=`r item2test$statistic `, p=`r item2test$p.value `, r = `r item2effsize `
 
+*Add on:* Did number of matches differ significantly from expected random?
+
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+
+# add on: run a test whether groups are signifcantly better than random
+
+# first: test for normality of distributions using shapiro test
+# if p-value is lower than 0.05, you can conclude that the sample deviates from normality
+# --> ALL HIGHLY NON-NORMAL!
+# ergo, run a Wilcoxon one-sample signed rank test
+## note: this actuallty tests for the median, but can also be used for the mean, cause:
+## "The signed rank test is a test for the pseudo-median. When accompanied by the assumption of symmetry (which the signed rank test needs for the permutations to be equally likely under the null), the population pseudo-median will equal the population median, and (by symmetry) will also equal the population mean when it is finite (which is hereafter assumed to save repeating it every time I mention the mean). Which is to say, under the usual assumptions the signed rank test is a suitable test for a mean as well as a median. (https://stats.stackexchange.com/questions/239293/non-parametric-altervative-to-one-sample-t-test)"
+
+## relevant plants, plausible group:
+shapiro=shapiro.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"])
+wos1_test=wilcox.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"], mu = 2.5, alternative = "two.sided")
+wos1_effsize=wos1_test$z_val/(sqrt(length(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"])))
+
+## relevant plants, closest group:
+shapiro=shapiro.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"])
+wos2_test=wilcox.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"], mu = 2.5, alternative = "two.sided")
+wos2_effsize=wos2_test$z_val/(sqrt(length(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"])))
+
+## irrelevant plants, plausible group:
+shapiro=shapiro.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"])
+wos3_test=wilcox.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"], mu = 2.5, alternative = "two.sided")
+wos3_effsize=wos3_test$z_val/(sqrt(length(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"])))
+
+## irrelevant plants, closest group:
+shapiro=shapiro.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"])
+wos4_test=wilcox.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"], mu = 2.5, alternative = "two.sided")
+wos4_effsize=wos4_test$z_val/(sqrt(length(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"])))
+
+```
+
+This post-hoc analysis revealed:
+
+* relevant plants, plausible group: one-sample Wilcoxon signed rank test, W = `r wos1_test$statistic`, p = `r wos1_test$p.value*4` (bonf corrected), r = `r wos1_effsize`
+
+* relevant plants, closest group: one-sample Wilcoxon signed rank test, W = `r wos2_test$statistic`, p = `r wos2_test$p.value*4` (bonf corrected), r = `r wos2_effsize`
+
+* irrelevant plants, plausible group: one-sample Wilcoxon signed rank test, W = `r wos3_test$statistic`, p = `r wos3_test$p.value*4` (bonf corrected), r = `r wos3_effsize`
+
+* irrelevant plants, closest group: one-sample Wilcoxon signed rank test, W = `r wos4_test$statistic`, p = `r wos4_test$p.value*4` (bonf corrected), r = `r wos4_effsize`
+
 ```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
 # put all three H1 figures to one for publication
 
@@ -1464,10 +1513,28 @@ H1.3_figure2_UserResponseMatches$labels$title=c()
 H1.3_figure2_UserResponseMatches$labels$x=c()
 
 p1 <- ggarrange(H1.1_p_ShubsPerTrial_summary_anno1,H1.2_p_RTPerTrial_summary_anno,ncol=1,nrow=2, common.legend = TRUE, legend = "bottom", labels = c("a", "b"), label.x=-0.001,label.y=1.04,font.label = list(size = 16),align = c("v"))
-p2 <- ggarrange(H1.3_figure2_UserResponseMatches, 
+
+H1.3tmp <- H1.3_figure2_UserResponseMatches+theme(legend.title = element_blank(),legend.margin=margin(t = -0.25, unit='cm'))
+
+# annotate statistical difference from random:
+dat_anno <- data.frame(
+  label = c("**", "**", "*"),
+  group = c("P","C","P"),
+  itemNo   = c(1, 2, 2),
+  x     = c(2, 1, 2),
+  y     = c(4, 4, 4)
+)
+
+H1.3tmp <- H1.3tmp + geom_text(
+  data    = dat_anno,
+  mapping = aes(x = x, y = y, group = group, label = label)
+)
+H1.3tmp$labels$x=c()
+
+p2 <- ggarrange(H1.3tmp, 
                 ncol = 1, nrow = 1,legend = "bottom", labels = c("c"),label.x=-0.001,label.y=1.02,font.label = list(size = 16))
 
-H1_p_ShubsPerTrial_RTPerTrial = ggarrange(p1, "", p2, ncol = 3, nrow = 1, widths=c(75,5,35),common.legend = TRUE, legend = "bottom")
+H1_p_ShubsPerTrial_RTPerTrial = ggarrange(p1, "", p2, ncol = 3, nrow = 1, widths=c(65,5,35),common.legend = TRUE, legend = "bottom")
 
 # save
 ggsave("Figures/H1_p_ShubsPerTrial_RTPerTrial_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
