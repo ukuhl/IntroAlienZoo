@@ -9,7 +9,7 @@ Consequently, the \gls{XAI} community has seen a veritable surge of technical ac
 
 Motivated by a seminal review by~\citep{miller_explanation_2019} advocating a user-centered focus on explainability, \glspl{CFE} gained particular prominence as a supposedly useful, human-accessible solution~\citep{keane_if_2021}.
 \glspl{CFE} provide \textit{what-if} feedback to the user, \ie, information on what changes in the input elicit a change of an automated decision (\ie, ``if you had worn a mask, you would not have gotten ill''). % Counterfactuals can be interpreted as a recommendations of actions
-However, the emerging body of work on \glspl{CFE}, and explainability of \gls{ML} models more generally, shows an alarming tendency to take the quality of the suggested explanation modes at face value \citep{doshi-velez_towards_2017, offert_i_2017}.
+However, the emerging body of work on \glspl{CFE}, and explainability of \gls{ML} models more generally, shows an alarming tendency to take the quality of the suggested explanation modes at face value~\citep{doshi-velez_towards_2017, offert_i_2017}.
 In a recent review of over 100 counterfactual XAI studies,~\citeauthor{keane_if_2021} criticize that only a third of these studies concern themselves with user-based evaluations, often with limitations concerning statistical power and reproducibility~\citep{keane_if_2021}.
 
 % A profound research gap: comparing different approaches:
@@ -20,13 +20,13 @@ Thus, in-depth evaluations of user experiences, elucidating the usability of \gl
 % Our contribution! 
 The current work marks a step towards closing this fundamental research gap, focusing on the concept of plausibility.
 While technical descriptions of plausible \glspl{CFE} approaches exist~\citep{smyth_few_2021,schleich_geco_2021,artelt_efficient_2022}, no user study to date has directly investigated potential benefits of enforcing an additional plausibility constraint on generating \glspl{CFE}.
-Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional closest \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design \citep{artelt_convex_2020, artelt_efficient_2022}.
+Therefore, we perform a well-powered user study analyzing the performance of novice users when receiving conventional closest \glspl{CFE} exclusively defined via their proximity to the decision boundary, compared to computationally plausible \glspl{CFE} as feedback in an iterative learning design~\citep{artelt_convex_2020, artelt_efficient_2022}.
 
 \section{Counterfactual Explanations as a Psychologically Grounded Solution for XAI}\label{subsec:psychoCFs}
 
 % we still don't know what a good explanation is
 A major challenge for \gls{XAI} is the lack of a common, straight-forward and universally applicable definition of what constitutes a good explanation.
-To complicate matters, the effectiveness of an approach may depend on the reason for explaining \citep{adadi_peeking_2018}, as well as pre-existing knowledge and experiences of users at the receiving end \citep{van_der_waa_evaluating_2021}.
+To complicate matters, the effectiveness of an approach may depend on the reason for explaining~\citep{adadi_peeking_2018}, as well as pre-existing knowledge and experiences of users at the receiving end~\citep{van_der_waa_evaluating_2021}.
 
 % insights from psychology can help!
 In search of truly human-usable explanation modes, the \gls{XAI} community recognized the need to bridge the gap between psychology and computer science in order to draw inspiration from how humans explain in their daily social interactions~\citep{miller_explanation_2019}.
@@ -232,7 +232,7 @@ A first data quality check revealed corrupted data for four participants due to 
 All participants gave informed electronic consent by providing clickwrap agreement prior to participation.
 All participants received a reward of US\$ 4 for participation. 
 The ten best performing users received an additional bonus of US\$ 2. 
-Game instructions informed participants about the possibility of a bonus to motivate compliance with the experimental task \citep{bansal_updates_2019}.
+Game instructions informed participants about the possibility of a bonus to motivate compliance with the experimental task~\citep{bansal_updates_2019}.
 %The study was approved by the Ethics Committee of the University Bielefeld, Germany.
 The study was approved by the Ethics Committee of the author's home university.
 
@@ -295,14 +295,14 @@ On average, participants needed 13m:43s ($\pm$ 00m:23s SEM) from accepting the H
 
 \subsection{Statistical Analysis, Sample Size Calculation and Data Quality Measures}
 
-We perform all statistical analyses using R-4.1.1 \citep{r_core_team_r_2021}, using \gls{CFE} variant (\textit{closest} or \textit{computationally plausible}) as independent variable.
-Changes in performance over 12 trials as a measure of learning rate per group (lme4 v.4\textunderscore 1.1-27.1) \citep{bates_fitting_2015}.
+We perform all statistical analyses using R-4.1.1~\citep{r_core_team_r_2021}, using \gls{CFE} variant (\textit{closest} or \textit{computationally plausible}) as independent variable.
+Changes in performance over 12 trials as a measure of learning rate per group (lme4 v.4\textunderscore 1.1-27.1)~\citep{bates_fitting_2015}.
 In the model testing for differences in terms of user performance, the dependent variable is number of aliens generated. 
 In the assessment of user's reaction time, we use decision time in each trial as dependent variable.
 The final models include the fixed effects of group, trial number and their interaction. The random-effect structure includes a by-subjects random intercept. 
-Advantages of using this approach include that these models account for correlations of data drawn from the same participant and missing data \citep{detry_analyzing_2016,muth_alternative_2016}.
+Advantages of using this approach include that these models account for correlations of data drawn from the same participant and missing data~\citep{detry_analyzing_2016,muth_alternative_2016}.
 The analysis of variance function of the stats package in base R serves to compare model fits.
-$\eta_{\text{p}}^{2}$ values denote effect sizes (effectsize v.0.5) \citep{ben-shachar_effectsize_2020}.
+$\eta_{\text{p}}^{2}$ values denote effect sizes (effectsize v.0.5)~\citep{ben-shachar_effectsize_2020}.
 Computation of pairwise estimated marginal means follow up significant main effects or interactions, with respective effect sizes reported in terms of Cohen's \textit{d}.
 All post-hoc analyses reported are Bonferroni corrected to account for multiple comparisons.
 
@@ -315,7 +315,7 @@ We report effect sizes for all survey data comparisons as \textit{r}.
 
 We performed an a priori sample size estimation based on data obtained from the third pilot. 
 To do so, we set up two linear mixed effects models with pack size and reaction time as described above. 
-For each of these models, we run a simulation-based power analysis for samples of 20--100 participants with fixed effects of group and trial number over 1000 simulations (mixedpower v.0.1.0) \citep{kumle_estimating_2021}. 
+For each of these models, we run a simulation-based power analysis for samples of 20--100 participants with fixed effects of group and trial number over 1000 simulations (mixedpower v.0.1.0)~\citep{kumle_estimating_2021}. 
 Inspecting the results, we choose to acquire data from 100 participants to reach a power $>$ 80\% for at least one combination of trial number and group, while also accounting for potential participant attrition.
 
 As a web-based study, we run the risk that some participants attempt to game the system to collect the reward without providing proper answers. 
@@ -337,7 +337,7 @@ From 100 participants recruited via \gls{AMT}, we exclude data from participants
 \toprule
     & \multicolumn{4}{l}{Before quality assurance measures (\textit{N} = 100)} && \multicolumn{4}{l}{After quality assurance measures (\textit{N} = 74)} \\
 \cline{2-5}\cline{7-10}
-    & \textit{closest} & \textit{Plausible} & \textit{U} value$^a$ & \textit{p} value && \textit{closest} & \textit{Plausible} & \textit{U} value$^a$ & \textit{p} value\\ 
+    & \textit{closest} & \textit{plausible} & \textit{U} value$^a$ & \textit{p} value && \textit{closest} & \textit{plausible} & \textit{U} value$^a$ & \textit{p} value\\ 
 \hline
 \textit{N}   &  50 & 50 & .. & .. && 40 & 34 & .. & .. \\
 Gender$^b$ & 17f/33m & 22f/26m/1nb/1na & 1108 & .339 && 13f/27m & 18f/15m/1nb & 554.4 & .116 \\
@@ -440,7 +440,7 @@ Interestingly, their task resembles ours in so far that they also employed an ab
 However, while also dealing with an abstract task (\ie, feeding aliens), users have a tangible goal (\ie, make the pack grow).
 Further, we refrain from separating learning and testing as in ~\citeauthor{lim_why_2009}, where users went through an initial evaluation section receiving explanation after explanation.
 Our design is far more interactive, with different rounds of user action and feedback.
-This is in line with evidence from educational science, suggesting that learner's level of engagement relates to final learning outcomes, with interactive activities granting deepest understanding \citep{chi_icap_2014}.
+This is in line with evidence from educational science, suggesting that learner's level of engagement relates to final learning outcomes, with interactive activities granting deepest understanding~\citep{chi_icap_2014}.
 %These vital differences may make our design more effective.
 Thus, including goal-directed and interactive settings may potentially be vital facets of an effective usability studies. 
 We suggest that future research designs need to pay special attention to these aspects in order to accurately evaluate \gls{XAI} approaches.
@@ -450,7 +450,7 @@ Beyond task performance, we quantify learning success in terms of user's decisio
 Both measures do not reveal significant group differences.
 In terms of user's decision time, both groups show significant speed-up already after Trial 1 (Figure \ref{fig:hyp1}a).
 This initial time decrease likely reflects how participants learn to work with the game interface efficiently.
-Increased reaction time as a marker of learning is a classical insight from experimental psychology \citep{logan_shapes_1992}, indicating that both groups did indeed learn in the current setting. 
+Increased reaction time as a marker of learning is a classical insight from experimental psychology~\citep{logan_shapes_1992}, indicating that both groups did indeed learn in the current setting. 
 It is possible that the complex task we devised with its elaborate game-like setting was not sensitive enough or too short to pick up in subtle group differences usually linked to more simple, extensive reaction time experiments.
 
 % We did not find differences in relevance judgements
@@ -494,7 +494,7 @@ Such participant attrition common, especially in web-based studies.
 As smaller sample sizes always mean a loss of statistical power, we factored in this issue early on, based on our a priori power analysis. 
 Yet, the effect size of the significant interaction between factors \textit{trial number} and \textit{group} remains relatively small. 
 Hence, the results from this work await confirmation in larger follow-up studies.
-
+ 
 % was our survey suitable? 
 None of the user judgments differ for users receiving \textit{closest} and \textit{computationally plausible \glspl{CFE}}, respectively.
 This is in line with a previous report of diverging trends between objective measures and self-reports~\citep{van_der_waa_evaluating_2021}, and may actually reflect a more general tendency in human evaluation of system understanding.
@@ -517,7 +517,13 @@ Designed to be maximally engaging as to ensure participant compliance, we have t
 This could explain inferior performance of a small proportion of participants, like those who disagree with the notion that feedback presentation was timely and efficiently.
 
 % FUTURE WORK
-The Alien Zoo design lends itself to be easily modified. 
+% important ToDo: Comparisons with no-explanations + quatschexplanations
+Recent evidence suggests an added benefit of providing users with counterfactual style explanations over no explanations to understand the behavior of an unknown system~\citep{van_der_waa_evaluating_2021}.
+Thus, the current work expands this insight by a direct comparison of two different approaches for \gls{CFE} computation. 
+While our results suggests the suitability of our Alien Zoo design, further validation studies must delineate potential shortcomings.
+For instance, a crucial validation step of the design itself concerns comparisons of valid \glspl{CFE} with no explanations or non-sensical ones.
+
+Beyond such a fundamental investigation, the Alien Zoo design lends itself to be easily modified.
 Possible adaptations may incorporate data with different dynamics, use other underlying models, or rely on other approaches for generating \glspl{CFE}.
 Thus, the design has tremendous potential to be altered to answer various open questions in the domain of \gls{XAI}.
 
