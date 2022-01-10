@@ -211,18 +211,18 @@ Given that structure and presentation mode of \glspl{CFE} is kept constant for b
 
 \subsection{Implementation, ML Model and Data Set}
 While the back end of the system is written in Python3 using the sklearn package~\citep{pedregosa_scikit-learn_2011} for the \gls{ML} part, the front end is realized with HTML5 and JavaScript making use of the popular phaser\footnote{\url{https://phaser.io/}} library for game developing.
-We use a decision tree regression model for predicting the growth rate given the plants selected by the user. 
+We use a decision tree regression model for predicting the growth rate given the plants selected by the user -- the decision tree is build only once in the beginning and remains the same for every user during the study. 
 Decision trees approximate the data distribution with a collection of if-then-else rules, consecutively splitting the data~\citep{shalev-shwartz_understanding_2014}. 
-The current implementation uses the Gini splitting rule of CART~\citep{breiman_classification_1984}, with a maximum tree depth of 4.
+The current implementation uses the Gini splitting rule of CART~\citep{breiman_classification_1984}, with a maximum tree depth of $4$.
 We choose a decision tree because computing counterfactuals for this model is fairly simple~\citep{artelt_computation_2019}.
 Yet, it is powerful enough to model our synthetic data set sufficiently well.
 The code for computing the counterfactual explanation is taken from the CEML package~\citep{artelt_ceml_2019}.
 %In the interest of reproducible research, all source code of the current study is made available. % taken out to ensure anonymity
-The underlying data set consists of 5 features (\ie, the plants used for feeding) and a continuous output variable (\ie, the growth rate used as factor for computing the new pack size). We generated this data according to the following scheme: The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4. 
+The underlying data set, used for building the decision tree which is then used as the ground truth model, consists of $5$ features (\ie, the plants used for feeding) and a continuous output variable (\ie, the growth rate used as factor for computing the new pack size). We generated this data according to the following scheme: The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4. 
 Growth rate may take a value between 0 and 2, used as a factor for pack size in the previous round to compute the new pack size.
-The initial full data set contains all possible plant - growth rate combinations 100 times, yielding 3 276 800 data points. 
+The initial full data set contains all possible plant -- growth rate combinations $100$ times, yielding 3 276 800 data points. 
 For final model training, we sample a subset of 10 922 data points from this full set to introduce sparsity, thus ensuring that computed \textit{closest} and \textit{computationally plausible \gls{CFE}} diverge.
-Note that our implementation prevents pack size from shrinking below 2.
+Note that our implementation prevents pack size from shrinking below $2$.
 
 \subsection{Participants}
 
