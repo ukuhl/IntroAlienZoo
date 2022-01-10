@@ -1,4 +1,19 @@
 
+@article{smyth_few_2021,
+	title = {A {Few} {Good} {Counterfactuals}: {Generating} {Interpretable}, {Plausible} and {Diverse} {Counterfactual} {Explanations}},
+	shorttitle = {A {Few} {Good} {Counterfactuals}},
+	url = {http://arxiv.org/abs/2101.09056},
+	abstract = {Counterfactual explanations provide a potentially significant solution to the Explainable AI (XAI) problem, but good, native counterfactuals have been shown to rarely occur in most datasets. Hence, the most popular methods generate synthetic counterfactuals using blind perturbation. However, such methods have several shortcomings: the resulting counterfactuals (i) may not be valid data-points (they often use features that do not naturally occur), (ii) may lack the sparsity of good counterfactuals (if they modify too many features), and (iii) may lack diversity (if the generated counterfactuals are minimal variants of one another). We describe a method designed to overcome these problems, one that adapts native counterfactuals in the original dataset, to generate sparse, diverse synthetic counterfactuals from naturally occurring features. A series of experiments are reported that systematically explore parametric variations of this novel method on common datasets to establish the conditions for optimal performance.},
+	urldate = {2021-11-30},
+	journal = {arXiv:2101.09056 [cs]},
+	author = {Smyth, Barry and Keane, Mark T.},
+	month = jan,
+	year = {2021},
+	note = {arXiv: 2101.09056},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Machine Learning},
+	file = {arXiv Fulltext PDF:/Users/ukuhl/Zotero/storage/QLAC5A29/Smyth und Keane - 2021 - A Few Good Counterfactuals Generating Interpretab.pdf:application/pdf;arXiv.org Snapshot:/Users/ukuhl/Zotero/storage/5RZB3Z9C/2101.html:text/html},
+}
+
 @article{pedregosa_scikit-learn_2011,
 	title = {Scikit-learn: {Machine} {Learning} in {Python}},
 	volume = {12},
@@ -154,12 +169,11 @@
 	file = {PubMed Central Full Text PDF:/Users/ukuhl/Zotero/storage/AUCJ2GQV/Epstude und Roese - 2008 - The Functional Theory of Counterfactual Thinking.pdf:application/pdf},
 }
 
-@inproceedings{offert_i_2017,
-	address = {Long Beach, CA, USA},
+@article{offert_i_2017,
 	title = {"{I} know it when {I} see it". {Visualization} and {Intuitive} {Interpretability}},
 	url = {http://arxiv.org/abs/1711.08042},
 	abstract = {Most research on the interpretability of machine learning systems focuses on the development of a more rigorous notion of interpretability. I suggest that a better understanding of the deficiencies of the intuitive notion of interpretability is needed as well. I show that visualization enables but also impedes intuitive interpretability, as it presupposes two levels of technical pre-interpretation: dimensionality reduction and regularization. Furthermore, I argue that the use of positive concepts to emulate the distributed semantic structure of machine learning models introduces a significant human bias into the model. As a consequence, I suggest that, if intuitive interpretability is needed, singular representations of internal model states should be avoided.},
-	booktitle = {{arXiv}:1711.08042 [stat]},
+	journal = {arXiv:1711.08042 [stat]},
 	author = {Offert, Fabian},
 	month = dec,
 	year = {2017},
@@ -203,6 +217,7 @@
 }
 
 @incollection{kahneman_simulation_1982,
+	address = {Cambridge, UK},
 	edition = {1},
 	title = {The simulation heuristic},
 	isbn = {978-0-521-28414-1 978-0-521-24064-2 978-0-511-80947-7},
@@ -359,6 +374,7 @@
 }
 
 @incollection{lombrozo_explanation_2012,
+	address = {Oxford, UK},
 	title = {Explanation and {Abductive} {Inference}},
 	url = {http://oxfordhandbooks.com/view/10.1093/oxfordhb/9780199734689.001.0001/oxfordhb-9780199734689-e-14},
 	urldate = {2021-08-13},
@@ -391,7 +407,7 @@
 }
 
 @article{roese_counterfactual_1997,
-	title = {Counterfactual thinking.},
+	title = {Counterfactual thinking},
 	volume = {121},
 	issn = {1939-1455, 0033-2909},
 	url = {http://doi.apa.org/getdoi.cfm?doi=10.1037/0033-2909.121.1.133},
@@ -407,6 +423,7 @@
 }
 
 @incollection{roese_functional_2017,
+	address = {Amsterdam, Netherlands},
 	title = {The {Functional} {Theory} of {Counterfactual} {Thinking}: {New} {Evidence}, {New} {Challenges}, {New} {Insights}},
 	volume = {56},
 	isbn = {978-0-12-812120-7},
@@ -984,19 +1001,21 @@
 	title = {Measurable {Counterfactual} {Local} {Explanations} for {Any} {Classifier}},
 	abstract = {We propose a novel method for explaining the predictions of any classifier. In our approach, local explanations are expected to explain both the outcome of a prediction and how that prediction would change if {\textquoteright}things had been different{\textquoteright}. Furthermore, we argue that satisfactory explanations cannot be dissociated from a notion and measure of fidelity, as advocated in the early days of neural networks{\textquoteright} knowledge extraction. We introduce a definition of fidelity to the underlying classifier for local explanation models which is based on distances to a target decision boundary. A system called CLEAR: Counterfactual Local Explanations via Regression, is introduced and evaluated. CLEAR generates b-counterfactual explanations that state minimum changes necessary to flip a prediction{\textquoteright}s classification. CLEAR then builds local regression models, using the b-counterfactuals to measure and improve the fidelity of its regressions. By contrast, the popular LIME method [17], which also uses regression to generate local explanations, neither measures its own fidelity nor generates counterfactuals. CLEAR{\textquoteright}s regressions are found to have significantly higher fidelity than LIME{\textquoteright}s, averaging over 40\% higher in this paper{\textquoteright}s five case studies.},
 	language = {en},
+	booktitle = {{ECAI}},
 	author = {White, Adam and d{\textquoteright}Avila Garcez, Artur},
 	year = {2020},
 	pages = {7},
 }
 
 @book{breiman_classification_1984,
+	address = {London, UK},
 	edition = {1},
 	title = {Classification {And} {Regression} {Trees}},
 	isbn = {978-1-315-13947-0},
 	url = {https://www.taylorfrancis.com/books/9781351460491},
 	language = {en},
 	urldate = {2022-01-05},
-	publisher = {Taylor \& Francis},
+	publisher = {Routledge},
 	author = {Breiman, Leo and Friedman, Jerome H. and Olshen, Richard A. and Stone, Charles J.},
 	year = {1984},
 	doi = {10.1201/9781315139470},
