@@ -1512,7 +1512,7 @@ H1.2_p_RTPerTrial_summary_anno$labels$title=c()
 H1.3_figure2_UserResponseMatches$labels$title=c()
 H1.3_figure2_UserResponseMatches$labels$x=c()
 
-p1 <- ggarrange(H1.1_p_ShubsPerTrial_summary_anno1,H1.2_p_RTPerTrial_summary_anno,ncol=1,nrow=2, common.legend = TRUE, legend = "bottom", labels = c("a", "b"), label.x=-0.001,label.y=1.04,font.label = list(size = 16),align = c("v"))
+p1 <- ggarrange("",H1.1_p_ShubsPerTrial_summary_anno1,"",H1.2_p_RTPerTrial_summary_anno,ncol=2,nrow=2, common.legend = TRUE, legend = "bottom", labels = c("a","", "b",""), label.x=-0.001,label.y=1.04,font.label = list(size = 16),align = c("v"),widths=c(4,95))
 
 H1.3tmp <- H1.3_figure2_UserResponseMatches+theme(legend.title = element_blank(),legend.margin=margin(t = -0.25, unit='cm'))
 
@@ -1537,7 +1537,7 @@ p2 <- ggarrange(H1.3tmp,
 H1_p_ShubsPerTrial_RTPerTrial = ggarrange(p1, "", p2, ncol = 3, nrow = 1, widths=c(65,5,35),common.legend = TRUE, legend = "bottom")
 
 # save
-ggsave("Figures/H1_p_ShubsPerTrial_RTPerTrial_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H1_p_ShubsPerTrial_RTPerTrial_PAZ_FINAL.pdf",width = 8,height = 3.5) #width = 7, height = 2,
 ```
 
 ## H2) User differences in terms of subjective understanding
