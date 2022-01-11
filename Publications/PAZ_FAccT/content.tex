@@ -72,7 +72,7 @@ Thus, while it is difficult to pinpoint exactly what makes a counterfactual psyc
 Following the user-centered focus on explainability proposed by~\citeauthor{miller_explanation_2019}~\citep{miller_explanation_2019}, incorporating these concepts would be an important step towards automatic generation of plausible, and thus more human-friendly and usable, \gls{CFE}.
 
 \section{Computation of CFEs and Plausible CFEs}\label{sec:EffCompCFs}
-\citeauthor{wachter_counterfactual_2017} introduce a \gls{CFE} $\xcf\in\RN^\dimsym$ of an \gls{ML} model $\classifier:\RN^\dimsym\to\setY$ as an optimization problem~\citep{wachter_counterfactual_2017} :
+\citeauthor{wachter_counterfactual_2017} introduce a \gls{CFE} $\xcf\in\RN^\dimsym$ of a \gls{ML} model $\classifier:\RN^\dimsym\to\setY$ as an optimization problem~\citep{wachter_counterfactual_2017} :
 \begin{equation}\label{eq:counterfactual_opt_original}
 \underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x)
 \end{equation}
@@ -111,8 +111,8 @@ In the current work, we follow an alternative approach when providing \textit{co
 % Plausibility is an important feauture for human-generated CFEs, so why not also for machine learning ones?
 % TO DO: bring in the advantages of an iterative learning design
 
-The guiding question of the current work is whether \textit{computationally plausible \glspl{CFE}} have an advantage over \textit{closest \glspl{CFE}} in helping users to learn from an \gls{ML} model.
-To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for an \gls{ML} model.
+The guiding question of the current work is whether \textit{computationally plausible \glspl{CFE}} have an advantage over \textit{closest \glspl{CFE}} in helping users to learn from a \gls{ML} model.
+To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for a \gls{ML} model.
 At regular intervals, they receive either \textit{computationally plausible} or \textit{closest \glspl{CFE}}, highlighting how changes in the user's previous input would have lead to better results.
 The main advantage of this approach is that the interplay between repeated user action and corrective feedback enables us to assess user understanding at each stage of the process objectively through task performance.
 
@@ -212,11 +212,11 @@ Decision trees approximate the data distribution with a collection of if-then-el
 We choose a decision tree because computing counterfactuals for this model is fairly simple~\citep{artelt_computation_2019}.
 Yet, it is powerful enough to model our synthetic data set sufficiently well.
 The current implementation uses the Gini splitting rule of CART~\citep{breiman_classification_1984}, with a maximum tree depth of $4$.
-The decision tree corresponding to the ground truth model is build once in the beginning and remains the same for every user during the study. 
+The decision tree corresponding to the ground truth model is build once in the beginning and remains the same for all users during the study. 
 
 We use the code provided by the CEML package~\citep{artelt_ceml_2019} for computing \glspl{CFE}.
 %In the interest of reproducible research, all source code of the current study is made available. % taken out to ensure anonymity
-The underlying data set used for tree building consists of 5 features (\ie, the plants used for feeding) and 1 continuous output variable (\ie, the growth rate used as factor for computing the new pack size).
+The underlying data set used for tree building consists of 5 integer features (\ie, the plants used for feeding) and 1 continuous output variable (\ie, the growth rate used as factor for computing the new pack size).
 We generated this data according to the following scheme: The growth rate scales linearly with plant 2, iff plant 4 has a value of 1 or 2 AND plant 5 is not smaller than 4. 
 Growth rate may take a value between 0 and 2, used as a factor for pack size in the previous round to compute the new pack size.
 The initial full data set contains all possible plant -- growth rate combinations $100$ times, yielding 3 276 800 data points. 
@@ -308,7 +308,7 @@ We evaluate data gathered from the post-game survey depending on question type.
 For the first two items assessing user's explicit knowledge of plant relevance, we test data for normality of distributions using the Shapiro-Wilk test, followed up by the non-parametric Wilcoxon-Mann-Whitney \textit{U} test in case of non-normality, and the Welch two-sample t-test otherwise for group comparisons. 
 We follow the same approach to compare age and gender distributions.
 We also compare user's explicit knowledge of plant relevance to the expected value given random response patterns using the non-parametric one-sample Wilcoxon signed rank test for each group separately, and report Bonferroni corrected results.
-To analyse group differences of ordinal data from the Likert-style items, we rely on the non-parametric Wilcoxon-Mann-Whitney \textit{U} test.
+To analyze group differences of ordinal data from the Likert-style items, we rely on the non-parametric Wilcoxon-Mann-Whitney \textit{U} test.
 We report effect sizes for all survey data comparisons as \textit{r}.
 
 We performed an a priori sample size estimation based on data obtained from the third pilot. 
@@ -361,11 +361,11 @@ The significant main effect of factor \textit{trial number} (\textit{F}(11,792) 
 Corresponding post-hoc analyses show significant differences between trial 1 and all other trials (all \textit{t}(792) \textgreater 5.900, \textit{p} \textless .001, \textit{d} \textgreater 1.200), between trial 3 and 4 (\textit{t}(792) = 3.765, \textit{p} = .012, \textit{d} = 0.621), and between trials 4 and 5 (\textit{t}(792) = 3.395, \textit{p} = .048, \textit{d} = 0.560).
 Neither the main effect of factor \textit{group} (\textit{F}(11,72) = 0.235, \textit{p} = .630, $\eta_{\text{p}}^{2}$ = 0.003), nor the interaction between factors \textit{trial number} and \textit{group} (\textit{F}(11,792) = 0.897, \textit{p} = .543, $\eta_{\text{p}}^{2}$ = 0.012) reach significance.
 
-In terms of mean number of matches between user judgements of plant relevance for task success and the ground truth, users in both groups performed comparably both for relevant 
+In terms of mean number of matches between user judgments of plant relevance for task success and the ground truth, users in both groups performed comparably both for relevant 
 (\textit{closest}: mean number of matches = 2.850 $\pm$ 0.198 \textit{SE}; \textit{plausible}: mean number of matches = 3.206 $\pm$ 0.178 \textit{SE}; \textit{U} = 781, \textit{p} = .255, \textit{r} = .054)
 and irrelevant plants (closest: mean number of matches = 3.125 $\pm$ 0.157 \textit{SE}), plausible: mean number of matches = 3.177 $\pm$ 0.217 \textit{SE}; \textit{U} = 721.5, \textit{p} = .643, \textit{r} = .054).
 
-While groups did not differ in terms of matches between user judgements of plant relevance, we find significant differences between mean group responses compared to the expected value given random responses (\ie., expected mean number of matches = 2.500): 
+While groups did not differ in terms of matches between user judgments of plant relevance, we find significant differences between mean group responses compared to the expected value given random responses (\ie, expected mean number of matches = 2.500): 
 Users in the \textit{computationally plausible} group have significantly more matches than random for both items (relevant plants: \textit{W} = 481, \textit{p} = .005, \textit{r} = .550; irrelevant plants: \textit{W} = 459.5, \textit{p} = .020, \textit{r} = .483).
 Users in the \textit{closest} group have significantly more matches than random when identifying irrelevant (\textit{W} = 659.5, \textit{p} = .002, \textit{r} = .544), but not relevant (\textit{W} = 536.5, \textit{p} = .331, \textit{r} = .274) plants.
 
@@ -374,7 +374,7 @@ Thus, we cannot verify our hypothesis that \textit{computationally plausible \gl
 \begin{figure}
    \centering
    \includegraphics[width=\textwidth]{./media/H1_p_ShubsPerTrial_RTPertrial_PAZ_FINAL.pdf}
-   \caption{Development of (\textbf{a}) mean pack size per group by trial, (\textbf{b}) mean decision time per group by trial, and (\textbf{c}) mean number of matches between user judgements and ground truth for survey items assessing relevant plants and irrelevant plants, respecively. Shaded areas in (\textbf{a}) and (\textbf{b}), and error bars in (\textbf{c}) denote the standard error of the mean. Asterisks denote statistical significance (\textit{p} < .05 (*), \textit{p} < .01 (**), and \textit{p} < .001 (***), respectively. Asterisks in (\textbf{c}) denote statistical significance from expected value for random behavior.}
+   \caption{Development of (\textbf{a}) mean pack size per group by trial, (\textbf{b}) mean decision time per group by trial, and (\textbf{c}) mean number of matches between user judgments and ground truth for survey items assessing relevant plants and irrelevant plants, respectively. Shaded areas in (\textbf{a}) and (\textbf{b}), and error bars in (\textbf{c}) denote the standard error of the mean. Asterisks denote statistical significance (\textit{p} < .05 (*), \textit{p} < .01 (**), and \textit{p} < .001 (***), respectively. Asterisks in (\textbf{c}) denote statistical significance from expected value for random behavior.}
    \label{fig:hyp1}
  \end{figure}
 
@@ -388,7 +388,7 @@ In addition, there is no significant difference between groups for estimated use
 \begin{figure}
    \centering
    \includegraphics[width=\textwidth]{./media/H2_H3_expl_survey_T_PAZ_FINAL.pdf}
-   \caption{Overview of user judgements in post-game survey per group, adapted from ~\citep{holzinger_measuring_2020}. (\textbf{a}) depicts user replies in survey items relevant for hypothesis 2, (\textbf{b}) depicts user replies in survey items relevant for hypothesis 3, and (\textbf{c}) depcits replies relevant for our last exploratory analysis. Distributions did not differ significantly between groups for any of the items (all \textit{p} \textgreater .05).}
+   \caption{Overview of user judgments in post-game survey per group, adapted from ~\citep{holzinger_measuring_2020}. (\textbf{a}) depicts user replies in survey items relevant for hypothesis 2, (\textbf{b}) depicts user replies in survey items relevant for hypothesis 3, and (\textbf{c}) depcits replies relevant for our last exploratory analysis. Distributions did not differ significantly between groups for any of the items (all \textit{p} \textgreater .05).}
    \label{fig:survey}
  \end{figure}
 
@@ -396,7 +396,7 @@ In addition, there is no significant difference between groups for estimated use
 As postulated in hypothesis 3, we do not observe group differences between conditions in terms of understanding the explanations as such (Figure \ref{fig:survey}b). 
 A considerable proportion of both groups responds positively about understanding the feedback, not differing significantly in their responses (\textit{closest} condition: \textit{M} = 3.975 $\pm$ 0.184 \textit{SE}; \textit{plausible} condition: \textit{M} = 4.118 $\pm$ 0.162 \textit{SE}; \textit{U} = 773.5, \textit{p} = .200 \textit{r} = .149).
 In terms of needing support for understanding, both groups reply with a similar response pattern (\textit{closest} condition: \textit{M} = 3.200 $\pm$ 0.230 \textit{SE}; \textit{plausible} condition: \textit{M} = 3.147 $\pm$ 0.257 \textit{SE}; \textit{U} = 667, \textit{p} = .890 \textit{r} = .016).
-Similarly, user judgements on timing and efficacy of  CFE presentation are consistently high across groups (\textit{closest} condition: \textit{M} = 4.100$\pm$0.175 \textit{SE}; \textit{plausible} condition: \textit{M} = 4.147$\pm$0.170 \textit{SE}; \textit{U} = 680.5, \textit{p} = 1 \textit{r} = .000).
+Similarly, user judgments on timing and efficacy of  CFE presentation are consistently high across groups (\textit{closest} condition: \textit{M} = 4.100$\pm$0.175 \textit{SE}; \textit{plausible} condition: \textit{M} = 4.147$\pm$0.170 \textit{SE}; \textit{U} = 680.5, \textit{p} = 1 \textit{r} = .000).
 
 \subsection{Exploratory Analysis}
 Our explanatory analysis revealed that more than half of all users in both groups do not report to having detected any inconsistencies in the \glspl{CFE} provided (\textit{closest} condition: \textit{M} = 2.675 $\pm$ 0.166 \textit{SE}; \textit{plausible} condition: \textit{M} = 2.853 $\pm$ 0.207 \textit{SE}; \textit{U} = 743, \textit{p} = .480, \textit{r} = .082).
