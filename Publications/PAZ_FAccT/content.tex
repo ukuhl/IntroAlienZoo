@@ -72,7 +72,7 @@ Thus, while it is difficult to pinpoint exactly what makes a counterfactual psyc
 Following the user-centered focus on explainability proposed by~\citeauthor{miller_explanation_2019}~\citep{miller_explanation_2019}, incorporating these concepts would be an important step towards automatic generation of plausible, and thus more human-friendly and usable, \gls{CFE}.
 
 \section{Computation of CFEs and Plausible CFEs}\label{sec:EffCompCFs}
-\citeauthor{wachter_counterfactual_2017} introduce a \gls{CFE} $\xcf\in\RN^\dimsym$ of a \gls{ML} model $\classifier:\RN^\dimsym\to\setY$ as an optimization problem~\citep{wachter_counterfactual_2017} :
+\citeauthor{wachter_counterfactual_2017} introduce a \gls{CFE} $\xcf\in\RN^\dimsym$ of an \gls{ML} model $\classifier:\RN^\dimsym\to\setY$ as an optimization problem~\citep{wachter_counterfactual_2017} :
 \begin{equation}\label{eq:counterfactual_opt_original}
 \underset{\xcf \,\in\, \RN^\dimsym}{\arg\min}\; \loss\big(\classifier(\xcf), \ycf\big) + C \cdot \regularization(\xcf, \x)
 \end{equation}
@@ -111,8 +111,8 @@ In the current work, we follow an alternative approach when providing \textit{co
 % Plausibility is an important feauture for human-generated CFEs, so why not also for machine learning ones?
 % TO DO: bring in the advantages of an iterative learning design
 
-The guiding question of the current work is whether \textit{computationally plausible \glspl{CFE}} have an advantage over \textit{closest \glspl{CFE}} in helping users to learn from a \gls{ML} model.
-To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for a \gls{ML} model.
+The guiding question of the current work is whether \textit{computationally plausible \glspl{CFE}} have an advantage over \textit{closest \glspl{CFE}} in helping users to learn from an \gls{ML} model.
+To assess this question, we rely on an interactive iterative learning task, where users repeatedly choose input values for an \gls{ML} model.
 At regular intervals, they receive either \textit{computationally plausible} or \textit{closest \glspl{CFE}}, highlighting how changes in the user's previous input would have lead to better results.
 The main advantage of this approach is that the interplay between repeated user action and corrective feedback enables us to assess user understanding at each stage of the process objectively through task performance.
 
@@ -449,7 +449,7 @@ This initial time decrease likely reflects how participants learn to work with t
 Increased reaction time as a marker of learning is a classical insight from experimental psychology~\citep{logan_shapes_1992}, indicating that both groups did indeed learn in the current setting. 
 It is possible that the complex task we devised with its elaborate game-like setting was not sensitive enough or too short to pick up in subtle group differences usually linked to more simple, extensive reaction time experiments.
 
-% We did not find differences in relevance judgements
+% We did not find differences in relevance judgments
 Users in the closest group show superior performance, however, they are not able to state more explicitly which plants were relevant or irrelevant for the given task. 
 With this, our study replicates a recent observation that objective measures (\ie, task performance) do not necessarily correlate with self-reports reflecting system understanding~\citep{van_der_waa_evaluating_2021}.
 Participants in both groups made three out of five correct choices on average (Figure \ref{fig:hyp1}c), in part significantly exceeding the number expected in case of random behavior.
