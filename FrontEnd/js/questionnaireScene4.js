@@ -46,9 +46,16 @@ class QuestionnaireScene4 extends Phaser.Scene {
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.05, qIntro1, { fontFamily: 'Arial', fontSize: '17px', color: '#000000' });
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.1, qIntro2, { fontFamily: 'Arial', fontSize: '17px',fontStyle: "bold italic", color: '#000000' });
 
+		if (this.varObj.api.controlGroup) {
+			var item9 = [
+				"9. I think most people would learn to work with the overview of their past choices very quickly."
+			];
+		} else {
 		var item9 = [
 			"9. I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
+			//"9. I received the feedback on what choice would have led to a better result in a timely and efficient manner."
 		];
+		}
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.25, item9, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });
@@ -215,9 +222,16 @@ class QuestionnaireScene4 extends Phaser.Scene {
 			}
 		}.bind(this));
 
+		if (this.varObj.api.controlGroup) {
+			var item10 = [
+				"10. I received the overview of my past choices in a timely and efficient manner."
+			];
+		} else {
 		var item10 = [
 			"10. I received the feedback on what choice would have led to a better result in a timely and efficient manner."
+			//"7. I found inconsistencies in the feedback on what choice would have led to a better result."
 		];
+		}
 
 		// add item 1
 		this.add.text(window.innerWidth * 0.025, window.innerHeight * 0.425, item10, { fontFamily: 'Arial', fontSize: '17px', fontStyle: "bold", color: '#000000' });

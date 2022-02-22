@@ -77,12 +77,19 @@ window.onload = function(){
       // numbers of Shubs
       let newNumber = 10;
       let oldNumber = newNumber;
+      // HERE HERE
+      // min / max numbers of Shubs to be added to the pack
+      //let maxPosShubChange = 5;
+      //let maxNegShubChange = -5;
+      // HERE HERE STOP
       // button to start the Game
       var buttonStart;
       var buttonContinue;
-      var btnContinueShowDelay = 10000; // Button "Continue" becomes visible after 10 seconds (= 10000ms)
-      var btnStartShowDelay = 20000; // Button "Start!" becomes visible after 20 seconds (= 20000ms)
-      var btnOkayShowDelay = 5000; // Button "Okay" becomes visible after 5 seconds (= 5000ms)
+      // HERE HERE
+      var btnContinueShowDelay = 1 // 10000; // Button "Continue" becomes visible after 10 seconds (= 10000ms)
+      var btnStartShowDelay = 1 // 20000; // Button "Start!" becomes visible after 20 seconds (= 20000ms)
+      var btnOkayShowDelay = 1 // 5000; // Button "Okay" becomes visible after 5 seconds (= 5000ms)
+      // HERE HERE STOP
 
       // button to get feedback
       var buttonFeedback;
@@ -91,7 +98,9 @@ window.onload = function(){
       // trial and block counters
       let trialCount = 0;
       let blockCount = 1;
-      let maxBlockCount = 7; // ATTENTION: insert desired blockNumber + 1 --> 7!
+      // HERE HERE
+      let maxBlockCount = 3; // 7; // ATTENTION: insert desired blockNumber + 1 --> 7!
+      // HERE HERE STOP
       let numTrialsPerBlock = 2;  // ATTENTION: Must be less or equal than 3!
       let attentionTrials = [3,7]; // define after which trials attention scenes are played
       // arrays for storing user input / counterfactual information for later feedback
@@ -125,6 +134,10 @@ window.onload = function(){
         "clickCountVar5": clickCountVar5,
         "oldNumber": oldNumber,
         "newNumber": newNumber,
+        // HERE HERE
+        //"maxPosShubChange": maxPosShubChange,
+        //"maxNegShubChange": maxNegShubChange,
+        // HERE HERE STOP
         "maxFeedingNo": maxFeedingNo,
         "minFeedingNo": minFeedingNo,
         "in_array" : [],

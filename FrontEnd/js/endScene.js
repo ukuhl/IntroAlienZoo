@@ -49,7 +49,7 @@ class EndScene extends Phaser.Scene {
 		// add button to start game and switch to fullscreen
 		var buttonDebrief = this.add.image(0, 0, 'buttonAgree').setScale(0.65)
 			.setInteractive()
-			.on('pointerdown', () => { window.open('https://its-ml.de/index.php/pazdebrief/'); });
+			.on('pointerdown', () => { window.open('https://its-ml.de/index.php/iazdebrief/'); });
 
 		var textDebrief = this.add.text(-100, -25, ['I want to learn more','about the study!'], { fontSize: '18px', color: '#ffffff' }).setOrigin(0);
 		var buttonContainer = this.add.container(window.innerWidth * 0.85, window.innerHeight * 0.80, [buttonDebrief, textDebrief])
