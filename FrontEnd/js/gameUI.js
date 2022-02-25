@@ -98,9 +98,7 @@ window.onload = function(){
       // trial and block counters
       let trialCount = 0;
       let blockCount = 1;
-      // HERE HERE
-      let maxBlockCount = 3; // 7; // ATTENTION: insert desired blockNumber + 1 --> 7!
-      // HERE HERE STOP
+      let maxBlockCount = 7; // ATTENTION: insert desired blockNumber + 1 --> 7!
       let numTrialsPerBlock = 2;  // ATTENTION: Must be less or equal than 3!
       let attentionTrials = [3,7]; // define after which trials attention scenes are played
       // arrays for storing user input / counterfactual information for later feedback

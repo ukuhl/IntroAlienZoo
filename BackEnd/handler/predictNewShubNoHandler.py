@@ -42,7 +42,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         if user_id is None:
             self.send_custom_error(400, "Missing field 'userId'")
             raise Exception()
-        
+
         # Get number of current shubs
         cur_num_shubs = self.args["numShubs"]
         if user_id is None:
@@ -69,7 +69,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         if not isinstance(input_vars, dict):
             self.send_custom_error(400, "Invalid data type of 'inputVars'")
             raise Exception()
-        
+
         return user_id, cur_num_shubs, trial_count, block_count, input_vars
 
     def post(self):
@@ -91,14 +91,27 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         pred = self.model["model"].predict(x)
 
         # Compute new number of shubs
-        SNnew = int(np.floor(cur_num_shubs * pred))    # new number = old number * GR prediction)
+        # SNnew = int(np.floor(cur_num_shubs * pred))    # new number = old number * GR prediction)
+        print("input:")
+        print([input_vars["var1"], input_vars["var2"], input_vars["var3"], input_vars["var4"], input_vars["var5"]])
+        print("pred:")
+        print(pred)
+        #SNnew = int(cur_num_shubs + np.round((((5-(-5))*(pred - 0))/(2 - 0)) + (-5)))
+        # REMEMBER: minimal / maximal growth rates in training data:
+        #GRneg.min=0.1; GRpos.max=1.9
+        diff = np.round((((10-(-10))*(pred - 0.1))/(1.9 - 0.1)) + (-10))
+        SNnew = int(cur_num_shubs + np.round((((10-(-10))*(pred - 0.1))/(1.9 - 0.1)) + (-10)))
+        print("diff:")
+        print(diff)
+        print("SNnew:")
+        print(SNnew)
         # never have less than 2 Shubs!
         if SNnew < 2:
             SNnew = 2
 
-        # Compute a plausible counterfactual explanation if the user is in the experimental group and a closest counterfactual explanatons otherwise
-        x_cf = self.__compute_counterfactual(x, pred, plausible=not control_group)
-        
+        # Compute a closest counterfactual explanation if the user is in the experimental group
+        x_cf = self.__compute_counterfactual(x, pred, plausible=False)
+
         # Log everything!
         log_data = {
             "oldNumShubs": cur_num_shubs,

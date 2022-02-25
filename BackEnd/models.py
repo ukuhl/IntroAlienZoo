@@ -4,6 +4,8 @@ import sklearn
 
 # Fit model
 def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
+#def build_model(file_path="modelsStuff/AlienZooDataSet4_duplPosGR.csv"):
+#def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     import pandas as pd
     import random
     random.seed(42)
@@ -22,19 +24,20 @@ def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
 
     # Remove some samples to create "holes" in data space - otherwise every point in data space would be a plausible instance!
     # Random subsampling
-    idx = range(0, X.shape[0])
-    idx = random.sample(idx, int((X.shape[0] / 300) * 1))
-    X, y = X[idx, :], y[idx]
+    # idx = range(0, X.shape[0])
+    # idx = random.sample(idx, int((X.shape[0] / 300) * 1))
+    # X, y = X[idx, :], y[idx]
 
     # Split into training and test set
     print(X.shape)
     print(y.shape)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     # Save dataset
-    np.savez("dataset.npz", X_train=X_train, X_test=X_test, y_train=y_train, y_test=y_test)
+    np.savez("dataset_TEST_DS4.npz", X_train=X_train, X_test=X_test, y_train=y_train, y_test=y_test)
 
     # Fit model
-    model = DecisionTreeRegressor(max_depth=4, random_state=42)
+    #model = DecisionTreeRegressor(max_depth=4, random_state=42)
+    model = DecisionTreeRegressor(max_depth=7, random_state=42)
     model.fit(X_train, y_train)
 
     # Evaluate
@@ -140,7 +143,7 @@ def score_adjustments(x_orig, x_orig_path, leafs_path, dist):
 
         r.append((cost, y, adjustment))
 
-    r.sort(key=lambda item: item[0])        
+    r.sort(key=lambda item: item[0])
 
     return r
 
@@ -164,7 +167,7 @@ def compute_counterfactual_of_model(model, x, y_pred, plausible=False, X_train=N
     else:
         # Enumerate all leafs
         leafs = get_leafs_from_tree(model.tree_, classifier=False)
-        
+
         # Filter leafs for better predictions
         leafs = list(filter(lambda z: z[-1][2] > y_pred, leafs))
 
