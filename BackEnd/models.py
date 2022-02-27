@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import sklearn
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
 
 # Fit model
-def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
+#def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
 #def build_model(file_path="modelsStuff/AlienZooDataSet4_duplPosGR.csv"):
-#def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
+def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     import pandas as pd
     import random
     random.seed(42)
@@ -28,24 +30,45 @@ def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
     # idx = random.sample(idx, int((X.shape[0] / 300) * 1))
     # X, y = X[idx, :], y[idx]
 
+    # Binning
+    _, bin_values = np.histogram(y, bins=10)
+    y_binning = [list(bin_values).index(bin_values[np.argmin(np.abs(bin_values - y_))]) for y_ in y]
+
     # Split into training and test set
     print(X.shape)
     print(y.shape)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+    X_train, X_test, y_train, y_test, y_train_bins, y_test_bins = train_test_split(X, y, y_binning, test_size=0.33, random_state=42)
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     # Save dataset
-    np.savez("dataset_TEST_DS4.npz", X_train=X_train, X_test=X_test, y_train=y_train, y_test=y_test)
+    #np.savez("dataset_TEST_DS4.npz", X_train=X_train, X_test=X_test, y_train=y_train, y_test=y_test)
+
+    # Resample data set to get a balanced data set    
+    # Apply method from imbalanced learn to get a balanced data set
+    X_train_ = np.concatenate((X_train, y_train.reshape(-1, 1)), axis=1)    # Add true targets to the input as an additional dimension
+    X_test_ = np.concatenate((X_test, y_test.reshape(-1, 1)), axis=1)
+
+    # Apply imbalanced learn
+    X_train_, _ = SMOTE().fit_resample(X_train_, y_train_bins)
+    X_test_, _ = SMOTE().fit_resample(X_test_, y_test_bins)
+
+    #X_train_, _ = RandomUnderSampler().fit_resample(X_train_, y_train_bins)
+    #X_test_, _ = RandomUnderSampler().fit_resample(X_test_, y_test_bins)
+
+    #  Split into input and output
+    X_train_final, y_train_final = X_train_[:,:X.shape[1]], X_train_[:, -1]
+    X_test_final, y_test_final = X_test_[:,:X.shape[1]], X_test_[:, -1]
 
     # Fit model
-    #model = DecisionTreeRegressor(max_depth=4, random_state=42)
-    model = DecisionTreeRegressor(max_depth=7, random_state=42)
-    model.fit(X_train, y_train)
+    model = DecisionTreeRegressor(max_depth=5, random_state=42)
+    #model = DecisionTreeRegressor(max_depth=7, random_state=42)
+    model.fit(X_train_final, y_train_final)
 
     # Evaluate
-    y_pred = model.predict(X_test)
-    print(f"R^2: {r2_score(y_test, y_pred)}")
-    print(f"MSE: {mean_squared_error(y_test, y_pred)}")
+    y_pred = model.predict(X_test_final)
+    print(f"R^2: {r2_score(y_test_final, y_pred)}")
+    print(f"MSE: {mean_squared_error(y_test_final, y_pred)}")
 
-    return {"model": model, "X_train": X_train, "y_train": y_train}
+    return {"model": model, "X_train": X_train_final, "y_train": y_train_final}
 
 
 # Compute counterfactual
@@ -190,3 +213,7 @@ def compute_counterfactual_of_model(model, x, y_pred, plausible=False, X_train=N
         x_cf = [-1000 for _ in range(x.shape[0])] if len(counterfactuals) == 0 else counterfactuals[0]
 
         return x_cf
+
+
+if __name__ == "__main__":
+    build_model()
