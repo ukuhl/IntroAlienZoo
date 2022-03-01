@@ -11,6 +11,7 @@ def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     import pandas as pd
     import random
     random.seed(42)
+    from joblib import dump, load
     from sklearn.tree import DecisionTreeRegressor
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error, r2_score
@@ -24,44 +25,55 @@ def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     print(X.shape)
     print(y.shape)
 
-    # Remove some samples to create "holes" in data space - otherwise every point in data space would be a plausible instance!
-    # Random subsampling
-    # idx = range(0, X.shape[0])
-    # idx = random.sample(idx, int((X.shape[0] / 300) * 1))
-    # X, y = X[idx, :], y[idx]
+    # CODE FOR MODEL COMPUTATION: We'll load the precomputed model below
+    # # settings for compute balanced data + max tree depth
+    # bins=5
+    # depthTree=7
+    #
+    # # Binning
+    # _, bin_values = np.histogram(y, bins=bins) # von André gesetzt: 10
+    # y_binning = [list(bin_values).index(bin_values[np.argmin(np.abs(bin_values - y_))]) for y_ in y]
+    #
+    # # Split into training and test set
+    # print(X.shape)
+    # print(y.shape)
+    # X_train, X_test, y_train, y_test, y_train_bins, y_test_bins = train_test_split(X, y, y_binning, test_size=0.33, random_state=42)
+    #
+    # # Resample data set to get a balanced data set
+    # # Apply method from imbalanced learn to get a balanced data set
+    # X_train_ = np.concatenate((X_train, y_train.reshape(-1, 1)), axis=1)    # Add true targets to the input as an additional dimension
+    # X_test_ = np.concatenate((X_test, y_test.reshape(-1, 1)), axis=1)
+    #
+    # # Apply imbalanced learn
+    # X_train_, _ = SMOTE().fit_resample(X_train_, y_train_bins)
+    # X_test_, _ = SMOTE().fit_resample(X_test_, y_test_bins)
+    #
+    # #  Split into input and output
+    # X_train_final, y_train_final = X_train_[:,:X.shape[1]], X_train_[:, -1]
+    # X_test_final, y_test_final = X_test_[:,:X.shape[1]], X_test_[:, -1]
+    #
+    # # Fit model
+    # model = DecisionTreeRegressor(max_depth=depthTree, random_state=42)
+    # model.fit(X_train_final, y_train_final)
+    #
+    # # Evaluate
+    # y_pred = model.predict(X_test_final)
+    # print(f"R^2: {r2_score(y_test_final, y_pred)}")
+    # print(f"MSE: {mean_squared_error(y_test_final, y_pred)}")
+    #
+    # # Save dataset and model
+    # np.savez("modelsStuff/dataset_IAZ.npz", X_train=X_train_final, X_test=X_test_final, y_train=y_train_final, y_test=y_test_final)
+    # dump(model, "modelsStuff/model_IAZ.joblib")
 
-    # Binning
-    _, bin_values = np.histogram(y, bins=10)
-    y_binning = [list(bin_values).index(bin_values[np.argmin(np.abs(bin_values - y_))]) for y_ in y]
+    # Load pre-computed dataset and model
+    dat=np.load("modelsStuff/dataset_IAZ.npz")
+    model = load("modelsStuff/model_IAZ.joblib")
 
-    # Split into training and test set
-    print(X.shape)
-    print(y.shape)
-    X_train, X_test, y_train, y_test, y_train_bins, y_test_bins = train_test_split(X, y, y_binning, test_size=0.33, random_state=42)
-    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-    # Save dataset
-    #np.savez("dataset_TEST_DS4.npz", X_train=X_train, X_test=X_test, y_train=y_train, y_test=y_test)
-
-    # Resample data set to get a balanced data set    
-    # Apply method from imbalanced learn to get a balanced data set
-    X_train_ = np.concatenate((X_train, y_train.reshape(-1, 1)), axis=1)    # Add true targets to the input as an additional dimension
-    X_test_ = np.concatenate((X_test, y_test.reshape(-1, 1)), axis=1)
-
-    # Apply imbalanced learn
-    X_train_, _ = SMOTE().fit_resample(X_train_, y_train_bins)
-    X_test_, _ = SMOTE().fit_resample(X_test_, y_test_bins)
-
-    #X_train_, _ = RandomUnderSampler().fit_resample(X_train_, y_train_bins)
-    #X_test_, _ = RandomUnderSampler().fit_resample(X_test_, y_test_bins)
-
-    #  Split into input and output
-    X_train_final, y_train_final = X_train_[:,:X.shape[1]], X_train_[:, -1]
-    X_test_final, y_test_final = X_test_[:,:X.shape[1]], X_test_[:, -1]
-
-    # Fit model
-    model = DecisionTreeRegressor(max_depth=5, random_state=42)
-    #model = DecisionTreeRegressor(max_depth=7, random_state=42)
-    model.fit(X_train_final, y_train_final)
+    #print(dat.files)
+    X_train_final=dat['X_train']
+    X_test_final=dat['X_test']
+    y_train_final=dat['y_train']
+    y_test_final=dat['y_test']
 
     # Evaluate
     y_pred = model.predict(X_test_final)
