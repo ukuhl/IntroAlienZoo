@@ -75,13 +75,8 @@ window.onload = function(){
       let maxFeedingNo = 6;
       let minFeedingNo = 0;
       // numbers of Shubs
-      let newNumber = 10;
+      let newNumber = 20;
       let oldNumber = newNumber;
-      // HERE HERE
-      // min / max numbers of Shubs to be added to the pack
-      //let maxPosShubChange = 5;
-      //let maxNegShubChange = -5;
-      // HERE HERE STOP
       // button to start the Game
       var buttonStart;
       var buttonContinue;
@@ -132,10 +127,6 @@ window.onload = function(){
         "clickCountVar5": clickCountVar5,
         "oldNumber": oldNumber,
         "newNumber": newNumber,
-        // HERE HERE
-        //"maxPosShubChange": maxPosShubChange,
-        //"maxNegShubChange": maxNegShubChange,
-        // HERE HERE STOP
         "maxFeedingNo": maxFeedingNo,
         "minFeedingNo": minFeedingNo,
         "in_array" : [],

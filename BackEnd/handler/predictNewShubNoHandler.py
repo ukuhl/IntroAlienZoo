@@ -29,7 +29,7 @@ class PredictNewShubNoHandler(BasisRequestHandler):
         except Exception as ex:
             pass
 
-    def __compute_counterfactual(self, x, y_pred, plausible=True):
+    def __compute_counterfactual(self, x, y_pred, plausible=False):
         return compute_counterfactual_of_model(self.model["model"], x, y_pred, plausible=plausible, X_train=self.model["X_train"], y_train=self.model["y_train"])
 
     def __parse_request_body(self):
