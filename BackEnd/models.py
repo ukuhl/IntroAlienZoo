@@ -5,9 +5,7 @@ from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 
 # Fit model
-#def build_model(file_path="modelsStuff/AlienZooDataSet3.csv"):
-#def build_model(file_path="modelsStuff/AlienZooDataSet4_duplPosGR.csv"):
-def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
+def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
     import pandas as pd
     import random
     random.seed(42)
@@ -25,7 +23,7 @@ def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     print(X.shape)
     print(y.shape)
 
-    # CODE FOR MODEL COMPUTATION: We'll load the precomputed model below
+    # # CODE FOR MODEL COMPUTATION: We'll load the precomputed model below
     # # settings for compute balanced data + max tree depth
     # bins=5
     # depthTree=7
@@ -35,8 +33,6 @@ def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     # y_binning = [list(bin_values).index(bin_values[np.argmin(np.abs(bin_values - y_))]) for y_ in y]
     #
     # # Split into training and test set
-    # print(X.shape)
-    # print(y.shape)
     # X_train, X_test, y_train, y_test, y_train_bins, y_test_bins = train_test_split(X, y, y_binning, test_size=0.33, random_state=42)
     #
     # # Resample data set to get a balanced data set
@@ -62,12 +58,12 @@ def build_model(file_path="modelsStuff/AlienZooDataSet4.csv"):
     # print(f"MSE: {mean_squared_error(y_test_final, y_pred)}")
     #
     # # Save dataset and model
-    # np.savez("modelsStuff/dataset_IAZ.npz", X_train=X_train_final, X_test=X_test_final, y_train=y_train_final, y_test=y_test_final)
-    # dump(model, "modelsStuff/model_IAZ.joblib")
+    # np.savez("modelsStuff/dataset_IAZ_DS2.npz", X_train=X_train_final, X_test=X_test_final, y_train=y_train_final, y_test=y_test_final)
+    # dump(model, "modelsStuff/model_IAZ_DS2.joblib")
 
     # Load pre-computed dataset and model
-    dat=np.load("modelsStuff/dataset_IAZ.npz")
-    model = load("modelsStuff/model_IAZ.joblib")
+    dat=np.load("modelsStuff/dataset_IAZ_DS2.npz")
+    model = load("modelsStuff/model_IAZ_DS2.joblib")
 
     #print(dat.files)
     X_train_final=dat['X_train']
