@@ -26,7 +26,7 @@ def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
     # # CODE FOR MODEL COMPUTATION: We'll load the precomputed model below
     # # settings for compute balanced data + max tree depth
     # bins=5
-    # depthTree=7
+    # depthTree=5 # for DS2 condition: 5; for DS4 condition: 7
     #
     # # Binning
     # _, bin_values = np.histogram(y, bins=bins) # von André gesetzt: 10
