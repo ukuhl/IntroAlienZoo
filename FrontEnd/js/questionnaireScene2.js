@@ -230,7 +230,7 @@ class QuestionnaireScene2 extends Phaser.Scene {
 
 		if (this.varObj.api.controlGroup) {
 			var item4 = [
-				"4. I did not need support to understand the overview of my past choices."
+				"4. I needed support to understand the overview of my past choices."
 			];
 		} else {
 		var item4 = [
