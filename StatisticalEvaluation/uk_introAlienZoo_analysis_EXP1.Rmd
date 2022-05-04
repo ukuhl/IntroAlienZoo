@@ -1,10 +1,10 @@
 ---
-title: "Plausible Alien Zoo: Summary of evaluation and results (October 2021)"
+title: "Introducing the Alien Zoo: Summary of evaluation and results for Exp1 (DS4 condition, March 2022)"
 output: 
   pdf_document:
     toc: TRUE
     toc_depth: 5
-bibliography: PlausibleAlienZoo.bib
+bibliography: IntroAlienZoo.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -29,11 +29,6 @@ library(scales)
 library(effsize)
 
 # for the lme approach:
-#install.packages("emmeans") # estimated marginal means and p values
-#install.packages("sjstats") # partial eta squared and cohens f effect size
-#install.packages("lme4") # estimated the multi level model (random intercept for participants)
-#install.packages("lmerTest") # more comprehensive anova output with p values
-#install.packages("MuMIn") # R^2 for the model
 library("emmeans")
 library("sjstats")
 library("lme4")
@@ -89,8 +84,8 @@ source("uk_wilcox.test.R")
 
 # Introduction
 
-This is an analysis of data acquired in the plausible Alien Zoo study run on Amazon mechanical turk in October-November 2021. In this study, naive users were asked to interact with the Alien Zoo paradigm to understand relationships in an unknown dataset, what has been termed “learning to discover” by [@adadi_peeking_2018]. In regular intervals, participants receive counterfactual explanations (CFEs) regarding past choices. These are either "closest" CFEs that fulfill the "smallest feature change" condition [@wachter_counterfactual_2017], or "plausible" CFEs that are smallest feature changes and also prototypical instances of the data [@farkas_convex_2020].
-
+This is an analysis of data acquired in the "Introducing the Alien Zoo" study run on Amazon mechanical turk in March 2022. In this study, naive users were asked to interact with the Alien Zoo paradigm to understand relationships in an unknown dataset, what has been termed “learning to discover” by [@adadi_peeking_2018]. In regular intervals, participants receive either counterfactual explanations (CFEs) regarding past choices, or no explanation. Computed CFEs correspond to "Control" counterfactuals that fulfill the "smallest feature change" condition [@wachter_counterfactual_2017].
+This script evaluates data from Experiment 1 (three features, plant 2, 4, and 5, impacting growth rate).
 
 # First things first: rough data cleaning
 
@@ -103,11 +98,11 @@ sourceLoc=here::set_here()
 setwd(dirname(sourceLoc))
 
 # Where's the data
-demo_source = list.files(path = "../BackEnd/userData", pattern="demographics.csv",full.names=TRUE)
-perf_source = list.files(path = "../BackEnd/userData", pattern="performance.csv",full.names=TRUE)
-rt_source = list.files(path = "../BackEnd/userData", pattern="reactionTime.csv",full.names=TRUE)
-survey_source = list.files(path = "../BackEnd/userData", pattern="survey.csv",full.names=TRUE)
-attention_source = list.files(path = "../BackEnd/userData", pattern="attentionCheck.csv",full.names=TRUE)
+demo_source = list.files(path = "../UserData", pattern="demographics_IAZ_EXP1.csv",full.names=TRUE)
+perf_source = list.files(path = "../UserData", pattern="performance_IAZ_EXP1.csv",full.names=TRUE)
+rt_source = list.files(path = "../UserData", pattern="reactionTime_IAZ_EXP1.csv",full.names=TRUE)
+survey_source = list.files(path = "../UserData", pattern="survey_IAZ_EXP1.csv",full.names=TRUE)
+attention_source = list.files(path = "../UserData", pattern="attentionCheck_IAZ_EXP1.csv",full.names=TRUE)
 
 # load to dframes
 df_demo=read.csv(demo_source,header=TRUE)
@@ -132,15 +127,15 @@ df_attention$userId=substr(df_attention$userId,1,5)
 
 # group as factor, recode values to more descriptive letters
 df_demo$group=as.factor(df_demo$group)
-df_demo$group=recode_factor(df_demo$group,"1"="C","0"="P")
+df_demo$group=recode_factor(df_demo$group,"1"="C","0"="E")
 df_perf$group=as.factor(df_perf$group)
-df_perf$group=recode_factor(df_perf$group,"1"="C","0"="P")
+df_perf$group=recode_factor(df_perf$group,"1"="C","0"="E")
 df_rt$group=as.factor(df_rt$group)
-df_rt$group=recode_factor(df_rt$group,"1"="C","0"="P")
+df_rt$group=recode_factor(df_rt$group,"1"="C","0"="E")
 df_survey$group=as.factor(df_survey$group)
-df_survey$group=recode_factor(df_survey$group,"1"="C","0"="P")
+df_survey$group=recode_factor(df_survey$group,"1"="C","0"="E")
 df_attention$group=as.factor(df_attention$group)
-df_attention$group=recode_factor(df_attention$group,"1"="C","0"="P")
+df_attention$group=recode_factor(df_attention$group,"1"="C","0"="E")
 
 # drop fields 'X' if present (was problem with simulated data)
 if("X" %in% colnames(df_perf)){
@@ -162,13 +157,13 @@ df_survey$itemNo=df_survey$itemNo+1
 userNo_raw <- data.frame(table(c(unique(df_perf$userId), unique(df_rt$userId), unique(df_survey$userId), unique(df_attention$userId),c(unique(df_demo$userId)))))
 names(userNo_raw) <- c("Names", "Matches")
 
-## Still to do: remove participants how did not finish all parts (i.e., not being part of all DFs)
+# Now, remove participants how did not finish all parts (i.e., not being part of all DFs)
 df_perf=df_perf[!df_perf$userId %in% userNo_raw$Names[!userNo_raw$Matches==5],]
 df_rt=df_rt[!df_rt$userId %in% userNo_raw$Names[!userNo_raw$Matches==5],]
 df_survey=df_survey[!df_survey$userId %in% userNo_raw$Names[!userNo_raw$Matches==5],]
 df_attention=df_attention[!df_attention$userId %in% userNo_raw$Names[!userNo_raw$Matches==5],]
 
-# sort according to ID and trial:
+# sort according to user ID and trial number:
 df_perf=df_perf[order(df_perf$userId, df_perf$trialNo),]
 df_rt=df_rt[order(df_rt$userId, df_rt$TrialNr),]
 df_survey=df_survey[order(df_survey$userId, df_survey$itemNo),]
@@ -194,9 +189,12 @@ odd_userIDs=unique(c(df_perf_trialsPerUser$userId[!df_perf_trialsPerUser$trialNo
   df_attention_trialsPerUser$userId[!df_attention_trialsPerUser$trialNo==numAttentionTrials]))
 
 # Manual checks showed: 
-## odd_userIDs do not have full RT / perf / attention data - REMOVE DUE TO LOGGING ISSUES!
+## userID "5f4cc" is an odd user: no logs for item 1 and 2 -- strategy for now:
+## keep that person anyway, with a note that for assessment of items 1 and 2, one person less was evaluated!
+safe4now=c("5f4cc")
+odd_userIDs=odd_userIDs[!odd_userIDs %in% safe4now]
 
-# remove from all dfs:
+# remove odd users from all dfs:
 df_perf=df_perf[!df_perf$userId %in% odd_userIDs,]
 df_rt=df_rt[!df_rt$userId %in% odd_userIDs,]
 df_survey=df_survey[!df_survey$userId %in% odd_userIDs,]
@@ -209,43 +207,15 @@ df_rt$group <- as.factor(df_rt$group)
 
 ```
 
-How many users do we have in our performance df before any cleaning (i.e., also including users with incomplete datasets)? `r length(userNo_raw$Names)`
-
-How many users do we have in our performance df after cleaning? `r length(unique(df_perf$userId))`
-
-How many users do we have in our reaction time df after cleaning? `r length(unique(df_rt$userId))`
-
-How many users do we have in our attention df after cleaning? `r length(unique(df_attention$userId))`
-
-How many users do we have in our survey df after cleaning? `r length(unique(df_survey$userId))`
-
 ## General infos after removal of incomplete datasets
 
-At this point, we have `r length(unique(df_perf$userId))` participants. 
+How many users do we have in our performance df before any cleaning (i.e., also including users with incomplete datasets)? `r length(userNo_raw$Names)`
 
-Why 101? We actually acquired 100, but one participant timed out on AMT. That means that he/she played the game and data was fully logged, BUT AMT did not accept their code anymore.
-Unfortunately, we cannot re-imburse this person for their efforts. Thus, we will exclude that person too.
+After cleaning, we have `r length(unique(df_perf$userId))` participants. Of those, 
 
+* `r length(unique(df_perf$userId[df_perf$group=="C"]))` participants were in the control condition and 
 
-```{r echo=FALSE, warning=FALSE}
-
-# userId from the one non-imbursed participant: 294e3
-# remove from all dfs:
-df_perf=df_perf[!df_perf$userId %in% c("294e3"),]
-df_rt=df_rt[!df_rt$userId %in% c("294e3"),]
-df_survey=df_survey[!df_survey$userId %in% c("294e3"),]
-df_attention=df_attention[!df_attention$userId %in% c("294e3"),]
-df_demo=df_demo[!df_demo$userId %in% c("294e3"),]
-
-```
-
-After removal, check again:
-
-* At this point, we have `r length(unique(df_perf$userId))` participants. Of those, 
-
-* `r length(unique(df_perf$userId[df_perf$group=="C"]))` participants were in the closest condition and 
-
-* `r length(unique(df_perf$userId[df_perf$group=="P"]))` participants in the plausible condition.
+* `r length(unique(df_perf$userId[df_perf$group=="E"]))` participants in the explanation condition.
 
 ## Check covariates across groups
 
@@ -277,7 +247,7 @@ CovAge_FreqUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fil
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
   labs(title="Age of participants (freq. counts)",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:7, labels=c("18-24y","25-34y","35-44y","45-54y","55-64y","65 and\nover","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -286,7 +256,7 @@ CovAge_PercUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fil
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   labs(title="Age of participants (% of users)",x="", y = "% of users")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:7, labels=c("18-24y","25-34y","35-44y","45-54y","55-64y","65 and\nover","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -294,7 +264,7 @@ CovAge_PercUserResponses = ggplot(data=df_demo_age_summary, aes(x=responseNo,fil
 figure_CovAgeRaw <- ggarrange(CovAge_FreqUserResponses,CovAge_PercUserResponses,
                     ncol = 1, nrow = 2, align = "v")
 # save
-ggsave("Figures/CovAgeRaw_distribution_PAZ_FINAL.pdf",width = 9, height = 7,)
+ggsave("Figures/CovAgeRaw_distribution_IAZ_EXP1_FINAL.pdf",width = 9, height = 7,)
 
 # show 
 figure_CovAgeRaw
@@ -304,7 +274,7 @@ CovGender_FreqUserResponses = ggplot(data=df_demo_gender_summary, aes(x=response
   geom_bar(aes(y = SumChecks),stat="identity",position = position_dodge(preserve = "single"))+
   labs(title="Gender of participants (freq. counts)",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:7, labels=c("Female","Male","Transgender\nfemale","Transgender\nmale","Non-binary/\n gender non-\nconforming","Not listed","Prefer not\nto answer"))+
   ylim(0, 40)+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
@@ -314,16 +284,16 @@ CovGender_PercUserResponses = ggplot(data=df_demo_gender_summary, aes(x=response
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   labs(title="Gender of participants (% of users)",x="", y = "% of users")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:7, labels=c("Female","Male","Transgender\nfemale","Transgender\nmale","Non-binary/\n gender non-\nconforming","Not listed","Prefer not\nto answer"))+
-  ylim(0, 70)+
+  #ylim(0, 70)+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
 # put plots together 
 figure_CovGenderRaw <- ggarrange(CovGender_FreqUserResponses,CovGender_PercUserResponses,
                     ncol = 1, nrow = 2, align = "v")
 # save
-ggsave("Figures/CovGenderRaw_distribution_PAZ_FINAL.pdf",width = 9, height = 7,)
+ggsave("Figures/CovGenderRaw_distribution_IAZ_EXP1_FINAL.pdf",width = 9, height = 7,)
 
 # show 
 figure_CovGenderRaw
@@ -339,7 +309,7 @@ For gender, we need to check if data is normally distributed. If so, use a ttest
 
 # get median age per group for reporting
 medianAge_C=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="C"])
-medianAge_P=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="P"])
+medianAge_E=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="E"])
 # inspect: we have 50 people per group, in which group does the 25th person lie?
 
 # count users who 'prefered not to answer'
@@ -355,11 +325,11 @@ df_demo_gender_responses=df_demo_gender[!df_demo_gender$checked==0,]
 # Age first: 
 
 # check sample sizes, make sure they deviate not too much:
-N_P_age=sum(df_demo_age_responses$group=='P')
+N_E_age=sum(df_demo_age_responses$group=='E')
 N_C_age=sum(df_demo_age_responses$group=='C')
 
 aget="Wilcox"
-agetest=uk_wilcox.test(df_demo_age_responses$responseNo[df_demo_age_responses$group=="P"],df_demo_age_responses$responseNo[df_demo_age_responses$group=="C"],paired=FALSE,exact=FALSE)
+agetest=uk_wilcox.test(df_demo_age_responses$responseNo[df_demo_age_responses$group=="E"],df_demo_age_responses$responseNo[df_demo_age_responses$group=="C"],paired=FALSE,exact=FALSE)
 ageeffsize=agetest$z_val/(sqrt(nrow(df_demo_age_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","AgeRaw",sep=""),"",aget,agetest$p.value,ageeffsize,sep = ",")
@@ -367,7 +337,7 @@ matchingRes=paste(matchingRes,paste("\n","AgeRaw",sep=""),"",aget,agetest$p.valu
 # Gender second: 
 
 # check sample sizes, make sure they deviate not too much:
-N_P_gender=sum(df_demo_gender_responses$group=='P')
+N_E_gender=sum(df_demo_gender_responses$group=='E')
 N_C_gender=sum(df_demo_gender_responses$group=='C')
 
 # check for significant differences - "irrelevant plans" judgements:
@@ -380,7 +350,7 @@ if(shapiro$p.value > 0.05){
   geneffsize=cohen.d(df_demo_gender_responses$responseNo ~ df_demo_gender_responses$group)
 } else {
   gent="Wilcox"
-  gentest=uk_wilcox.test(df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="P"],df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="C"],paired=FALSE,exact=FALSE)
+  gentest=uk_wilcox.test(df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="E"],df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="C"],paired=FALSE,exact=FALSE)
   geneffsize=gentest$z_val/(sqrt(nrow(df_demo_gender_responses)))
 }
 
@@ -388,19 +358,20 @@ matchingRes=paste(matchingRes,paste("\n","GenderRaw",sep=""),shapiro$p.value,gen
 
 ```
 
-We acquired data from `r length(unique(df_demo$userId))`, with `r length(unique(df_demo$userId[df_demo$group=="C"]))` users in the control group (`r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 25-34years), and `r length(unique(df_demo$userId[df_demo$group=="P"]))` users in the plausible group (`r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, `r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==5]))` non-binary / gender non-conforming, 1 user did not disclose gender information, median age group is 25-34years).
+We acquired data from `r length(unique(df_demo$userId))` participants, with `r length(unique(df_demo$userId[df_demo$group=="C"]))` users in the control group (`r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 35-44years), and `r length(unique(df_demo$userId[df_demo$group=="E"]))` users in the explanation group (`r length(unique(df_demo$userId[df_demo$group=="E" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="E" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 35-44years).
 
 The analysis showed for *Age*:
 
-* We have age information for `r N_P_age` users in the plausible and `r N_C_age` users in the closest group (`r N_noAnswer_age` user(s) preferred not to disclose age information).
-* Is there a significant difference in terms of age between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r aget` test. This showed: U=`r agetest$statistic `, p=`r agetest$p.value `, r = `r ageeffsize `
+* We have age information for `r N_E_age` users in the explanation and `r N_C_age` users in the control group.
+
+* Is there a significant difference in terms of age between the groups? We compared ages of users in explanation condition and users in the control condition using a `r aget` test. This showed: U=`r agetest$statistic `, p=`r agetest$p.value `, r = `r ageeffsize `
   
 The analysis showed for *Gender*:
 
-* We have gender information for `r N_P_gender` users in the plausible and `r N_C_gender` users in the closest group (`r N_noAnswer_gender` user(s) preferred not to give gender information).
-* Is there a significant difference in terms of gender between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r gent` test. This showed
+* We have gender information for `r N_E_gender` users in the explanation and `r N_C_gender` users in the control group.
 
-  <!-- + for ttest: t(`r gentest$parameter `)=`r gentest$statistic `, p=`r gentest$p.value `, cohen's d = `r geneffsize ` -->
+* Is there a significant difference in terms of gender between the groups? We compared gender distribution for users in explanation condition and users in the control condition using a `r gent` test. This showed
+
   + for wilcoxon test: U=`r gentest$statistic `, p=`r gentest$p.value `, r = `r geneffsize `
 
 ## Quality criteria
@@ -415,19 +386,19 @@ Aim: identify IDs being faster than specified values (variable per game part).
 This part will tag users that needed less than 2000ms to reach a feeding decision (suspiciously quick) in 4 or more trials.
 
 
-```{r echo=FALSE,, fig.height = 7, fig.width = 7, fig.align = "center",fig.height = 4, fig.width = 6}
+```{r echo=FALSE, fig.align = "center", fig.height = 4, fig.width = 7}
 
 # define min times for individual trial types (in ms)
-min_timeAgreementScene= 1 # 1000 #1 # 1 second only? rationale: people agree really quickly, accept "speeding" here
-min_timeStartScene=20000 # 20000=20s is current delay before button appears
-min_timeStableUntilFeeding=2000 #2000ms = 2s ?
+min_timeAgreementScene= 1 # 1 second only? rationale: people agree really quickly, accept "speeding" here
+min_timeStartScene=20000  # 20000=20s is the delay before button appears
+min_timeStableUntilFeeding=2000 #2000ms = 2s
 min_timeFeedbackScene=10000 # 10000=10s is current delay before button appears
 
 # take a look: plot reaction times per participant, per trial type
 # AgreementScene
 pRTagreement <- ggplot(unique(df_rt[,c('userId','timeAgreementScene','group')]), aes(x=timeAgreementScene, y=0,label=userId,colour = factor(group)))+ 
   geom_point(alpha = 0.5)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   geom_vline(xintercept = min_timeAgreementScene,linetype="dotted", 
                 color = "red")+
   geom_text(aes(min_timeAgreementScene,0,label = min_timeAgreementScene, hjust = -0.1,vjust = -1),color = "red")+
@@ -443,7 +414,7 @@ pRTagreement <- ggplot(unique(df_rt[,c('userId','timeAgreementScene','group')]),
 # StartScene (i.e., instructions)
 pRTstart <- ggplot(unique(df_rt[,c('userId','timeStartScene','group')]), aes(x=timeStartScene, y=0,label=userId,colour = factor(group)))+ 
   geom_point(alpha = 0.5)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   geom_vline(xintercept = min_timeStartScene,linetype="dotted", 
                 color = "red")+
   geom_text(aes(min_timeStartScene,0,label = min_timeStartScene, hjust = -0.1,vjust = -1),color = "red")+
@@ -460,7 +431,7 @@ pRTstart <- ggplot(unique(df_rt[,c('userId','timeStartScene','group')]), aes(x=t
 pRTuntilFeeding <- ggplot(df_rt[,c('userId','timeStableUntilFeeding','group','TrialNr')], aes(x=as.factor(TrialNr), y=timeStableUntilFeeding,group=userId,label=userId,colour = factor(group)))+ 
   geom_point(alpha = 0.5)+
   geom_line()+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   geom_hline(yintercept = min_timeStableUntilFeeding,linetype="dotted", 
                 color = "red")+
   geom_text(aes(0.3,min_timeStableUntilFeeding,label = min_timeStableUntilFeeding, vjust = -1),color = "red")+
@@ -475,7 +446,7 @@ pRTuntilFeeding <- ggplot(df_rt[,c('userId','timeStableUntilFeeding','group','Tr
 pRTfeedback <- ggplot(unique(df_rt[,c('userId','timeFeedbackScene','group','BlockNr')]), aes(x=as.factor(BlockNr), y=timeFeedbackScene,group=userId,label=userId,colour = factor(group)))+ 
   geom_point(alpha = 0.5)+
   geom_line()+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   geom_hline(yintercept = min_timeFeedbackScene,linetype="dotted", 
                 color = "red")+
   geom_text(aes(0.7,min_timeFeedbackScene,label = min_timeFeedbackScene, vjust = -1),color = "red")+
@@ -490,13 +461,13 @@ pRTfeedback <- ggplot(unique(df_rt[,c('userId','timeFeedbackScene','group','Bloc
 figure_RTquality_Agree_Start <- ggarrange(pRTagreement,pRTstart,
                     ncol = 1, nrow = 2, align = "v")
 # save
-ggsave("Figures/DatQual_RTquality_Agree_Start_PAZ_FINAL.pdf",width = 9, height = 7,)
+ggsave("Figures/DatQual_RTquality_Agree_Start_IAZ_EXP1_FINAL.pdf",width = 9, height = 7,)
 
 # put plots together, v2
 figure_RTquality_Feeding_Feedback <- ggarrange(pRTuntilFeeding, pRTfeedback,
                     ncol = 1, nrow = 2, align = "v")
 # save 
-ggsave("Figures/DatQual_RTquality_Feeding_Feedback_PAZ_FINAL.pdf",width = 9, height = 7,)
+ggsave("Figures/DatQual_RTquality_Feeding_Feedback_IAZ_EXP1_FINAL.pdf",width = 9, height = 7,)
 
 # display figure
 print("Display detailed RT data for different trials:")
@@ -581,8 +552,8 @@ straightlineGame_data=merge(merge(merge(merge(merge(
 straightlineGame_data=straightlineGame_data[(!straightlineGame_data$mismatchP1) & (!straightlineGame_data$mismatchP2) & (!straightlineGame_data$mismatchP3) & (!straightlineGame_data$mismatchP4) & (!straightlineGame_data$mismatchP5) & (!straightlineGame_data$mismatchShubNoNew), ]
 
 # count occurences of userIDs
-straightlinersGame_IDs=as.data.frame(straightlineGame_data %>% count(userId))
-# keep only IDs of users straight-lining in at least 2 blocks
+straightlinersGame_IDs=straightlineGame_data %>% count(userId)   
+# keep only IDs of users straight-lining in at least 3 blocks (i.e. half the blocks)
 straightlinersGame_IDs=straightlinersGame_IDs[(straightlinersGame_IDs$n > 2), ]
 straightlinersGame_IDs=as.character(straightlinersGame_IDs$userId)
 
@@ -607,8 +578,6 @@ straightlineSurvey_data=dt_survey[ checked == 1 & itemNo > 2 & !itemNo==7]
 straightlineSurvey_data$valence=ifelse(straightlineSurvey_data$responseNo>3,"pos","neg")
 straightlineSurvey_data$valence[straightlineSurvey_data$responseNo==3 | straightlineSurvey_data$responseNo==6]="neut"
 
-# identify users that answered with only 1 response type throughout all questions (very conservative)
-# straightlinersSurvey_IDs=straightlineSurvey_data[,list(mismatchSurveyItems=length(unique(responseNo))>1),keyby=.(userId)]
 # identify users that answered only using positive / negative / neutral valence
 straightlinersSurvey_IDs=straightlineSurvey_data[,list(mismatchValenceSurveyItems=length(unique(valence))>1),keyby=.(userId)]
 # keep only users without "mismatchSurveyItems" (no mismatch = uniform answers)
@@ -674,7 +643,7 @@ df_demo=subset(df_demo, ! userId %in% straightlinersSurvey_IDs_clean)
 # repeat sanity check: Number of users in each df the same?
 # make df with user numbers: user ID 'XXXX' appears in how many dfs?
 # the value of 4 would be desireable: all IDs represented in all 4 dfs
- userNo_clean <- data.frame(table(c(as.character(unique(df_perf$userId)), as.character(unique(df_rt$userId)), as.character(unique(df_survey$userId)), as.character(unique(df_attention$userId)))))
+userNo_clean <- data.frame(table(c(as.character(unique(df_perf$userId)), as.character(unique(df_rt$userId)), as.character(unique(df_survey$userId)), as.character(unique(df_attention$userId)))))
 names(userNo_clean) <- c("Names", "Matches")
 
 ```
@@ -684,7 +653,7 @@ So to summarize:
 * we have `r length(userNo_raw$Names)` users to begin with
 * we remove `r sum(!userNo_raw$Matches==5)` users that have incomplete datasets (aborted prematurely)
 * we remove `r length(odd_userIDs)` whose information was not logged properly
-* 1 participant timed out and could not be re-imbursed properly
+** Note here: for one user, logging failed for the survey items 1 and 2 - we will keep data for this person anyway for all other measurements
 * we remove `r length(speeder_IDs)` speeders
 * we remove `r length(attentionFailBoth_IDs_clean)` users that failed both attention tests during the game
 * we remove `r length(attentionFailSurvey_IDs_clean)` users that failed the attention test in the survey
@@ -703,12 +672,14 @@ df_demo_age_summary=dplyr::summarise(group_by(df_demo[df_demo$item=="age",], gro
           PercUsersChecked=100*(sum(checked)/length(unique(userId))))
 
 medianAge_C=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="C"])
-medianAge_P=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="P"])
+medianAge_E=cumsum(df_demo_age_summary$SumChecks[df_demo_age_summary$group=="E"])
 
 ```
 
-To sum up, in our final data we have `r length(unique(df_perf$userId))` users, with `r length(unique(df_perf$userId[df_perf$group=="C"]))` users in the control group (`r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 25-34years), and 
-`r length(unique(df_perf$userId[df_perf$group=="P"]))` users in the plausible group (`r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, `r length(unique(df_demo$userId[df_demo$group=="P" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==5]))` non-binary / gender non-conforming, median age group is 35-44years).
+### Final, clean dataset
+
+To sum up, in our final data we have `r length(unique(df_perf$userId))` users, with `r length(unique(df_perf$userId[df_perf$group=="C"]))` users in the control group (`r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="C" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 35-44years), and 
+`r length(unique(df_perf$userId[df_perf$group=="E"]))` users in the explanation group (`r length(unique(df_demo$userId[df_demo$group=="E" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==1]))` female, `r length(unique(df_demo$userId[df_demo$group=="E" & df_demo$item=="gender" & df_demo$checked==1 & df_demo$responseNo==2]))` male, median age group is 35-44years).
 
 Re-check: are there still no significant differences in terms of gender / age?
 
@@ -731,11 +702,11 @@ df_demo_gender_responses=df_demo_gender[!df_demo_gender$checked==0,]
 # Age first: 
 
 # check sample sizes, make sure they deviate not too much:
-N_P_age=sum(df_demo_age_responses$group=='P')
+N_E_age=sum(df_demo_age_responses$group=='E')
 N_C_age=sum(df_demo_age_responses$group=='C')
 
 aget="Wilcox"
-agetest=uk_wilcox.test(df_demo_age_responses$responseNo[df_demo_age_responses$group=="P"],df_demo_age_responses$responseNo[df_demo_age_responses$group=="C"],paired=FALSE,exact=FALSE)
+agetest=uk_wilcox.test(df_demo_age_responses$responseNo[df_demo_age_responses$group=="E"],df_demo_age_responses$responseNo[df_demo_age_responses$group=="C"],paired=FALSE,exact=FALSE)
 ageeffsize=agetest$z_val/(sqrt(nrow(df_demo_age_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","AgeClean",sep=""),"",aget,agetest$p.value,ageeffsize,sep = ",")
@@ -743,7 +714,7 @@ matchingRes=paste(matchingRes,paste("\n","AgeClean",sep=""),"",aget,agetest$p.va
 # Gender second: 
 
 # check sample sizes, make sure they deviate not too much:
-N_P_gender=sum(df_demo_gender_responses$group=='P')
+N_E_gender=sum(df_demo_gender_responses$group=='E')
 N_C_gender=sum(df_demo_gender_responses$group=='C')
 
 # check for significant differences - "irrelevant plans" judgements:
@@ -756,7 +727,7 @@ if(shapiro$p.value > 0.05){
   geneffsize=cohen.d(df_demo_gender_responses$responseNo ~ df_demo_gender_responses$group)
 } else {
   gent="Wilcox"
-  gentest=uk_wilcox.test(df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="P"],df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="C"],paired=FALSE,exact=FALSE)
+  gentest=uk_wilcox.test(df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="E"],df_demo_gender_responses$responseNo[df_demo_gender_responses$group=="C"],paired=FALSE,exact=FALSE)
   geneffsize=gentest$z_val/(sqrt(nrow(df_demo_gender_responses)))
 }
 
@@ -766,67 +737,57 @@ matchingRes=paste(matchingRes,paste("\n","GenderClean",sep=""),shapiro$p.value,g
 
 The analysis showed for *Age* in the clean dataset:
 
-* We have age information for `r N_P_age` users in the plausible and `r N_C_age` users in the closest group (`r N_noAnswer_age` user(s) preferred not to disclose age information).
-* Is there a significant difference in terms of age between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r aget` test. This showed: U=`r agetest$statistic `, p=`r agetest$p.value `, r = `r ageeffsize `
+* We have age information for `r N_E_age` users in the explanation and `r N_C_age` users in the control group. 
+
+* Is there a significant difference in terms of age between the groups? We compared age of users in the explanation condition and users in the control condition using a `r aget` test. This showed: U=`r agetest$statistic `, p=`r agetest$p.value `, r = `r ageeffsize `
   
 The analysis showed for *Gender* in the clean dataset:
 
-* We have gender information for `r N_P_gender` users in the plausible and `r N_C_gender` users in the closest group (`r N_noAnswer_gender` user(s) preferred not to give gender information).
-* Is there a significant difference in terms of gender between the groups? We compared number of matches for users in plausible condition and users in the closest condition using a `r gent` test. This showed
+* We have gender information for `r N_E_gender` users in the explanation and `r N_C_gender` users in the control group.
 
-  <!-- + for ttest: t(`r gentest$parameter `)=`r gentest$statistic `, p=`r gentest$p.value `, cohen's d = `r geneffsize ` -->
+* Is there a significant difference in terms of gender between the groups? We compared gender distribution of users in explanation condition and users in the control condition using a `r gent` test. This showed
+
   + for wilcoxon test: U=`r gentest$statistic `, p=`r gentest$p.value `, r = `r geneffsize `
-  
-  
-  
-  
-
-
 
 ## Hypotheses
 
 The main hypothesis is the following:
 
-*H1) Plausible CFEs will be more helpful to users tasked to discover unknown relationships in data than closest ones. This should affect objective as well as subjective understandability.*
+*H1) CFEs will help users tasked to discover unknown relationships in data. We expect this to affect objective as well as subjective understandability.*
 
-That means, we expect users in the plausible condition to 
+That means, we expect users in the explanation condition to 
 
-H1.1) perform better over time in terms of number of Shubs generated, *AND*
+* H1.1) perform better over time in terms of number of Shubs generated, *AND*
 
-H1.2) will become quicker in the final blocks, because choosing the right plants will become more automatic, *AND*
+* H1.2) will become quicker in the final blocks, because choosing the right plants will become more automatic, *AND*
 
-H1.3) can more clearly state which plants were crucial for the Shubs to prosper (questionnaire items 1 and 2)
+* H1.3) can more clearly state which plants were crucial for the Shubs to prosper (survey items 1 and 2).
 
 Further, we expect:
 
 *H2) Users will differ in terms of their subjective understanding*, specifically:
 
-H2.1) Users will differ in how far they found the explanations useful, and in how far they could made use of it, with an advantage of plausible CFEs (questionnaire items 5, 6)
+* H2.1) Users will differ in how far they found the feedback (CF-style explanation vs. overview over past choices only) useful, and in how far they could made use of it, with an advantage of providing CFEs (survey items 5, 6)
 
-H2.2) Users imagine plausible CFEs to be more helpful for others users, too (questionnaire item 9).
+* H2.2) Users imagine that providing CFEs to be more helpful for others users, too (survey item 9).
 
-However:
+Moreover:
 
-*H3) We do not expect users in different conditions to differ in terms of how well they understood the explanations per se, or needing support for understanding, because explanations are basically the same structurally (questionnaire items 3, 4).* So this is also control to make sure groups don't differ in a weird way.
+*H3) We expect users in different conditions not to differ in terms of how well they understood the feedback per se, or needing support for understanding. This would be good, because it means that the added information provided does not overload the participant's cognitive capacities. (survey items 3, 4).* So this is also control to make sure groups don't differ in a weird way.
 
 Last:
 
-*H4) We expect timing and efficacy of how CFEs were presented to be comparable, as it was literally the same (questionnaire item 10) - a further control.*
+*H4) We expect timing and efficacy of how feedback was provided to be comparable (survey item 10) - a further control.* Could still be that there is a difference here, as less useful feedback (control) is perceived less efficient.
 
-Finally, we *do not formulate a prediction whether users will uncover inconsistencies in the feedback* (maybe that happens in case of "closest" CFEs when we're in the areas of "no training data“?) (questionnaire item 8). This will be investiagted in a further exploratory analysis.
+*H5) Finally, we predict that users will not have uncoverred inconsistencies in the feedback.* It would be weird for the control group; and the models were really good, and we trust CEML to do a good job. (survey item 8)
 
 # Statistical assessment
 
-<!--
-THE CLASSICAL MUTLIVARIATE ANOVA APPROACH:
-[...] Comparisons of performance over time between users in the plausible and closest conditions, respectively, were performed using R–4.1.1 (https://www.r-project.org/) using a two-way mixed analyses of variance (ANOVA). Before running each analysis, user data was checked (*and corrected???*) for outliers, as well as for compliance with the ANOVA assumption of normality by visually inspecting the correlation between data and the normal distribution in normal QQ plots. In case of heteroscadicity, the Greenhouse-Geisser sphericity correction was applied to the data [@greenhouse1959methods]. Significant interactions or main effects were followed up in post-hoc analyses by running simple pairwise comparisons. The post-hoc analysis was corrected for multiple comparisons, and only adjusted p-values $p_{adj}$ are reported in this manuscript.
--->
+[...] Comparisons of performance over time between users in the explanation and control conditions, respectively, are performed using R–4.1.1 [@r_core_team_r_2021]. Changes in performance over 12 trials as a measure of learning rate per group are modeled using the lme4 package v.4_1.1-27.1.
 
-[...] Comparisons of performance over time between users in the plausible and closest conditions, respectively, are performed using R–4.1.1 [@r_core_team_r_2021]. Changes in performance over 12 trials as a measure of learning rate per group are modeled using the lme4 package v.4_1.1-27.1.
-
-In the model testing for differences in terms of user performance, the dependent variable is number of Shubs generated. In teh assessment of user's reaction time, we used time needed to reach a feeding decision in each trial as dependent variable.
+In the model testing for differences in terms of user performance, the dependent variable is number of Shubs generated. In the assessment of user's reaction time, we used time needed to reach a feeding decision in each trial as dependent variable.
 The final models include the fixed effects of group, trial number and their interaction. The random-effect structure includes a by-subjects random intercept. 
-Advantages of using this approach include that these models account for correlations of data drawn from the same participant [@detry_analyzing_2016], account for missing data, and better availability of post-hoc tests (according to here: https://www.theanalysisfactor.com/advantages-of-repeated-measures-anova-as-a-mixed-model/; find a more appropriate reference.)
+Advantages of using this approach include that these models account for correlations of data drawn from the same participant [@detry_analyzing_2016].
 <!--The code is inspired by this 2-part tutotial: https://www.youtube.com/watch?v=AWInLxpiZuA; https://www.youtube.com/watch?v=YsD8b5KYdMw -->
 
 Model fits are compared with the analysis of variance function of the stats package.
@@ -834,23 +795,23 @@ Effect sizes are computed in terms of $\eta_{\text{p}}^{2}$ using the effectsize
 
 Significant main effects or interactions are followed up by computing the pairwise estimated marginal means. All post-hoc analyses reported are bonerroni corrected to account for multiple comparisons.
 
-## H1: Plausible CFEs are more helpful to users than closest CFEs
+## H1: Providing CFEs helps users
 
 Recap the full hypothesis:
 
-*H1) Plausible CFEs will be more helpful to users tasked to discover unknown relationships in data than closest ones. This should affect objective as well as subjective understandability.*
+*H1) CFEs will help users tasked to discover unknown relationships in data. We expect this to affect objective as well as subjective understandability.*
 
-That means, we expect users in the plausible condition to 
+That means, we expect users in the explanation condition to 
 
-H1.1) perform better over time in terms of number of Shubs generated, *AND*
+* H1.1) perform better over time in terms of number of Shubs generated, *AND*
 
-H1.2) will become quicker in the final blocks, because choosing the right plants will become more automatic, *AND*
+* H1.2) will become quicker in the final blocks, because choosing the right plants will become more automatic, *AND*
 
-H1.3) can more clearly state which plants were crucial for the Shubs to prosper (questionnaire items 1 and 2)
+* H1.3) can more clearly state which plants were crucial for the Shubs to prosper (survey items 1 and 2).
 
-### H1.1) Users in the plausible condition perform better over time in terms of number of Shubs generated
+### H1.1) Users in the explanation condition perform better over time in terms of number of Shubs generated.
 
-Let's start with a first peek at the data: Descriptive stats + plotting the pack size trajectories per trial and block for each person individually.
+Let's start with a first peek at the data: Descriptive stats + plotting the pack size trajectories per trial and block for each person individually (figure not shown in .pdf).
 
 ```{r echo=FALSE, fig.height = 4, fig.width = 7, fig.align = "center"}
 
@@ -875,7 +836,7 @@ H1.1_p_ShubsPerTrial <- ggplot(df_perf, aes(x=factor(trialNo), y=shubNoNew, grou
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 # prepare line plot to show sd and sem
@@ -903,8 +864,9 @@ H1.1_p_ShubsPerTrial_summary <- ggplot(df_ShubsPerTrial_summary, aes(x=factor(tr
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_y_continuous(limits = c(0, 75))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 # plot averaged data per block
@@ -920,12 +882,12 @@ H1.1_p_ShubsPerBlock <- ggplot(df_perf_blockStats, aes(x=blockNo, y=shubNoNew[,"
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_continuous(breaks=1:max(df_perf$blockNo))+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 # plot data per trial
-H1.1_p_ShubsPerBlock_summary <- ggplot(df_ShubsPerBlock_summary, aes(x=blockNo, y=mean, group = group, color= group))+ 
+H1.1_p_ShubsPerBlock_summary <- ggplot(df_ShubsPerBlock_summary, aes(x=blockNo, y=mean, group = group, color= group))+
   geom_point(alpha = 0.5)+
   geom_line()+
   geom_ribbon(aes(ymin=mean-sem, ymax=mean+sem,fill=group), linetype=2, alpha=0.1)+
@@ -934,8 +896,8 @@ H1.1_p_ShubsPerBlock_summary <- ggplot(df_ShubsPerBlock_summary, aes(x=blockNo, 
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_continuous(breaks=1:max(df_ShubsPerBlock_summary$blockNo))+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 # in separate facets for better visibility
@@ -947,17 +909,17 @@ H1.1_figure1_ShubData <- ggarrange(H1.1_p_ShubsPerTrial,H1.1_p_ShubsPerBlock,
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/H1.1_figure1_ShubData_PAZ_FINAL.pdf",width = 5, height = 4,)
+ggsave("Figures/H1.1_figure1_ShubData_IAZ_EXP1_FINAL.pdf",width = 5, height = 4,)
 
 H1.1_figure1_ShubData_summary <- ggarrange(H1.1_p_ShubsPerTrial_summary,H1.1_p_ShubsPerBlock_summary,
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 # save
-ggsave("Figures/H1.1_figure1_ShubData_summary_PAZ_FINAL.pdf",width = 5, height = 4,)
+ggsave("Figures/H1.1_figure1_ShubData_summary_IAZ_EXP1_FINAL.pdf",width = 5, height = 4,)
 
-# show
-print("Display figures showing development of pack size over trials / blocks:")
-#H1.1_figure1_ShubData
-H1.1_figure1_ShubData_summary
+# # show
+# print("Display figures showing development of pack size over trials / blocks:")
+# #H1.1_figure1_ShubData
+# H1.1_figure1_ShubData_summary
 
 # last, make trialno a factor and show again a summary of data
 df_perf$trialNo = as.factor(df_perf$trialNo)
@@ -969,18 +931,13 @@ Now on to the statistics.
 
 ```{r echo=FALSE, fig.height = 4, fig.width = 7, fig.align = "center"}
 
-# setting up our LME model (as a 2x15 Anova, group by trial)
-
-# mixed design, with one within-subjects IV (trial) and one between subjects IV (group)
+# Setting up our LME model (as a 2x12 Anova, group by trial)
+# We use a mixed design, with one within-subjects IV (trial) and one between subjects IV (group),
 # investigating the effect of both on Shubs generated.
-
 # Note that we add a random intercept for the participant by stating + (1|userId)
 # This makes it repeated measures, as we control for the random effect of 
-# one person doing something mutliple times.
+# one person doing something multiple times.
 ShubNo_effect= lmer(shubNoNew ~ trialNo*group + (1|userId), data = df_perf) # linear model DV ShubNoNew predicted by the IV (trials, i.e. time)
-
-# NOTE NOTE NOTE! IF ESTIMATEABLE WITH FULL DATA, ALSO INCLUDE A RANDOM SLOPE FOLLOWING BARR et. al.:
-# ShubNo_effect= lmer(shubNoNew ~ group*trialNo + (1+trialNo|userId), data = df_perf)
 
 ShubNo_effect_anova=anova(ShubNo_effect)  # show model as anova
 names(ShubNo_effect_anova)=c("SumSq","MeanSq","NumDF","DenDF","Fvalue","Pvalue") # rename fields for easy access
@@ -999,12 +956,15 @@ ShubNo_effect_posthoc_ME_time=emmeans(ShubNo_effect, list(pairwise ~ trialNo), a
 # estimated marginal means - first table: shows how many Shubs were produced on average per trial; based on that we can make statements of "more" / "fewer" Shubs produced
 ShubNo_effect_posthoc_ME_group=emmeans(ShubNo_effect, list(pairwise ~ group), adjust = "bonferroni") # pariwise comparisons between different groups
 # estimated marginal means - first table: shows how many Shubs were produced on average per group; based on that we can make statements of "more" / "fewer" Shubs produced
+# get mean value for groups for reporting:
+ShubNo_effect_posthoc_ME_group_C_mean=mean(df_perf[df_perf$group=="C",]$shubNoNew)
+ShubNo_effect_posthoc_ME_group_C_sem=sd(df_perf[df_perf$group=="C",]$shubNoNew)/sqrt(length(df_perf[df_perf$group=="C",]$shubNoNew))
+ShubNo_effect_posthoc_ME_group_E_mean=mean(df_perf[df_perf$group=="E",]$shubNoNew)
+ShubNo_effect_posthoc_ME_group_E_sem=sd(df_perf[df_perf$group=="E",]$shubNoNew)/sqrt(length(df_perf[df_perf$group=="E",]$shubNoNew))
 
 # INTERACTION:
 ShubNo_effect_posthoc_INT_timeXgroup=emmeans(ShubNo_effect, list(pairwise ~ group | trialNo), adjust = "bonferroni")
 ShubNo_effect_posthoc_INT_timeXgroup_effsizes=eff_size(ShubNo_effect_posthoc_INT_timeXgroup$`emmeans of group | trialNo`, sigma = sigma(ShubNo_effect), edf = Inf)
-# check qqnorm plot
-# ShubNo_effect_qqnorm=qqnorm(resid(ShubNo_effect)) # QQ plot showing distribution of residuals
 
 ```
 
@@ -1018,50 +978,40 @@ Additionally:
 
 * there was a significant main effect of trialnumber (time): F(`r ShubNo_effect_anova$NumDF[1]`,`r ShubNo_effect_anova$DenDF[1]`)=`r ShubNo_effect_anova$Fvalue[1] `, p=`r ShubNo_effect_anova$Pvalue[1]`,$\eta_{\text{p}}^{2}$=`r ShubNo_effect_effsize$Eta2_partial[1]`
 
-* however, there was a no main effect of group: F(`r ShubNo_effect_anova$NumDF[2]`,`r ShubNo_effect_anova$DenDF[2]`)=`r ShubNo_effect_anova$Fvalue[2] `, p=`r ShubNo_effect_anova$Pvalue[2]`,$\eta_{\text{p}}^{2}$=`r ShubNo_effect_effsize$Eta2_partial[2]`
+* however, there was a no main effect of group: F(`r ShubNo_effect_anova$NumDF[2]`,`r ShubNo_effect_anova$DenDF[2]`)=`r ShubNo_effect_anova$Fvalue[2] `, p=`r ShubNo_effect_anova$Pvalue[2]`,$\eta_{\text{p}}^{2}$=`r ShubNo_effect_effsize$Eta2_partial[2]` (mean ShubNo explanation group: `r ShubNo_effect_posthoc_ME_group_E_mean`, sem=`r ShubNo_effect_posthoc_ME_group_E_sem`; mean ShubNo control group: `r ShubNo_effect_posthoc_ME_group_C_mean`, sem=`r ShubNo_effect_posthoc_ME_group_C_sem`).
 
-Posthoc analysis revealed significant differences betweeen groups in trials 11 (t(472)=4.020, p=0.0117) and 12 (t(472)=2.530, p=0.0001):
+Posthoc analysis revealed significant differences betweeen groups from trial 9 onwards 
+(trial 9: t(56.7)=2.461, p=0.0169, Cohen's d=-1.711;
+trial 10: t(56.7)=2.609, p=0.0116, Cohen's d=-1.814;
+trial 11: t(56.7)=3.522, p=0.0009, Cohen's d=-2.449;
+trial 12: t(56.7)=3.861, p=0.0003, Cohen's d=-2.685):
 
-```{r echo=FALSE, fig.height = 7, fig.width = 7, fig.align = "center"}
+```{r echo=FALSE, fig.height = 2, fig.width = 7, fig.align = "center"}
 
 # add statistics info to plot:
 H1.1_p_ShubsPerTrial_summary_anno1 = H1.1_p_ShubsPerTrial_summary+
   # vertical
-  geom_segment(aes(x = 11, y = 50, xend = 11, yend = 80),colour = "black", size=0.2) +
-  geom_segment(aes(x = 11, y = 90, xend = 11, yend = 120),colour = "black", size=0.2) +
-  geom_text(x = 11,  y = 82, label = "*", colour = "black")+
-  geom_segment(aes(x = 12, y = 78, xend = 12, yend = 127.5),colour = "black", size=0.2) +
-  geom_segment(aes(x = 12, y = 137.5, xend = 12, yend = 190),colour = "black", size=0.2) +
-  geom_text(x = 12,  y = 130.5, label = "***", colour = "black")
+  geom_segment(aes(x = 9, y = 2.5, xend = 9, yend = 9),colour = "black", size=0.2) +
+  geom_text(x = 9,  y = 20, label = "*", colour = "black")+
+  geom_segment(aes(x = 10, y = 2.5, xend = 10, yend = 9.5),colour = "black", size=0.2) +
+  geom_text(x = 10,  y = 20, label = "*", colour = "black")+
+  geom_segment(aes(x = 11, y = 2.5, xend = 11, yend = 12),colour = "black", size=0.2) +
+  geom_text(x = 11,  y = 22, label = "***", colour = "black")+
+  geom_segment(aes(x = 12, y = 2.5, xend = 12, yend = 13),colour = "black", size=0.2) +
+  geom_text(x = 12,  y = 23, label = "***", colour = "black")
 
 # save
-ggsave("Figures/H1.1_p_ShubsPerTrial_summary_anno1_PAZ_FINAL.pdf",width = 5, height = 3,)
+ggsave("Figures/H1.1_p_ShubsPerTrial_summary_anno1_IAZ_EXP1_FINAL.pdf",width = 5, height = 3,)
 
-H1.1_p_ShubsPerTrial_summary_anno2 <- ggplot(df_ShubsPerTrial_summary, aes(x=factor(trialNo), y=mean, group = group, color= group))+
-  geom_point(alpha = 0.5)+
-  geom_line()+
-  geom_ribbon(aes(ymin=mean-sem, ymax=mean+sem,fill=group), linetype=2, alpha=0.1)+
-  #facet_wrap(vars(group),nrow = 2, ncol = 1)+
-  labs(title="Mean pack size by group over trials",x="Trial", y = " Mean pack size")+
-  theme_bw(base_size = 10)+
-  scale_y_continuous(limits = c(0, 300))+
-  scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  theme(legend.position="bottom")+
-  geom_text(x = 11,  y = 300, label = "*", colour = "black")+
-  geom_text(x = 12,  y = 300, label = "***", colour = "black")
-
-# save
-ggsave("Figures/H1.1_p_ShubsPerTrial_summary_anno2_PAZ_FINAL.pdf",width = 5, height = 3,)
-
-H1.1_p_ShubsPerTrial_summary_anno2
+# show
+print("Display figure showing development of pack size over trials / blocks:")
+H1.1_p_ShubsPerTrial_summary_anno1
 
 ```
 
-### H1.2) Users in the plausible condition become quicker in deciding what plants to choose in the final blocks, because choice of the right plants will become more automatic
+### H1.2) Users in the explanation condition become quicker in deciding what plants to choose in the final blocks, because choice of the right plants will become more automatic.
 
-Again, first peek at the data: Descriptive stats + plotting the RT trajectories per trial and block for each person individually.
+Again, first peek at the data: Descriptive stats + plotting the RT trajectories per trial and block for each person individually (plots generated, but not shown in final .pdf).
 
 ```{r echo=FALSE, fig.height = 4, fig.width = 7, fig.align = "center"}
 
@@ -1086,7 +1036,7 @@ H1.2_p_RTPerTrial <- ggplot(df_rt, aes(x=as.factor(TrialNr), y=timeStableUntilFe
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 # prepare line plot to show sd and sem
@@ -1102,8 +1052,8 @@ H1.2_p_RTPerTrial_summary <- ggplot(df_RTPerTrial_summary, aes(x=as.factor(Trial
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 
@@ -1121,8 +1071,8 @@ H1.2_p_RTPerBlock <- ggplot(df_rt_blockStats, aes(x=as.factor(BlockNr), y=timeSt
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_discrete(breaks=1:max(df_perf$blockNo))+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 H1.2_p_RTPerBlock_summary <- ggplot(df_RTPerBlock_summary, aes(x=as.factor(BlockNr), y=mean, group = group, color= group))+ 
@@ -1134,8 +1084,8 @@ H1.2_p_RTPerBlock_summary <- ggplot(df_RTPerBlock_summary, aes(x=as.factor(Block
   theme_bw(base_size = 10)+
   #scale_y_continuous(limits = c(0, 100))+
   scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")
 
 # in separate facets for better visibility
@@ -1146,17 +1096,17 @@ H1.2_p_RTPerBlock_facet <- H1.2_p_RTPerBlock + facet_wrap(vars(group),nrow = 2, 
 H1.2_figure1_RTData <- ggarrange(H1.2_p_RTPerTrial,H1.2_p_RTPerBlock,
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 # save
-ggsave("Figures/H1.2_figure1_RTData_PAZ_FINAL.pdf",width = 5, height = 4,)
+ggsave("Figures/H1.2_figure1_RTData_IAZ_EXP1_FINAL.pdf",width = 5, height = 4,)
 
 # put all plots together
 H1.2_figure1_RTData_summary <- ggarrange(H1.2_p_RTPerTrial_summary,H1.2_p_RTPerBlock_summary,
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 # save
-ggsave("Figures/H1.2_figure1_RTData_summary_PAZ_FINAL.pdf",width = 5, height = 4,)
+ggsave("Figures/H1.2_figure1_RTData_summary_IAZ_EXP1_FINAL.pdf",width = 5, height = 4,)
 
-# show
-print("Display figures showing development of reaction times over trials / blocks:")
-H1.2_figure1_RTData_summary
+# # show
+# print("Display figures showing development of reaction times over trials / blocks:")
+# H1.2_figure1_RTData_summary
 
 # last, make trialno a factor and show again a summary of data
 df_rt$TrialNr = as.factor(df_rt$TrialNr)
@@ -1168,11 +1118,9 @@ Now on to the statistics.
 
 ```{r echo=FALSE}
 
-# setting up our LME model (as a 2x15 Anova, group by trial)
-
-# mixed design, with one within-subjects IV (trial) and one between subjects IV (group)
+# Setting up our LME model (as a 2x15 Anova, group by trial)
+# mixed design, with one within-subjects IV (trial) and one between subjects IV (group),
 # investigating the effect of reaction times.
-
 # Note that we add a random intercept for the participant by stating + (1|userId)
 # This makes it repeated measures, as we control for the random effect of 
 # one person doing something multiple times.
@@ -1195,16 +1143,16 @@ RT_effect_posthoc_ME_time=emmeans(RT_effect, list(pairwise ~ TrialNr), adjust = 
 # estimated marginal means - first table: average reaction times per trial; based on that we can make statements of "faster" / "slower" trials
 RT_effect_posthoc_ME_time_effsizes=eff_size(RT_effect_posthoc_ME_time$`emmeans of TrialNr`, sigma = sigma(RT_effect), edf = Inf)
 
-
-
 RT_effect_posthoc_ME_group=emmeans(RT_effect, list(pairwise ~ group), adjust = "bonferroni") # pariwise comparisons between different groups
 # estimated marginal means - first table: average reaction times per group; based on that we can make statements of "faster" / "slower" groups
+# get mean value for groups for reporting:
+RT_effect_posthoc_ME_group_C_mean=mean(df_rt[df_rt$group=="C",]$timeStableUntilFeeding)
+RT_effect_posthoc_ME_group_C_sem=sd(df_rt[df_rt$group=="C",]$timeStableUntilFeeding)/sqrt(length(df_rt[df_rt$group=="C",]$timeStableUntilFeeding))
+RT_effect_posthoc_ME_group_E_mean=mean(df_rt[df_rt$group=="E",]$timeStableUntilFeeding)
+RT_effect_posthoc_ME_group_E_sem=sd(df_rt[df_rt$group=="E",]$timeStableUntilFeeding)/sqrt(length(df_rt[df_rt$group=="E",]$timeStableUntilFeeding))
 
 # INTERACTION:
-RT_effect_posthoc_INT_timeXgroup=emmeans(RT_effect, list(pairwise ~ group | TrialNr), adjust = "bonferroni")
-
-# check qqnorm plot
-# RT_effect_qqnorm=qqnorm(resid(ShubNo_effect)) # QQ plot showing distribution of residuals
+# RT_effect_posthoc_INT_timeXgroup=emmeans(RT_effect, list(pairwise ~ group | TrialNr), adjust = "bonferroni")
 
 ```
 
@@ -1212,15 +1160,22 @@ The analysis revealed:
 
 * There was a highly significant main effect of trials (time): F(`r RT_effect_anova$NumDF[2]`,`r RT_effect_anova$DenDF[2]`)=`r RT_effect_anova$Fvalue[2] `, p=`r RT_effect_anova$Pvalue[2]`,$\eta_{\text{p}}^{2}$=`r RT_effect_effsize$Eta2_partial[2]`
 
-The other comparisons did not show significant differences:
+The other main effect of group did not reach significance
+* ... and also a significant main effect of group: F(`r RT_effect_anova$NumDF[1]`,`r RT_effect_anova$DenDF[1]`)=`r RT_effect_anova$Fvalue[1] `, p=`r RT_effect_anova$Pvalue[1]`,$\eta_{\text{p}}^{2}$=`r RT_effect_effsize$Eta2_partial[1]` (mean RT explanation group: `r RT_effect_posthoc_ME_group_E_mean/1000`s, sem=`r RT_effect_posthoc_ME_group_E_sem/1000`s; mean RT control group: `r RT_effect_posthoc_ME_group_C_mean/1000`s, sem=`r RT_effect_posthoc_ME_group_C_sem/1000`s).
 
-* main effect of group: F(`r RT_effect_anova$NumDF[1]`,`r RT_effect_anova$DenDF[1]`)=`r RT_effect_anova$Fvalue[1] `, p=`r RT_effect_anova$Pvalue[1]`,$\eta_{\text{p}}^{2}$=`r RT_effect_effsize$Eta2_partial[1]`
+* ... and neither did the interaction::
 
 * interaction (group x trials): F(`r RT_effect_anova$NumDF[3]`,`r RT_effect_anova$DenDF[3]`)=`r RT_effect_anova$Fvalue[3] `, p=`r RT_effect_anova$Pvalue[3]`,$\eta_{\text{p}}^{2}$=`r RT_effect_effsize$Eta2_partial[3]`
 
-Post-hoc analysis of the main effect of trial showed significant differences between trial 1 and all other trials (all t(792)>5.90, p<0.0001), between trial 3 and 4 (t(792)=3.765, p=0.0118) and between trials 4 and 5 (t(792)=3.395,p=0.0476). 
+Post-hoc analysis of the main effect of trial showed significant differences between 
 
-```{r echo=FALSE, fig.height = 4, fig.width = 7, fig.align = "center"}
+* trial 1 and all other trials (all t(407)>=5.189, p<.0001, Cohen's d=1.17536 or higher).
+* between trial 4 and trial 5 (t(407)=3.755, p=0.0131, Cohen's d=0.85056)
+* between trial 4 and trial 7 (t(407)=4.020, p=0.0046, Cohen's d=0.91069)
+* between trial 4 and trial 10 (t(407)=3.397, p=0.0494, Cohen's d=0.76949)
+* between trial 4 and trial 11 (t(407)=3.537, p=0.0298, Cohen's d=0.80129)
+
+```{r echo=FALSE, fig.height = 2, fig.width = 7, fig.align = "center"}
 
 # add statistics info to plot:
 
@@ -1232,10 +1187,10 @@ H1.2_p_RTPerTrial_summary_anno <- ggplot(df_RTPerTrial_summary, aes(x=as.factor(
   #facet_wrap(vars(group),nrow = 2, ncol = 1)+
   labs(title="Mean time needed to reach feeding decision by group over trials",x="Trial", y = " Mean time (s)")+
   theme_bw(base_size = 10)+
-  scale_y_continuous(limits = c(8800/1000, 37000/1000))+
+  scale_y_continuous(limits = c(5000/1000, 37000/1000))+
   scale_x_discrete(breaks=1:numTrials)+
-  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_colour_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(legend.position="bottom")+
   # FIRST COMPARISONS: trial 1 vs. all other trials (all p<0.0001)
   geom_segment(aes(x = 1, y = 32000/1000, xend = 1, yend = 35500/1000),colour = "black", size=0.2) +
@@ -1245,37 +1200,48 @@ H1.2_p_RTPerTrial_summary_anno <- ggplot(df_RTPerTrial_summary, aes(x=as.factor(
   geom_segment(aes(x = 7, y = 34000/1000, xend = 7, yend = 35500/1000),colour = "black", size=0.2) +
   geom_segment(aes(x = 1, y = 35500/1000, xend = 7, yend = 35500/1000),colour = "black", size=0.2) +
   geom_text(x = 4,  y = 36000/1000, label = "***", colour = "black")+
-  # SECOND EFFECT: trial 3 vs. trial 4 (p=0.0118) 
-  geom_segment(aes(x = 3, y = 20000/1000, xend = 3, yend = 22000/1000),colour = "black", size=0.2) +
+  # SECOND EFFECTS: trial 4 vs. trial 5 (p=0.0131) 
   geom_segment(aes(x = 4, y = 20000/1000, xend = 4, yend = 22000/1000),colour = "black", size=0.2) +
-  geom_segment(aes(x = 3, y = 22000/1000, xend = 4, yend = 22000/1000),colour = "black", size=0.2) +
-  geom_text(x = 3.5,  y = 22500/1000, label = "*", colour = "black")+
-  # THIRD EFFECT: trial 4 vs. trial 5 (p=0.0476) 
+  geom_segment(aes(x = 5, y = 20000/1000, xend = 5, yend = 22000/1000),colour = "black", size=0.2) +
+  geom_segment(aes(x = 4, y = 22000/1000, xend = 5, yend = 22000/1000),colour = "black", size=0.2) +
+  geom_text(x = 4.5,  y = 22500/1000, label = "*", colour = "black")+
+  # SECOND EFFECTS: trial 4 vs. trial 7 (p=0.0242) 
+  geom_segment(aes(x = 4, y = 22500/1000, xend = 4, yend = 24500/1000),colour = "black", size=0.2) +
+  geom_segment(aes(x = 7, y = 22500/1000, xend = 7, yend = 24500/1000),colour = "black", size=0.2) +
+  geom_segment(aes(x = 4, y = 24500/1000, xend = 7, yend = 24500/1000),colour = "black", size=0.2) +
+  geom_text(x = 5.5,  y = 25000/1000, label = "*", colour = "black")+
+  # SECOND EFFECTS: trial 4 vs. trial 10 (p=0.0494) 
   geom_segment(aes(x = 4, y = 25000/1000, xend = 4, yend = 27000/1000),colour = "black", size=0.2) +
-  geom_segment(aes(x = 5, y = 25000/1000, xend = 5, yend = 27000/1000),colour = "black", size=0.2) +
-  geom_segment(aes(x = 4, y = 27000/1000, xend = 5, yend = 27000/1000),colour = "black", size=0.2) +
-  geom_text(x = 4.5,  y = 27500/1000, label = "*", colour = "black")
+  geom_segment(aes(x = 10, y = 25000/1000, xend = 10, yend = 27000/1000),colour = "black", size=0.2) +
+  geom_segment(aes(x = 4, y = 27000/1000, xend = 10, yend = 27000/1000),colour = "black", size=0.2) +
+  geom_text(x = 7,  y = 27500/1000, label = "*", colour = "black")+
+  # SECOND EFFECTS: trial 4 vs. trial 11 (p=0.0298) 
+  geom_segment(aes(x = 4, y = 27500/1000, xend = 4, yend = 29500/1000),colour = "black", size=0.2) +
+  geom_segment(aes(x = 11, y = 27500/1000, xend = 11, yend = 29500/1000),colour = "black", size=0.2) +
+  geom_segment(aes(x = 4, y = 29500/1000, xend = 11, yend = 29500/1000),colour = "black", size=0.2) +
+  geom_text(x = 7.5,  y = 30000/1000, label = "*", colour = "black")
 
 # save
-ggsave("Figures/H1.2_p_RTPerTrial_summary_anno_PAZ_FINAL.pdf",width = 5, height = 3,)
+ggsave("Figures/H1.2_p_RTPerTrial_summary_anno_IAZ_EXP1_FINAL.pdf",width = 5, height = 3,)
 
+# show
+print("Display figures showing development of reaction times over trials / blocks:")
 H1.2_p_RTPerTrial_summary_anno
 
 ```
 
 
-### H1.3) Users in the plausible condition can more clearly state which plants were crucial for the Shubs to prosper (questionnaire items 1 and 2)
+### H1.3) Users in the explanation condition can more clearly state which plants were crucial for the Shubs to prosper (survey items 1 and 2)
 
-Questionnaire items 1 and 2 explicitly ask users to state which plants they thought were relevant.
+survey items 1 and 2 explicitly ask users to state which plants they thought were relevant.
 So what did users tick?
 
 ```{r echo=FALSE, fig.height = 5, fig.width = 4, fig.align = "center"}
 
 # ADAPT depending on data used: Vector specifying which features are relevant
 # [LAST ENTRY ALWAYS 0, to account for 'don't know' response option in survey]
-# current (random) setting: plant 2 and plant 5 were important
-# we used the third simulated dataset with
-# - a linear relationship between plant 2 and the growth rate, iff
+# Experiment 1: plants 2, 4, and 5 were relevant:
+# there was a linear relationship between plant 2 and the growth rate, iff
 #  + plant 4 has a value of 1 or 2 AND
 #  + plant 5 is not smaller than 4
 
@@ -1297,8 +1263,13 @@ df_survey_relevantPlants_summary=dplyr::summarise(group_by(df_survey_relevantPla
           PercUsersChecked=100*(sum(checked)/length(unique(userId))))
 
 # rectangle data for figure annotation
-rect_df<-data.frame(xmin = c(1.5, 3.5, 4.5, 0.5, 2.5), xmax = c(2.5, 4.5, 5.5, 1.5, 3.5), 
-                 ymin = c(0, 0, 0, 0, 0), ymax = c(80, 80, 80, 80, 80), 
+rect_df_freq<-data.frame(xmin = c(1.5, 3.5, 4.5, 0.5, 2.5), xmax = c(2.5, 4.5, 5.5, 1.5, 3.5), 
+                 ymin = c(0, 0, 0, 0, 0), ymax = c(25, 25, 25, 25, 25), 
+                 itemNo = as.character(c(1,1,1,2,2)))
+
+# rectangle data for figure annotation
+rect_df_perc<-data.frame(xmin = c(1.5, 3.5, 4.5, 0.5, 2.5), xmax = c(2.5, 4.5, 5.5, 1.5, 3.5), 
+                 ymin = c(0, 0, 0, 0, 0), ymax = c(101, 101, 101, 101, 101), 
                  itemNo = as.character(c(1,1,1,2,2)))
 
 # display frequency as raw counts
@@ -1307,22 +1278,24 @@ H1.3_p_FreqUserResponses = ggplot(data=df_survey_relevantPlants_summary, aes(x=r
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`1`="What plants are relevant?",`2`="What plants are not relevant?")))+
   labs(title="Judged relevance of plants (freq. counts)",x="Plant number", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("1","2","3","4","5","don't know"))+
+  scale_y_continuous(limits = c(0,25))+
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-  alpha = 0.2,colour ="red",data = rect_df,inherit.aes = FALSE)+
+  alpha = 0.2,colour ="red",data = rect_df_freq,inherit.aes = FALSE)+
   theme(plot.title = element_text(hjust = 0.5))
 
-# display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
+# display frequency as percentage of all per group users (how many % of explanation users picked plant 1?)
 H1.3_p_PercUserResponses = ggplot(data=df_survey_relevantPlants_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`1`="What plants are relevant?",`2`="What plants are not relevant?")))+
   labs(title="Judged relevance of plants (% of users)",x="Plant number", y = "% of users per group")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("1","2","3","4","5","don't know"))+
+  scale_y_continuous(limits = c(0,101))+
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-  alpha = 0.2,colour ="red",data = rect_df,inherit.aes = FALSE)+
+  alpha = 0.2,colour ="red",data = rect_df_perc,inherit.aes = FALSE)+
   theme(plot.title = element_text(hjust = 0.5),legend.title = element_blank())
 
 # put all plots together
@@ -1330,17 +1303,17 @@ H1.3_figure1_UserResponses <- ggarrange(H1.3_p_FreqUserResponses,H1.3_p_PercUser
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/H1.3_figure1_UserResponses_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/H1.3_figure1_UserResponses_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
-# show
-print("Display figures showing user responses in relevant survey items:")
-H1.3_figure1_UserResponses
+# # show
+# print("Display figures showing user responses in relevant survey items:")
+# H1.3_figure1_UserResponses
 
 ```
 
 How to evaluate this statistically? Let's just count the matches between 'judged as relevant' / 'judged as irrelevant' user vectors and the true 'relevant' / 'irrelevant' factors.
 
-```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+```{r echo=FALSE, fig.height = 5, fig.width = 5, fig.align = "center"}
 
 # define vectors with ground truth
 relevantPlants_truth_vec=c(0,0,0,0,0)
@@ -1397,15 +1370,14 @@ H1.3_figure2_UserResponseMatches = ggplot(df_survey_relevantPlants_plot, aes(x=g
   labs(title="Mean no. of matches (judgements vs. truth)",x="Group", y = "Mean number of matches")+
   theme_bw(base_size = 10)+
   scale_y_continuous(expand = c(0,0),limits = c(0,5.5),breaks=c(1:5))+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   geom_hline(aes(yintercept=5, linetype="Max. no.\nof possible\nmatches"), color = "black", size=0.5)+
-  geom_hline(aes(yintercept=2.5, linetype="Mean no.\nof matches for\n random choice"), color = "black", size=0.5)+
   scale_linetype_manual(name = "", values = c(5, 3), 
-                      guide = guide_legend(override.aes = list(color = c("black", "black"))))+
+                      guide = guide_legend(override.aes = list(color = c("black"))))+
   theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",legend.box="vertical")
 
 # save
-ggsave("Figures/H1.3_figure2_UserResponseMatches_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/H1.3_figure2_UserResponseMatches_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
 # show plot
 print("Mean number of matches between user judgements and ground truth for relevant and irrelevant plants:")
@@ -1421,7 +1393,7 @@ if(shapiro$p.value > 0.05){
   item1effsize=cohen.d(df_survey_relevantPlants_wide$matches ~ df_survey_relevantPlants_wide$group)
 } else {
   item1t="Wilcox"
-  item1test=uk_wilcox.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"],df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"],paired=FALSE,exact=FALSE)
+  item1test=uk_wilcox.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="E"],df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"],paired=FALSE,exact=FALSE)
   item1effsize=item1test$z_val/(sqrt(nrow(df_survey_relevantPlants_wide)))
 }
 matchingRes=paste(matchingRes,paste("\n","H1.3_UserJudgementsRelevPlants",sep=""),shapiro$p.value,item1t,item1test$p.value,item1effsize,sep = ",")
@@ -1436,7 +1408,7 @@ if(shapiro$p.value > 0.05){
   item2effsize=cohen.d(df_survey_irrelevantPlants_wide$matches ~ df_survey_irrelevantPlants_wide$group)
 } else {
   item2t="Wilcox"
-  item2test=uk_wilcox.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"],df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"],paired=FALSE,exact=FALSE)
+  item2test=uk_wilcox.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="E"],df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"],paired=FALSE,exact=FALSE)
   item2effsize=item2test$z_val/(sqrt(nrow(df_survey_irrelevantPlants_wide)))
 }
 
@@ -1446,60 +1418,48 @@ matchingRes=paste(matchingRes,paste("\n","H1.3_UserJudgementsIrrelevPlants",sep=
 
 The analysis revealed:
 
-* Is there a significant difference in terms of matches between plants judged as relevant and ground truth?: We compared number of matches for users in plausible condition (M = `r df_survey_relevantPlants_summary$mean[df_survey_relevantPlants_summary$group=="P"]`, SEM = `r df_survey_relevantPlants_summary$sem[df_survey_relevantPlants_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_relevantPlants_summary$mean[df_survey_relevantPlants_summary$group=="C"]`, SEM = `r df_survey_relevantPlants_summary$sem[df_survey_relevantPlants_summary$group=="C"]`) using a `r item1t` test. This showed
+* Is there a significant difference in terms of matches between plants judged as relevant and ground truth?: We compared number of matches for users in explanation condition (M = `r df_survey_relevantPlants_summary$mean[df_survey_relevantPlants_summary$group=="E"]`, SEM = `r df_survey_relevantPlants_summary$sem[df_survey_relevantPlants_summary$group=="E"]`) and users in the control condition (M = `r df_survey_relevantPlants_summary$mean[df_survey_relevantPlants_summary$group=="C"]`, SEM = `r df_survey_relevantPlants_summary$sem[df_survey_relevantPlants_summary$group=="C"]`) using a `r item1t` test. This showed
 
-  <!-- + for ttest: t(`r item1test$parameter `)=`r item1test$statistic `, p=`r item1test$p.value `, cohen's d = `r item1effsize ` -->
   + for wilcoxon test: U=`r item1test$statistic `, p=`r item1test$p.value `, r = `r item1effsize `
+  + So YES! People receiving explanations could better identify relevant features.
+  + Note: a large proportion on the control group replied with "I don't know", also indicating the troubles these participants had.
 
-* Is there a significant difference in terms of matches between plants judged as irrelevant and ground truth?: We compared number of matches for users in plausible condition (M = `r df_survey_irrelevantPlants_summary$mean[df_survey_irrelevantPlants_summary$group=="P"]`, SEM = `r df_survey_irrelevantPlants_summary$sem[df_survey_irrelevantPlants_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_irrelevantPlants_summary$mean[df_survey_irrelevantPlants_summary$group=="C"]`, SEM = `r df_survey_irrelevantPlants_summary$sem[df_survey_irrelevantPlants_summary$group=="C"]`) using a `r item2t` test. This showed
+* Is there a significant difference in terms of matches between plants judged as irrelevant and ground truth?: We compared number of matches for users in explanation condition (M = `r df_survey_irrelevantPlants_summary$mean[df_survey_irrelevantPlants_summary$group=="E"]`, SEM = `r df_survey_irrelevantPlants_summary$sem[df_survey_irrelevantPlants_summary$group=="E"]`) and users in the control condition (M = `r df_survey_irrelevantPlants_summary$mean[df_survey_irrelevantPlants_summary$group=="C"]`, SEM = `r df_survey_irrelevantPlants_summary$sem[df_survey_irrelevantPlants_summary$group=="C"]`) using a `r item2t` test. This showed
 
-  <!-- + for ttest: t(`r item2test$parameter `)=`r item2test$statistic `, p=`r item2test$p.value `, cohen's d = `r item2effsize ` -->
   + for wilcoxon test: U=`r item2test$statistic `, p=`r item2test$p.value `, r = `r item2effsize `
 
-*Add on:* Did number of matches differ significantly from expected random?
-
 ```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+# Add significance notation to plot:
 
-# add on: run a test whether groups are signifcantly better than random
+H1.3_figure2_UserResponseMatches_anno = ggplot(df_survey_relevantPlants_plot, aes(x=group, y=mean, fill=group)) + 
+  geom_bar(stat="identity", color="black", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem), width=.2,
+                 position=position_dodge(.9))+
+  facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`1`="Which plants are relevant?",`2`="Which plants are not relevant?")))+
+  labs(title="Mean no. of matches (judgements vs. truth)",x="Group", y = "Mean number of matches")+
+  theme_bw(base_size = 10)+
+  scale_y_continuous(expand = c(0,0),limits = c(0,5.5),breaks=c(1:5))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
+  geom_hline(aes(yintercept=5, linetype="Max. no.\nof possible\nmatches"), color = "black", size=0.5)+
+  scale_linetype_manual(name = "", values = c(5, 3), 
+                      guide = guide_legend(override.aes = list(color = c("black"))))+
+  theme(plot.title = element_text(hjust = 0.5),legend.position = "bottom",axis.ticks.x=element_blank(),axis.text.x=element_blank())+
+  geom_segment(aes(x = 1, y = 2.75, xend = 1, yend = 4),colour = "black", size=0.2) +
+  geom_segment(aes(x = 2, y = 3.5, xend = 2, yend = 4),colour = "black", size=0.2) +
+  geom_segment(aes(x = 1, y = 4, xend = 2, yend = 4),colour = "black", size=0.2) +
+  geom_text(x = 1.5,  y = 4.25, label = "**", colour = "black")
 
-# first: test for normality of distributions using shapiro test
-# if p-value is lower than 0.05, you can conclude that the sample deviates from normality
-# --> ALL HIGHLY NON-NORMAL!
-# ergo, run a Wilcoxon one-sample signed rank test
-## note: this actuallty tests for the median, but can also be used for the mean, cause:
-## "The signed rank test is a test for the pseudo-median. When accompanied by the assumption of symmetry (which the signed rank test needs for the permutations to be equally likely under the null), the population pseudo-median will equal the population median, and (by symmetry) will also equal the population mean when it is finite (which is hereafter assumed to save repeating it every time I mention the mean). Which is to say, under the usual assumptions the signed rank test is a suitable test for a mean as well as a median. (https://stats.stackexchange.com/questions/239293/non-parametric-altervative-to-one-sample-t-test)"
+# save
+ggsave("Figures/H1.3_figure2_UserResponseMatches_anno_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
-## relevant plants, plausible group:
-shapiro=shapiro.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"])
-wos1_test=wilcox.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"], mu = 2.5, alternative = "two.sided")
-wos1_effsize=wos1_test$z_val/(sqrt(length(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="P"])))
-
-## relevant plants, closest group:
-shapiro=shapiro.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"])
-wos2_test=wilcox.test(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"], mu = 2.5, alternative = "two.sided")
-wos2_effsize=wos2_test$z_val/(sqrt(length(df_survey_relevantPlants_wide$matches[df_survey_relevantPlants_wide$group=="C"])))
-
-## irrelevant plants, plausible group:
-shapiro=shapiro.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"])
-wos3_test=wilcox.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"], mu = 2.5, alternative = "two.sided")
-wos3_effsize=wos3_test$z_val/(sqrt(length(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="P"])))
-
-## irrelevant plants, closest group:
-shapiro=shapiro.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"])
-wos4_test=wilcox.test(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"], mu = 2.5, alternative = "two.sided")
-wos4_effsize=wos4_test$z_val/(sqrt(length(df_survey_irrelevantPlants_wide$matches[df_survey_irrelevantPlants_wide$group=="C"])))
+# show
+print("Display figures showing matches between user responses and ground truth in relevant survey items:")
+H1.3_figure2_UserResponseMatches_anno
 
 ```
 
-This post-hoc analysis revealed:
-
-* relevant plants, plausible group: one-sample Wilcoxon signed rank test, W = `r wos1_test$statistic`, p = `r wos1_test$p.value*4` (bonf corrected), r = `r wos1_effsize`
-
-* relevant plants, closest group: one-sample Wilcoxon signed rank test, W = `r wos2_test$statistic`, p = `r wos2_test$p.value*4` (bonf corrected), r = `r wos2_effsize`
-
-* irrelevant plants, plausible group: one-sample Wilcoxon signed rank test, W = `r wos3_test$statistic`, p = `r wos3_test$p.value*4` (bonf corrected), r = `r wos3_effsize`
-
-* irrelevant plants, closest group: one-sample Wilcoxon signed rank test, W = `r wos4_test$statistic`, p = `r wos4_test$p.value*4` (bonf corrected), r = `r wos4_effsize`
+## H1) Final plot for publication
 
 ```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
 # put all three H1 figures to one for publication
@@ -1509,27 +1469,13 @@ ggarrange(H1.1_p_ShubsPerTrial_summary_anno1,H1.2_p_RTPerTrial_summary_anno,ncol
 # remove individual titles before putting all plots together:
 H1.1_p_ShubsPerTrial_summary_anno1$labels$title=c()
 H1.2_p_RTPerTrial_summary_anno$labels$title=c()
-H1.3_figure2_UserResponseMatches$labels$title=c()
-H1.3_figure2_UserResponseMatches$labels$x=c()
+H1.3_figure2_UserResponseMatches_anno$labels$title=c()
+H1.3_figure2_UserResponseMatches_anno$labels$x=c()
 
 p1 <- ggarrange("",H1.1_p_ShubsPerTrial_summary_anno1,"",H1.2_p_RTPerTrial_summary_anno,ncol=2,nrow=2, common.legend = TRUE, legend = "bottom", labels = c("a","", "b",""), label.x=-0.001,label.y=1.04,font.label = list(size = 16),align = c("v"),widths=c(4,95))
 
-H1.3tmp <- H1.3_figure2_UserResponseMatches+theme(legend.title = element_blank(),legend.margin=margin(t = -0.25, unit='cm'))
-
-# annotate statistical difference from random:
-dat_anno <- data.frame(
-  label = c("**", "**", "*"),
-  group = c("P","C","P"),
-  itemNo   = c(1, 2, 2),
-  x     = c(2, 1, 2),
-  y     = c(4, 4, 4)
-)
-
-H1.3tmp <- H1.3tmp + geom_text(
-  data    = dat_anno,
-  mapping = aes(x = x, y = y, group = group, label = label)
-)
-H1.3tmp$labels$x=c()
+H1.3tmp <- H1.3_figure2_UserResponseMatches_anno+theme(legend.title = element_blank(),legend.margin=margin(t = -0.25, unit='cm'))
+H1.3tmp = H1.3tmp+theme(axis.title.x = element_blank())
 
 p2 <- ggarrange(H1.3tmp, 
                 ncol = 1, nrow = 1,legend = "bottom", labels = c("c"),label.x=-0.001,label.y=1.02,font.label = list(size = 16))
@@ -1537,7 +1483,11 @@ p2 <- ggarrange(H1.3tmp,
 H1_p_ShubsPerTrial_RTPerTrial = ggarrange(p1, "", p2, ncol = 3, nrow = 1, widths=c(65,5,35),common.legend = TRUE, legend = "bottom")
 
 # save
-ggsave("Figures/H1_p_ShubsPerTrial_RTPerTrial_PAZ_FINAL.pdf",width = 8,height = 3.5) #width = 7, height = 2,
+ggsave("Figures/H1_p_ShubsPerTrial_RTPerTrial_IAZ_EXP1_FINAL.pdf",width = 8,height = 3.5) #width = 7, height = 2,
+
+# display big summary figure:
+H1_p_ShubsPerTrial_RTPerTrial
+
 ```
 
 ## H2) User differences in terms of subjective understanding
@@ -1546,11 +1496,11 @@ Recap the full hypothesis:
 
 H2) Users will differ in terms of their subjective understanding, specifically:
 
-H2.1) Users will differ in how far they found the explanations useful, and in how far they could make use of it, with an advantage of plausible CFEs (questionnaire items 5, 6)
+* H2.1) Users will differ in how far they found the explanations useful, and in how far they could make use of it, with an advantage of providing CFEs (survey items 5, 6)
 
-H2.2) Users imagine plausible CFEs to be more helpful for others users, too (questionnaire item 9).
+* H2.2) Users imagine CFEs to be more helpful for others users, too (survey item 9).
 
-### H2.1) Users will differ in how far they found the explanations useful, and in how far they could made use of it, with an advantage of plausible CFEs (questionnaire items 5, 6)
+### H2.1) Users will differ in how far they found the explanations useful, and in how far they could made use of it, with an advantage of providing CFEs (survey items 5, 6)
 
 Diving more into survey results.
 
@@ -1583,17 +1533,17 @@ H2.1_p_FreqUserResponses = ggplot(data=df_survey_subjUsability_summary, aes(x=re
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
   labs(title="Subjective helpfulness / usability of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
-# display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
+# display frequency as percentage of all per group users (how many % of explanation users picked plant 1?)
 H2.1_p_PercUserResponses = ggplot(data=df_survey_subjUsability_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
   labs(title="Subjective helpfulness / usability of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -1605,7 +1555,7 @@ H2.1_figure1_UserResponses <- ggarrange(H2.1_p_FreqUserResponses,H2.1_p_PercUser
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/H2.1_figure1_UserResponses_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/H2.1_figure1_UserResponses_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
 # show
 print("Display figures showing user responses in relevant survey items:")
@@ -1654,12 +1604,12 @@ H2.1_figure2_UserResponses_violin = ggplot(df_survey_subjHelpUsability_responses
   labs(title="Mean response for subjective helpfulness / usability",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Closest", "Plausible"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Control", "CFE"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H2.1_figure2_UserResponses_violin_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/H2.1_figure2_UserResponses_violin_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
 # Stacked bar plot, the more appropriate visualization for likert data:
 # separate "high" and "low" values
@@ -1673,7 +1623,7 @@ highs=highs[!highs$responseNo==6,]
 lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
 highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
 
-H2.1_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+H2.1_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("E"="CFE","C"="Control")) +
   # annotation:
   annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
   annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
@@ -1688,7 +1638,7 @@ H2.1_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"
   stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
                fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
   # flip coordinates:
-  coord_flip() +
+  coord_flip(xlim=c(0.99,2.3)) +
   # more aesthetics:
   geom_hline(yintercept = 0, color =c("black"),size=0.1) +
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
@@ -1696,27 +1646,27 @@ H2.1_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"
 theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
   labs(title="Subjective helpfulness / usability of CFEs",x="Group", y ="% of users")+
   scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_y_continuous(labels=c(100,50,0,50,100))
 
 # save
-ggsave("Figures/H2.1_figure2_UserResponses_stackedBar_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/H2.1_figure2_UserResponses_stackedBar_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
 # show plots
-print("Mean user response for subjective helpfulness / usability:")
-H2.1_figure2_UserResponses_violin
-H2.1_figure2_UserResponses_stackedBar
+# print("Mean user response for subjective helpfulness / usability:")
+# H2.1_figure2_UserResponses_violin
+# H2.1_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item5t="Wilcox"
-item5test=uk_wilcox.test(df_survey_subjHelpfulness_responses$responseNo[df_survey_subjHelpfulness_responses$group=="P"],df_survey_subjHelpfulness_responses$responseNo[df_survey_subjHelpfulness_responses$group=="C"],paired=FALSE,exact=FALSE)
+item5test=uk_wilcox.test(df_survey_subjHelpfulness_responses$responseNo[df_survey_subjHelpfulness_responses$group=="E"],df_survey_subjHelpfulness_responses$responseNo[df_survey_subjHelpfulness_responses$group=="C"],paired=FALSE,exact=FALSE)
 item5effsize=item5test$z_val/(sqrt(nrow(df_survey_subjHelpfulness_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","H2.1_UserJudgementsHelpfulness",sep=""),"NA",item5t,item5test$p.value,item5effsize,sep = ",")
 
 # run stats, usability judgements:
 item6t="Wilcox"
-item6test=uk_wilcox.test(df_survey_subjUsability_responses$responseNo[df_survey_subjUsability_responses$group=="P"],df_survey_subjUsability_responses$responseNo[df_survey_subjUsability_responses$group=="C"],paired=FALSE,exact=FALSE)
+item6test=uk_wilcox.test(df_survey_subjUsability_responses$responseNo[df_survey_subjUsability_responses$group=="E"],df_survey_subjUsability_responses$responseNo[df_survey_subjUsability_responses$group=="C"],paired=FALSE,exact=FALSE)
 item6effsize=item6test$z_val/(sqrt(nrow(df_survey_subjUsability_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","H2.1_UserJudgementsUsability",sep=""),"NA",item6t,item6test$p.value,item6effsize,sep = ",")
@@ -1726,15 +1676,32 @@ matchingRes=paste(matchingRes,paste("\n","H2.1_UserJudgementsUsability",sep=""),
 
 The analysis revealed:
 
-* Is there a significant difference in terms of subjective helpfulness between groups? We compared responses for subjective helpfulness for users in plausible condition (M = `r df_survey_subjHelpfulness_summary$mean[df_survey_subjHelpfulness_summary$group=="P"]`, SEM = `r df_survey_subjHelpfulness_summary$sem[df_survey_subjHelpfulness_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_subjHelpfulness_summary$mean[df_survey_subjHelpfulness_summary$group=="C"]`, SEM = `r df_survey_subjHelpfulness_summary$sem[df_survey_subjHelpfulness_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item5test$statistic `, p=`r item5test$p.value `, r = `r item5effsize `
+* Is there a significant difference in terms of subjective helpfulness between groups? We compared responses for subjective helpfulness for users in explanation condition (M = `r df_survey_subjHelpfulness_summary$mean[df_survey_subjHelpfulness_summary$group=="E"]`, SEM = `r df_survey_subjHelpfulness_summary$sem[df_survey_subjHelpfulness_summary$group=="E"]`) and users in the control condition (M = `r df_survey_subjHelpfulness_summary$mean[df_survey_subjHelpfulness_summary$group=="C"]`, SEM = `r df_survey_subjHelpfulness_summary$sem[df_survey_subjHelpfulness_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item5test$statistic `, p=`r item5test$p.value `, r = `r item5effsize `
 
-* Is there a significant difference in terms of subjective usability?: We compared responses for subjective usability for users in plausible condition (M = `r df_survey_subjUsability_summary$mean[df_survey_subjUsability_summary$group=="P"]`, SEM = `r df_survey_subjUsability_summary$sem[df_survey_subjUsability_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_subjUsability_summary$mean[df_survey_subjUsability_summary$group=="C"]`, SEM = `r df_survey_subjUsability_summary$sem[df_survey_subjUsability_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item6test$statistic `, p=`r item6test$p.value `, r = `r item6effsize `
+* Is there a significant difference in terms of subjective usability?: We compared responses for subjective usability for users in explanation condition (M = `r df_survey_subjUsability_summary$mean[df_survey_subjUsability_summary$group=="E"]`, SEM = `r df_survey_subjUsability_summary$sem[df_survey_subjUsability_summary$group=="E"]`) and users in the control condition (M = `r df_survey_subjUsability_summary$mean[df_survey_subjUsability_summary$group=="C"]`, SEM = `r df_survey_subjUsability_summary$sem[df_survey_subjUsability_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item6test$statistic `, p=`r item6test$p.value `, r = `r item6effsize `
 
-### H2.2) Users imagine plausible CFEs to be more helpful for others users, too (questionnaire item 9).
+
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+# add significance annotation to likert plots:
+
+anno_df <- data.frame(label = c("*** (p<.001)", "*** (p<.001)"),itemNo   = c(5, 6))
+H2.1_figure2_UserResponses_stackedBar_anno = H2.1_figure2_UserResponses_stackedBar + geom_text(
+  data = anno_df, mapping = aes(x = Inf, y = -Inf, label = label), hjust = -0.1, vjust = 1.5, size=2, fontface = "italic")
+
+# save
+ggsave("Figures/H2.1_figure2_UserResponses_stackedBar_anno_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
+
+# show plots
+print("Mean user response for subjective helpfulness / usability:")
+H2.1_figure2_UserResponses_stackedBar_anno
+
+```
+
+### H2.2) Users provided with CFEs imagine this setting to be more helpful for others users, too (survey item 9).
 
 item 9: "I think most people would learn to work with the feedback on what choice would have led to a better result very quickly."
 
-Do users in the plausible condition imagine that explanations would be more helpful for other users, compared to users in the closes condition?
+Do users in the explanation condition imagine that explanations would be more helpful for other users, compared to users in the control condition?
 
 ```{r echo=FALSE, fig.height = 6, fig.width = 4, fig.align = "center"}
 
@@ -1758,17 +1725,17 @@ H2.2_p_FreqUserResponses = ggplot(data=df_survey_UsabilityForOthers_summary, aes
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`9`="\"Most people would learn quickly.\"")))+
   labs(title="Subjective helpfulness for others",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
-# display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
+# display frequency as percentage of all per group users (how many % of explanation users picked plant 1?)
 H2.2_p_PercUserResponses = ggplot(data=df_survey_UsabilityForOthers_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`9`="\"Most people would learn quickly.\"")))+
   labs(title="Subjective helpfulness for others",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -1780,7 +1747,7 @@ H2.2_figure1_UserResponses <- ggarrange(H2.2_p_FreqUserResponses,H2.2_p_PercUser
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/H2.2_figure1_UserResponses_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/H2.2_figure1_UserResponses_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
 # show
 print("Display figures showing user responses in relevant survey items:")
@@ -1817,12 +1784,12 @@ H2.2_figure2_UserResponses_violin = ggplot(df_survey_UsabilityForOthers_response
   labs(title="Subjective helpfulness for others",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Closest", "Plausible"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Control", "CFE"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H2.2_figure2_UserResponses_violin_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/H2.2_figure2_UserResponses_violin_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
 
 # Stacked bar plot, the more appropriate visualization for likert data:
@@ -1837,7 +1804,7 @@ highs=highs[!highs$responseNo==6,]
 lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
 highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
 
-H2.2_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+H2.2_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("E"="CFE","C"="Control")) +
   # annotation:
   annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
   annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
@@ -1852,7 +1819,7 @@ H2.2_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"
   stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
                fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
   # flip coordinates:
-  coord_flip() +
+  coord_flip(xlim=c(0.99,2.3)) +
   # more aesthetics:
   geom_hline(yintercept = 0, color =c("black"),size=0.1) +
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`9`="\"Most people would learn quickly.\"")))+
@@ -1860,20 +1827,20 @@ H2.2_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"
 theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
   labs(title="Subjective helpfulness for others",x="Group", y ="% of users")+
   scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_y_continuous(labels=c(100,50,0,50,100))
 
 # save
-ggsave("Figures/H2.2_figure2_UserResponses_stackedBar_PAZ_FINAL.pdf",width = 6, height = 2,)
+ggsave("Figures/H2.2_figure2_UserResponses_stackedBar_IAZ_EXP1_FINAL.pdf",width = 6, height = 2,)
 
-# show plot
-print("Mean user response for subjective helpfulness / usability:")
-H2.2_figure2_UserResponses_violin
-H2.2_figure2_UserResponses_stackedBar
+# # show plot
+# print("Mean user response for subjective helpfulness / usability:")
+# H2.2_figure2_UserResponses_violin
+# H2.2_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item9t="Wilcox"
-item9test=uk_wilcox.test(df_survey_UsabilityForOthers_responses$responseNo[df_survey_UsabilityForOthers_responses$group=="P"],df_survey_UsabilityForOthers_responses$responseNo[df_survey_UsabilityForOthers_responses$group=="C"],paired=FALSE,exact=FALSE)
+item9test=uk_wilcox.test(df_survey_UsabilityForOthers_responses$responseNo[df_survey_UsabilityForOthers_responses$group=="E"],df_survey_UsabilityForOthers_responses$responseNo[df_survey_UsabilityForOthers_responses$group=="C"],paired=FALSE,exact=FALSE)
 item9effsize=item9test$z_val/(sqrt(nrow(df_survey_UsabilityForOthers_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","H2.1_UserJudgementsHelpfulness",sep=""),"NA",item9t,item9test$p.value,item9effsize,sep = ",")
@@ -1882,42 +1849,62 @@ matchingRes=paste(matchingRes,paste("\n","H2.1_UserJudgementsHelpfulness",sep=""
 
 The analysis revealed:
 
-* Is there a significant difference in terms of estimated usefulness for others between groups? We compared number of matches for users in plausible condition (M = `r df_survey_UsabilityForOthers_summary$mean[df_survey_UsabilityForOthers_summary$group=="P"]`, SEM = `r df_survey_UsabilityForOthers_summary$sem[df_survey_UsabilityForOthers_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_UsabilityForOthers_summary$mean[df_survey_UsabilityForOthers_summary$group=="C"]`, SEM = `r df_survey_UsabilityForOthers_summary$sem[df_survey_UsabilityForOthers_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item9test$statistic `, p=`r item9test$p.value `, r = `r item9effsize `
+* Is there a significant difference in terms of estimated usefulness for others between groups? We compared number of matches for users in explanation condition (M = `r df_survey_UsabilityForOthers_summary$mean[df_survey_UsabilityForOthers_summary$group=="E"]`, SEM = `r df_survey_UsabilityForOthers_summary$sem[df_survey_UsabilityForOthers_summary$group=="E"]`) and users in the control condition (M = `r df_survey_UsabilityForOthers_summary$mean[df_survey_UsabilityForOthers_summary$group=="C"]`, SEM = `r df_survey_UsabilityForOthers_summary$sem[df_survey_UsabilityForOthers_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item9test$statistic `, p=`r item9test$p.value `, r = `r item9effsize `
 
-```{r echo=FALSE, fig.height = 2, fig.width = 5, fig.align = "center"}
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+# add significance annotation to likert plot:
+
+anno_df <- data.frame(label = c("n.s. (p=.674)"),itemNo   = c(9))
+H2.2_figure2_UserResponses_stackedBar_anno=H2.2_figure2_UserResponses_stackedBar + geom_text(
+  data = anno_df, mapping = aes(x = Inf, y = -Inf, label = label), hjust = -0.1, vjust = 1.5, size=2, fontface = "italic")
+
+# save
+ggsave("Figures/H2.2_figure2_UserResponses_stackedBar_anno_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
+
+# display:
+H2.2_figure2_UserResponses_stackedBar_anno
+
+```
+
+## H2) Final plot for publication
+
+```{r echo=FALSE, fig.height = 2, fig.width = 7, fig.align = "center"}
 # make a H2 plot for publication
 # remove superfluous info before putting it all together
-p1=H2.1_figure2_UserResponses_stackedBar+theme(title=element_blank(),
+p1=H2.1_figure2_UserResponses_stackedBar_anno+theme(title=element_blank(),
         axis.title.x=element_blank(),
         #axis.text.x=element_blank(),
         #axis.ticks.x=element_blank(),
         panel.spacing = unit(1, "lines"))
 p1$labels$title=c()
 
-p1_T=H2.1_figure2_UserResponses_stackedBar+facet_wrap(vars(itemNo),nrow = 1, ncol = 2,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
+p1_T=H2.1_figure2_UserResponses_stackedBar_anno+facet_wrap(vars(itemNo),nrow = 1, ncol = 2,labeller=as_labeller(c(`5`="\"Feedback helped me.\"",`6`="\"I could use the feedback.\"")))+
   theme(panel.spacing = unit(1, "lines"),axis.title.x=element_blank())
 
 p1_T$labels$title=c()
 
-H2.2_figure2_UserResponses_stackedBar$labels$title=c()
-p2=H2.2_figure2_UserResponses_stackedBar+theme(axis.title.y=element_blank())
+H2.2_figure2_UserResponses_stackedBar_anno$labels$title=c()
+p2=H2.2_figure2_UserResponses_stackedBar_anno+theme(axis.title.y=element_blank())
 
-p2_T=H2.2_figure2_UserResponses_stackedBar+theme(axis.title.y=element_blank(),
+p2_T=H2.2_figure2_UserResponses_stackedBar_anno+theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         axis.title.x=element_blank())
 
 H2_p_UserJudgements=ggarrange(p1,p2, ncol = 1, nrow = 2, heights=c(4,2.5), common.legend = TRUE, legend="bottom")
 # save
-ggsave("Figures/H2_p_UserJudgements_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H2_p_UserJudgements_IAZ_EXP1_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
 
 H2_p_UserJudgements_T=ggarrange(p1_T,p2_T, ncol = 2, nrow = 1, widths=c(6,2.5), common.legend = TRUE, legend="bottom")
 
 # save
-ggsave("Figures/H2_p_UserJudgements_T_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H2_p_UserJudgements_T_IAZ_EXP1_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
 
 # re-define without legend for later use
 H2_p_UserJudgements_T=ggarrange(p1_T,p2_T, ncol = 2, nrow = 1, widths=c(6,2.5), legend="none")
+
+# display:
+H2_p_UserJudgements_T
 
 ```
 
@@ -1928,7 +1915,7 @@ CAREFUL though: Remember that Null findings cannot be interpreted, so discuss wi
 
 Revisiting the hypothesis:
 
-*H3) We do not expect users in different conditions to differ in terms of how well they understood the explanations per se, or needing support for understanding, because explanations are basically the same structurally (questionnaire items 3, 4).*
+*H3) We do not expect users in different conditions to differ in terms of how well they understood the feedback, or needing support for understanding (survey items 3, 4).*
 
 Item 3: "I understood the feedback on what choice would have led to a better result."
 
@@ -1957,17 +1944,17 @@ H3_FreqUserResponses = ggplot(data=df_survey_understanding_summary, aes(x=respon
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
   labs(title="Subjective understanding of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
-# display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
+# display frequency as percentage of all per group users (how many % of explanation users picked plant 1?)
 H3_PercUserResponses = ggplot(data=df_survey_understanding_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
   labs(title="Subjective understanding of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -1978,7 +1965,7 @@ H3_figure1_UserResponses <- ggarrange(H3_FreqUserResponses,H3_PercUserResponses,
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/H3_figure1_UserResponses_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/H3_figure1_UserResponses_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
 # show
 print("Display figures showing user responses in relevant survey items:")
@@ -2027,12 +2014,12 @@ H3_figure2_UserResponses_violin = ggplot(df_survey_understanding_support_respons
   labs(title="Mean response for understanding\n/ support for understanding",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Closest", "Plausible"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Control", "CFE"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H3_figure2_UserResponses_violin_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/H3_figure2_UserResponses_violin_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
 
 # Stacked bar plot, the more appropriate visualization for likert data:
@@ -2047,7 +2034,7 @@ highs=highs[!highs$responseNo==6,]
 lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
 highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
 
-H3_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+H3_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("E"="CFE","C"="Control")) +
   # annotation:
   annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
   annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
@@ -2062,7 +2049,7 @@ H3_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="
   stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
                fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
   # flip coordinates:
-  coord_flip() +
+  coord_flip(xlim=c(0.99,2.3)) +
   # more aesthetics:
   geom_hline(yintercept = 0, color =c("black"),size=0.1) +
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
@@ -2070,27 +2057,27 @@ H3_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="
 theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
   labs(title="Subjective understanding/\nneeding support for understanding",x="Group", y ="% of users")+
   scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_y_continuous(labels=c(100,50,0,50,100))
 
 # save
-ggsave("Figures/H3_figure2_UserResponses_stackedBar_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/H3_figure2_UserResponses_stackedBar_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
-# show plot
-print("Mean user response for understanding / need for support to understand:")
-H3_figure2_UserResponses_violin
-H3_figure2_UserResponses_stackedBar
+# # show plot
+# print("Mean user response for understanding / need for support to understand:")
+# H3_figure2_UserResponses_violin
+# H3_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item3t="Wilcox"
-item3test=uk_wilcox.test(df_survey_understanding_responses$responseNo[df_survey_understanding_responses$group=="P"],df_survey_subjHelpfulness_responses$responseNo[df_survey_understanding_responses$group=="C"],paired=FALSE,exact=FALSE)
+item3test=uk_wilcox.test(df_survey_understanding_responses$responseNo[df_survey_understanding_responses$group=="E"],df_survey_subjHelpfulness_responses$responseNo[df_survey_understanding_responses$group=="C"],paired=FALSE,exact=FALSE)
 item3effsize=item3test$z_val/(sqrt(nrow(df_survey_understanding_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","H3_UserJudgementsUnderstanding",sep=""),"NA",item3t,item3test$p.value,item3effsize,sep = ",")
 
 # run stats, usability judgements:
 item4t="Wilcox"
-item4test=uk_wilcox.test(df_survey_support4understanding_responses$responseNo[df_survey_support4understanding_responses$group=="P"],df_survey_support4understanding_responses$responseNo[df_survey_support4understanding_responses$group=="C"],paired=FALSE,exact=FALSE)
+item4test=uk_wilcox.test(df_survey_support4understanding_responses$responseNo[df_survey_support4understanding_responses$group=="E"],df_survey_support4understanding_responses$responseNo[df_survey_support4understanding_responses$group=="C"],paired=FALSE,exact=FALSE)
 item4effsize=item4test$z_val/(sqrt(nrow(df_survey_support4understanding_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","H3_UserJudgementsSupport4Understanding",sep=""),"NA",item4t,item4test$p.value,item4effsize,sep = ",")
@@ -2100,14 +2087,30 @@ matchingRes=paste(matchingRes,paste("\n","H3_UserJudgementsSupport4Understanding
 
 The analysis revealed:
 
-* Is there a significant difference in terms of understanding of explanations between groups? We compared responses of users in plausible condition (M = `r df_survey_understanding_summary$mean[df_survey_understanding_summary$group=="P"]`, SEM = `r df_survey_understanding_summary$sem[df_survey_understanding_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_understanding_summary$mean[df_survey_understanding_summary$group=="C"]`, SEM = `r df_survey_understanding_summary$sem[df_survey_understanding_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item3test$statistic `, p=`r item3test$p.value `, r = `r item3effsize `
+* Is there a significant difference in terms of understanding of feedback between groups? We compared responses of users in explanation condition (M = `r df_survey_understanding_summary$mean[df_survey_understanding_summary$group=="E"]`, SEM = `r df_survey_understanding_summary$sem[df_survey_understanding_summary$group=="E"]`) and users in the control condition (M = `r df_survey_understanding_summary$mean[df_survey_understanding_summary$group=="C"]`, SEM = `r df_survey_understanding_summary$sem[df_survey_understanding_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item3test$statistic `, p=`r item3test$p.value `, r = `r item3effsize `
 
-* Is there a significant difference in terms of needing support to understand explanations?: We compared responses of users in plausible condition (M = `r df_survey_support4understanding_summary$mean[df_survey_support4understanding_summary$group=="P"]`, SEM = `r df_survey_support4understanding_summary$sem[df_survey_support4understanding_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_support4understanding_summary$mean[df_survey_support4understanding_summary$group=="C"]`, SEM = `r df_survey_support4understanding_summary$sem[df_survey_support4understanding_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item4test$statistic `, p=`r item4test$p.value `, r = `r item4effsize `
+* Is there a significant difference in terms of needing support to understand feedback?: We compared responses of users in explanation condition (M = `r df_survey_support4understanding_summary$mean[df_survey_support4understanding_summary$group=="E"]`, SEM = `r df_survey_support4understanding_summary$sem[df_survey_support4understanding_summary$group=="E"]`) and users in the control condition (M = `r df_survey_support4understanding_summary$mean[df_survey_support4understanding_summary$group=="C"]`, SEM = `r df_survey_support4understanding_summary$sem[df_survey_support4understanding_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item4test$statistic `, p=`r item4test$p.value `, r = `r item4effsize `
+
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+# add significance annotation to likert plot:
+
+anno_df <- data.frame(label = c("*** (p<.001)","n.s. (p=.674)"),itemNo   = c(3,4))
+H3_figure2_UserResponses_stackedBar_anno=H3_figure2_UserResponses_stackedBar + geom_text(
+  data = anno_df, mapping = aes(x = Inf, y = -Inf, label = label), hjust = -0.1, vjust = 1.5, size=2, fontface = "italic")
+
+# save
+ggsave("Figures/H3_figure2_UserResponses_stackedBar_anno_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
+
+# # show plot
+print("Mean user response for understanding / need for support to understand:")
+H3_figure2_UserResponses_stackedBar_anno
+
+```
 
 
-## H4) Presented timing and efficacy of how CFEs were presented expected to be comparable
+## H4) Timing and efficacy of how CFEs were presented expected to be comparable
 
-H4) We expect timing and efficacy of how CFEs were presented to be comparable, as it was literally the same (questionnaire item 10) - a further control.
+H4) We expect timing and efficacy of how CFEs were presented to be comparable, as it was literally the same (survey item 10) - a further control.
 
 Item 10: "I received the feedback on what choice would have led to a better result in a timely and efficient manner."
 
@@ -2133,17 +2136,17 @@ H4_FreqUserResponses = ggplot(data=df_survey_TimingEfficacy_summary, aes(x=respo
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`10`="\"I received feedback timely and efficient.\"")))+
   labs(title="Presentation of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
-# display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
+# display frequency as percentage of all per group users (how many % of explanation users picked plant 1?)
 H4_PercUserResponses = ggplot(data=df_survey_TimingEfficacy_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`10`="\"Feedback was timely and efficient.\"")))+
   labs(title="Presentation of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -2154,7 +2157,7 @@ H4_figure1_UserResponses <- ggarrange(H4_FreqUserResponses,H4_PercUserResponses,
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/H4_figure1_UserResponses_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/H4_figure1_UserResponses_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
 # show
 print("Display figures showing user responses in relevant survey items:")
@@ -2192,12 +2195,12 @@ H4_figure2_UserResponses_violin = ggplot(df_survey_TimingEfficacy_responses, aes
   labs(title="Mean response re. presentation of CFEs",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Closest", "Plausible"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Control", "CFE"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/H4_figure2_UserResponses_violin_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/H4_figure2_UserResponses_violin_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
 
 # Stacked bar plot, the more appropriate visualization for likert data:
@@ -2212,7 +2215,7 @@ highs=highs[!highs$responseNo==6,]
 lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
 highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
 
-H4_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+H4_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("E"="CFE","C"="Control")) +
   # annotation:
   annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
   annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
@@ -2227,7 +2230,7 @@ H4_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="
   stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
                fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
   # flip coordinates:
-  coord_flip() +
+  coord_flip(xlim=c(0.99,2.3)) +
   # more aesthetics:
   geom_hline(yintercept = 0, color =c("black"),size=0.1) +
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`10`="\"Feedback was timely and efficient.\"")))+
@@ -2235,48 +2238,65 @@ H4_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="
 theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
   labs(title="Presentation of CFEs",x="Group", y ="% of users")+
   scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_y_continuous(labels=c(100,50,0,50,100))
 
 # save
-ggsave("Figures/H4_figure2_UserResponses_stackedBar_PAZ_FINAL.pdf",width = 6, height = 2,)
+ggsave("Figures/H4_figure2_UserResponses_stackedBar_IAZ_EXP1_FINAL.pdf",width = 6, height = 2,)
 
-# show plot
-print("Mean user response for subjective helpfulness / usability:")
-H4_figure2_UserResponses_violin
-H4_figure2_UserResponses_stackedBar
+# # show plot
+# print("Mean user response for subjective helpfulness / usability:")
+# H4_figure2_UserResponses_violin
+# H4_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item10t="Wilcox"
-item10test=uk_wilcox.test(df_survey_TimingEfficacy_responses$responseNo[df_survey_TimingEfficacy_responses$group=="P"],df_survey_TimingEfficacy_responses$responseNo[df_survey_TimingEfficacy_responses$group=="C"],paired=FALSE,exact=FALSE)
+item10test=uk_wilcox.test(df_survey_TimingEfficacy_responses$responseNo[df_survey_TimingEfficacy_responses$group=="E"],df_survey_TimingEfficacy_responses$responseNo[df_survey_TimingEfficacy_responses$group=="C"],paired=FALSE,exact=FALSE)
 item10effsize=item10test$z_val/(sqrt(nrow(df_survey_TimingEfficacy_responses)))
 
-matchingRes=paste(matchingRes,paste("\n","H4_UserJudgementsHelpfulness",sep=""),"NA",item10t,item10test$p.value,item10effsize,sep = ",")
+matchingRes=paste(matchingRes,paste("\n","H4_UserJudgementsTimeEfficiency",sep=""),"NA",item10t,item10test$p.value,item10effsize,sep = ",")
 
 ```
 
 The analysis revealed:
 
-* Is there a significant difference in terms of estimated usefulness for others between groups? We compared number of matches for users in plausible condition (M = `r df_survey_TimingEfficacy_summary$mean[df_survey_TimingEfficacy_summary$group=="P"]`, SEM = `r df_survey_TimingEfficacy_summary$sem[df_survey_TimingEfficacy_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_TimingEfficacy_summary$mean[df_survey_TimingEfficacy_summary$group=="C"]`, SEM = `r df_survey_TimingEfficacy_summary$sem[df_survey_TimingEfficacy_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item10test$statistic `, p=`r item10test$p.value `, r = `r item10effsize `
+* Is there a significant difference in terms of estimated usefulness for others between groups? We compared number of matches for users in explanation condition (M = `r df_survey_TimingEfficacy_summary$mean[df_survey_TimingEfficacy_summary$group=="E"]`, SEM = `r df_survey_TimingEfficacy_summary$sem[df_survey_TimingEfficacy_summary$group=="E"]`) and users in the control condition (M = `r df_survey_TimingEfficacy_summary$mean[df_survey_TimingEfficacy_summary$group=="C"]`, SEM = `r df_survey_TimingEfficacy_summary$sem[df_survey_TimingEfficacy_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item10test$statistic `, p=`r item10test$p.value `, r = `r item10effsize `
 
-```{r echo=FALSE, fig.height = 2, fig.width = 5, fig.align = "center"}
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+# add significance annotation to likert plot:
+
+anno_df <- data.frame(label = c("n.s. (p=.289)"),itemNo   = c(10))
+H4_figure2_UserResponses_stackedBar_anno=H4_figure2_UserResponses_stackedBar + geom_text(
+  data = anno_df, mapping = aes(x = Inf, y = -Inf, label = label), hjust = -0.1, vjust = 1.5, size=2, fontface = "italic")
+
+# save
+ggsave("Figures/H4_figure2_UserResponses_stackedBar_anno_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
+
+# # show plot
+print("Mean user response for subjective helpfulness / usability:")
+H4_figure2_UserResponses_stackedBar_anno
+
+```
+
+
+```{r echo=FALSE, fig.height = 2, fig.width = 7, fig.align = "center"}
 # make a H3 plot for publication [combine H3+H4 in speculation about mode of presentation] 
 # remove superfluous info before putting it all together
-p1=H3_figure2_UserResponses_stackedBar+theme(title=element_blank(),
+p1=H3_figure2_UserResponses_stackedBar_anno+theme(title=element_blank(),
         axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         panel.spacing = unit(1, "lines"))
 p1$labels$title=c()
 
-p1_T=H3_figure2_UserResponses_stackedBar+facet_wrap(vars(itemNo),nrow = 1, ncol = 2,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
+p1_T=H3_figure2_UserResponses_stackedBar_anno+facet_wrap(vars(itemNo),nrow = 1, ncol = 2,labeller=as_labeller(c(`3`="\"I understood the feedback.\"",`4`="\"I needed support to understand.\"")))+
   theme(panel.spacing = unit(1, "lines"),axis.title.x=element_blank())
 p1_T$labels$title=c()
 
-H4_figure2_UserResponses_stackedBar$labels$title=c()
-p2=H4_figure2_UserResponses_stackedBar+theme(axis.title.y=element_blank())
+H4_figure2_UserResponses_stackedBar_anno$labels$title=c()
+p2=H4_figure2_UserResponses_stackedBar_anno+theme(axis.title.y=element_blank())
 
-p2_T=H4_figure2_UserResponses_stackedBar+theme(title=element_blank(),
+p2_T=H4_figure2_UserResponses_stackedBar_anno+theme(title=element_blank(),
         axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank())
@@ -2284,22 +2304,26 @@ p2_T=H4_figure2_UserResponses_stackedBar+theme(title=element_blank(),
 H3_p_UserJudgements=ggarrange(p1,p2, ncol = 1, nrow = 2, heights=c(4,2.5), common.legend = TRUE, legend="bottom")
 
 # save
-ggsave("Figures/H3_p_UserJudgements_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H3_p_UserJudgements_IAZ_EXP1_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
 
 H3_p_UserJudgements_T=ggarrange(p1_T,p2_T, ncol = 2, nrow = 1, widths=c(6,2.5), common.legend = TRUE, legend="bottom")
 # save
-ggsave("Figures/H3_p_UserJudgements_T_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H3_p_UserJudgements_T_IAZ_EXP1_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
 
 # re-define without legend for later use
 H3_p_UserJudgements_T=ggarrange(p1_T,p2_T, ncol = 2, nrow = 1, widths=c(6,2.5), legend="none")
 
+# # show plot
+print("Summary plot for H3:")
+H3_p_UserJudgements_T
+
 ```
 
-# Final exploratory analysis
+## Final exploratory analysis
 
-It is not clear whether users were uncover inconsistencies in the feedback. Maybe that is the case for "closest" CFEs when we're in the areas of "no training data“? Let's see what users responded.
+It is not clear whether users uncovered inconsistencies in the feedback. Let's ask them.
 
-Item 8: "I found inconsistencies in the feedback on what choice would have led to a better result."
+Item 8: "I found inconsistencies in the feedback presented."
 
 ```{r echo=FALSE, fig.height = 4, fig.width = 4, fig.align = "center"}
 
@@ -2323,17 +2347,17 @@ Expl_FreqUserResponses = ggplot(data=df_survey_Inconsist_summary, aes(x=response
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"I found inconsistencies.\"")))+
   labs(title="Detected inconsistencies of CFEs",x="", y = "Frequency of answer")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
-# display frequency as percentage of all per group users (how many % of plausible users picked plant 1?)
+# display frequency as percentage of all per group users (how many % of explanation users picked plant 1?)
 Expl_PercUserResponses = ggplot(data=df_survey_Inconsist_summary, aes(x=responseNo,fill = group)) + 
   geom_bar(aes(y = PercUsersChecked),stat="identity",position = position_dodge(preserve = "single"))+
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"I found inconsistencies.\"")))+
   labs(title="Detected inconsistencies of CFEs",x="", y = "% of users per group")+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_x_discrete(breaks=1:6, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree","Prefer not\nto answer"))+
   theme(plot.title = element_text(hjust = 0.5),axis.text.x = element_text(angle = 60,hjust = 0.95))
 
@@ -2344,7 +2368,7 @@ Expl_figure1_UserResponses <- ggarrange(Expl_FreqUserResponses,Expl_PercUserResp
                     ncol = 1, nrow = 2, heights=c(4,4), common.legend = TRUE)
 
 # save
-ggsave("Figures/Expl_figure1_UserResponses_PAZ_FINAL.pdf",width = 5, height = 6,)
+ggsave("Figures/Expl_figure1_UserResponses_IAZ_EXP1_FINAL.pdf",width = 5, height = 6,)
 
 # show
 print("Display figures showing user responses in relevant survey items:")
@@ -2382,12 +2406,12 @@ Expl_figure2_UserResponses_violin = ggplot(df_survey_Inconsist_responses, aes(x=
   labs(title="Mean responses re. inconsistencies of CFEs",x="Group", y = "Response")+
   scale_y_continuous(limits = c(1, 5),breaks=1:5, labels=c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
   theme_bw(base_size = 10)+
-  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Closest", "Plausible"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_fill_manual("Group", values=alpha(c(Ccol,Pcol),0.2), labels = c("Control", "CFE"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   theme(plot.title = element_text(hjust = 0.5))
 
 # save
-ggsave("Figures/Expl_figure2_UserResponses_violin_PAZ_FINAL.pdf",width = 6, height = 4,)
+ggsave("Figures/Expl_figure2_UserResponses_violin_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
 
 # Stacked bar plot, the more appropriate visualization for likert data:
 # separate "high" and "low" values
@@ -2401,7 +2425,7 @@ highs=highs[!highs$responseNo==6,]
 lows$PercUsersChecked[lows$responseNo==3]=lows$PercUsersChecked[lows$responseNo==3]/2
 highs$PercUsersChecked[highs$responseNo==3]=highs$PercUsersChecked[highs$responseNo==3]/2
 
-Expl_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"="Plausible","C"="Closest")) +
+Expl_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("E"="CFE","C"="Control")) +
   # annotation:
   annotate("rect", xmin = 1.6, xmax = 2.4, ymin = -100, ymax = 100, alpha=0.2, fill = Pcol)+
   annotate("rect", xmin = 0.6, xmax = 1.4, ymin = -100, ymax = 100, alpha=0.2, fill = Ccol)+
@@ -2416,7 +2440,7 @@ Expl_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"
   stat_summary(data=lows[order(lows$responseNo, decreasing = T),], aes(x = group, y=-PercUsersChecked),
                fun = sum,geom = "col",colour = "black",fill=NA,width = 0.5,size=0.1)+
   # flip coordinates:
-  coord_flip() +
+  coord_flip(xlim=c(0.99,2.3)) +
   # more aesthetics:
   geom_hline(yintercept = 0, color =c("black"),size=0.1) +
   facet_wrap(vars(itemNo),nrow = 2, ncol = 1,labeller=as_labeller(c(`8`="\"I found inconsistencies.\"")))+
@@ -2424,21 +2448,21 @@ Expl_figure2_UserResponses_stackedBar = ggplot() + scale_x_discrete(labels=c("P"
 theme(legend.position = "bottom",legend.title=element_blank(),legend.background = element_rect(fill="gray90", size=.5, linetype="dotted"),plot.title = element_text(hjust = 0.5))+
   labs(title="Detected inconsistencies in CFEs",x="Group", y ="% of users")+
   scale_fill_manual("User response", values = likert_Okabe_Ito_palette,labels = c("Strongly\ndisagree","Disagree","Neutral","Agree","Strongly\nagree"))+
-  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Closest", "Plausible"))+
+  scale_color_manual("Group", values=c(Ccol,Pcol), labels = c("Control", "CFE"))+
   scale_y_continuous(labels=c(100,50,0,50,100))
 
 # save
-ggsave("Figures/H4_figure2_UserResponses_stackedBar_PAZ_FINAL.pdf",width = 6, height = 2,)
+ggsave("Figures/Expl_figure2_UserResponses_stackedBar_IAZ_EXP1_FINAL.pdf",width = 6, height = 2,)
 
 
-# show plot
-print("Mean user response for inconsistencies of CFEs:")
-Expl_figure2_UserResponses_violin
-Expl_figure2_UserResponses_stackedBar
+# # show plot
+# print("Mean user response for inconsistencies of CFEs:")
+# Expl_figure2_UserResponses_violin
+# Expl_figure2_UserResponses_stackedBar
 
 # run stats, helpfulness judgements:
 item8t="Wilcox"
-item8test=uk_wilcox.test(df_survey_Inconsist_responses$responseNo[df_survey_Inconsist_responses$group=="P"],df_survey_Inconsist_responses$responseNo[df_survey_Inconsist_responses$group=="C"],paired=FALSE,exact=FALSE)
+item8test=uk_wilcox.test(df_survey_Inconsist_responses$responseNo[df_survey_Inconsist_responses$group=="E"],df_survey_Inconsist_responses$responseNo[df_survey_Inconsist_responses$group=="C"],paired=FALSE,exact=FALSE)
 item8effsize=item8test$z_val/(sqrt(nrow(df_survey_Inconsist_responses)))
 
 matchingRes=paste(matchingRes,paste("\n","Expl_UserJudgementsInconsistencies",sep=""),"NA",item8t,item8test$p.value,item8effsize,sep = ",")
@@ -2447,14 +2471,31 @@ matchingRes=paste(matchingRes,paste("\n","Expl_UserJudgementsInconsistencies",se
 
 The analysis revealed:
 
-* Is there a significant difference in terms of estimated usefulness for others between groups? We compared number of matches for users in plausible condition (M = `r df_survey_Inconsist_summary$mean[df_survey_Inconsist_summary$group=="P"]`, SEM = `r df_survey_Inconsist_summary$sem[df_survey_Inconsist_summary$group=="P"]`) and users in the closest condition (M = `r df_survey_Inconsist_summary$mean[df_survey_Inconsist_summary$group=="C"]`, SEM = `r df_survey_Inconsist_summary$sem[df_survey_Inconsist_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item8test$statistic `, p=`r item8test$p.value `, r = `r item8effsize `
+* Is there a significant difference in terms of found inconsistencies in the feedback provided? We compared answers of users in explanation condition (M = `r df_survey_Inconsist_summary$mean[df_survey_Inconsist_summary$group=="E"]`, SEM = `r df_survey_Inconsist_summary$sem[df_survey_Inconsist_summary$group=="E"]`) and users in the control condition (M = `r df_survey_Inconsist_summary$mean[df_survey_Inconsist_summary$group=="C"]`, SEM = `r df_survey_Inconsist_summary$sem[df_survey_Inconsist_summary$group=="C"]`) using a Wilcoxon–Mann–Whitney U test. This showed: U=`r item8test$statistic `, p=`r item8test$p.value `, r = `r item8effsize `
 
+```{r echo=FALSE, fig.height = 3, fig.width = 5, fig.align = "center"}
+# add significance annotation to likert plot:
 
-```{r echo=FALSE, fig.height = 2, fig.width = 5, fig.align = "center"}
+anno_df <- data.frame(label = c("n.s. (p=.232)"),itemNo   = c(8))
+Expl_figure2_UserResponses_stackedBar_anno=Expl_figure2_UserResponses_stackedBar + geom_text(
+  data = anno_df, mapping = aes(x = Inf, y = -Inf, label = label), hjust = -0.1, vjust = 1.5, size=2, fontface = "italic")
+
+# save
+ggsave("Figures/Expl_figure2_UserResponses_stackedBar_anno_IAZ_EXP1_FINAL.pdf",width = 6, height = 4,)
+
+# show plot
+print("Mean user response for inconsistencies of CFEs:")
+Expl_figure2_UserResponses_stackedBar_anno
+
+```
+
+## Survey data: Final plot for publication
+
+```{r echo=FALSE, fig.height = 7, fig.width = 7, fig.align = "center"}
 #make a final big figure of survey data for publication
 
-Expl_figure2_UserResponses_stackedBar$labels$title=c()
-p3=Expl_figure2_UserResponses_stackedBar+theme(title=element_blank(),
+Expl_figure2_UserResponses_stackedBar_anno$labels$title=c()
+p3=Expl_figure2_UserResponses_stackedBar_anno+theme(title=element_blank(),
         legend.position = "none",
         panel.spacing = unit(1, "lines"))
 
@@ -2463,7 +2504,7 @@ p3=ggarrange(p3,"","",ncol = 1, nrow = 3, heights=c(4,2.5), common.legend = TRUE
 H2_H3_expl_survey_figure=ggarrange(H2_p_UserJudgements,H3_p_UserJudgements,p3, ncol = 3, nrow = 1, common.legend = TRUE, legend="bottom") # heights=c(4,2.5)
 
 # save
-ggsave("Figures/H2_H3_expl_survey_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H2_H3_expl_survey_IAZ_EXP1_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
 
 ### transposed version
 # add labels to rows
@@ -2475,17 +2516,21 @@ H3_p_UserJudgements_T_anno=annotate_figure(H3_p_UserJudgements_T,
                 bottom = text_grob("% of users", hjust = c(-0.2),vjust = c(-0.1), size = 10),
 )
 
-Expl_figure2_UserResponses_stackedBar$labels$title=c()
-p3=Expl_figure2_UserResponses_stackedBar+theme(legend.position = "none",
+Expl_figure2_UserResponses_stackedBar_anno$labels$title=c()
+p3=Expl_figure2_UserResponses_stackedBar_anno+theme(legend.position = "none",
         panel.spacing = unit(1, "lines"))
 
-leg <- get_legend(Expl_figure2_UserResponses_stackedBar)
+leg <- get_legend(Expl_figure2_UserResponses_stackedBar_anno)
 
 p3_T=ggarrange(p3,leg,ncol = 2, nrow = 1,widths=c(1.3,2))
 
 H2_H3_expl_survey_figure_T=ggarrange(H2_p_UserJudgements_T_anno,H3_p_UserJudgements_T_anno,p3_T, ncol = 1, nrow = 3, common.legend = TRUE, legend="bottom",labels = c("a","b","c"), label.x=-0.001,label.y=1.04,font.label = list(size = 16),align = c("v")) # heights=c(4,2.5)
 
-ggsave("Figures/H2_H3_expl_survey_T_PAZ_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+ggsave("Figures/H2_H3_expl_survey_T_IAZ_EXP1_FINAL.pdf",width = 8,height = 4) #width = 7, height = 2,
+
+# # show plot
+print("Final summary plot for survey data:")
+H2_H3_expl_survey_figure_T
 
 ```
 
@@ -2496,12 +2541,12 @@ ggsave("Figures/H2_H3_expl_survey_T_PAZ_FINAL.pdf",width = 8,height = 4) #width 
 
 # delete file if already there:
 #Check its existence
-if (file.exists(paste("BivariateStats.csv",sep=""))) {
+if (file.exists(paste("BivariateStats_IAZ_EXP1_FINAL.csv",sep=""))) {
   #Delete file if it exists
-  file.remove(paste("BivariateStats.csv",sep=""))
+  file.remove(paste("BivariateStats_IAZ_EXP1_FINAL.csv",sep=""))
 }
 
-tmpFile=file(paste("BivariateStats.csv",sep=""), "w+")
+tmpFile=file(paste("BivariateStats_IAZ_EXP1_FINAL.csv",sep=""), "w+")
 writeLines(matchingRes,tmpFile)
 close(tmpFile)
 
