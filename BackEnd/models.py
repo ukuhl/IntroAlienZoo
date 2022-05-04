@@ -5,7 +5,7 @@ from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 
 # Fit model
-def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
+def build_model():
     import pandas as pd
     import random
     random.seed(42)
@@ -14,7 +14,25 @@ def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
     from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error, r2_score
 
-    df = pd.read_csv(file_path)
+    expNo = 1; # or 2; specifies which version you want to run (Experiment 1 or Experiment 2)
+                # NOTE: the information about experimental number is NOT LOGGED!
+                # if you don't want to mix data from different versions, make sure
+                # to clear the database in between or use different databases for each run
+
+    if expNo == 1:
+        source_data_file_path="modelData/AlienZooDataSet_EXP1.csv" # source data
+        depthTree=7
+        fin_data_file_path="modelData/dataset_IAZ_EXP1.npz" # where to save train / test data
+        model_file_path="modelData/model_IAZ_EXP1.joblib" # where to save model
+    elif expNo == 2:
+        source_data_file_path="modelData/AlienZooDataSet_EXP2.csv" # source data
+        depthTree=5
+        fin_data_file_path="modelData/dataset_IAZ_EXP2.npz"  # where to save train / test data
+        model_file_path="modelData/model_IAZ_EXP2.joblib" # where to save model
+    else:
+        raise ValueError("Unknown value supplied to variable expNo in models.py!")
+
+    df = pd.read_csv(source_data_file_path)
 
     df = df[["Var1", "Var2", "Var3", "Var4", "Var5", "GR"]]
     X = df[["Var1", "Var2", "Var3", "Var4", "Var5"]].to_numpy()
@@ -23,13 +41,13 @@ def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
     print(X.shape)
     print(y.shape)
 
-    # # CODE FOR MODEL COMPUTATION: We'll load the precomputed model below
+    # FOLLOWING COMMENTS CONTAIN CODE FOR MODEL COMPUTATION
+    # FOR CONVENIENCE, we'll load the precomputed model below
     # # settings for compute balanced data + max tree depth
     # bins=5
-    # depthTree=5 # for DS2 condition: 5; for DS4 condition: 7
     #
     # # Binning
-    # _, bin_values = np.histogram(y, bins=bins) # von André gesetzt: 10
+    # _, bin_values = np.histogram(y, bins=bins)
     # y_binning = [list(bin_values).index(bin_values[np.argmin(np.abs(bin_values - y_))]) for y_ in y]
     #
     # # Split into training and test set
@@ -58,12 +76,12 @@ def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
     # print(f"MSE: {mean_squared_error(y_test_final, y_pred)}")
     #
     # # Save dataset and model
-    # np.savez("modelsStuff/dataset_IAZ_DS2.npz", X_train=X_train_final, X_test=X_test_final, y_train=y_train_final, y_test=y_test_final)
-    # dump(model, "modelsStuff/model_IAZ_DS2.joblib")
+    # np.savez(fin_data_file_path, X_train=X_train_final, X_test=X_test_final, y_train=y_train_final, y_test=y_test_final)
+    # dump(model, model_file_path)
 
     # Load pre-computed dataset and model
-    dat=np.load("modelsStuff/dataset_IAZ_DS2.npz")
-    model = load("modelsStuff/model_IAZ_DS2.joblib")
+    dat=np.load(fin_data_file_path)
+    model = load(model_file_path)
 
     #print(dat.files)
     X_train_final=dat['X_train']
@@ -77,7 +95,6 @@ def build_model(file_path="modelsStuff/AlienZooDataSet2.csv"):
     print(f"MSE: {mean_squared_error(y_test_final, y_pred)}")
 
     return {"model": model, "X_train": X_train_final, "y_train": y_train_final}
-
 
 # Compute counterfactual
 def get_leafs_from_tree(tree_, classifier=False):
