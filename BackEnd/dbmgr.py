@@ -3,12 +3,13 @@ import mysql.connector
 from crypt import load_key, encrypt
 
 
-database = "alienzoo"   # CREATE DATABASE alienzoo;
-user_name = "user_alienzoo"  # CREATE USER 'user_alienzoo'@'localhost' IDENTIFIED BY 'useralienzoopw123456'; GRANT ALL PRIVILEGES ON alienzoo. * TO 'user_alienzoo'@'localhost';
-user_pw = "useralienzoopw123456"
+database = ""   # INSERT NAME OF YOUR CHOICE FOR YOUR DB
+user_name = ""  # INSERT NAME OF YOUR CHOICE
+                                # USER 'user_name'@'localhost' IDENTIFIED BY 'useralienzoopw123456' WILL BE CREATED
+                                # WILL GRANT ALL PRIVILEGES ON 'database'. * TO 'user_name'@'localhost';
+user_pw = ""
 
 public_key_file = "public_key.bin"
-
 
 class DataMgr():
     def __init__(self):
@@ -60,7 +61,7 @@ class DataMgr():
                 db.cursor().execute("INSERT INTO demographics (userId, varAge1, varAge2, varAge3, varAge4, varAge5, varAge6, varAge7, varGender1, varGender2, varGender3, varGender4, varGender5, varGender6, varGender7) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                                     (user_id, int(checkbox_values[0]), int(checkbox_values[1]), int(checkbox_values[2]), int(checkbox_values[3]), int(checkbox_values[4]), int(checkbox_values[5]), int(checkbox_values[6]),
                                     int(checkbox_values[7]), int(checkbox_values[8]), int(checkbox_values[9]), int(checkbox_values[10]), int(checkbox_values[11]), int(checkbox_values[12]), int(checkbox_values[13])))
-            
+
             else:
                 db.cursor().execute("INSERT INTO questionnaire_logs (userId, questionId, var1, var2, var3, var4, var5, var6) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",
                                     (user_id, question_id, int(checkbox_values[0]), int(checkbox_values[1]), int(checkbox_values[2]), int(checkbox_values[3]), int(checkbox_values[4]), int(checkbox_values[5])))
@@ -94,7 +95,7 @@ class DataMgr():
         except Exception as ex:
             print(ex)
             return False
-    
+
     def log_user_payment(self, user_id, payment_id):
         try:
             db = self.__connect_to_database()
