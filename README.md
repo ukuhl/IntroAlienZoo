@@ -44,8 +44,8 @@ to reset the database again.
 # FAQ
 ## How was synthetic data used for model training generated?
 We included the code on how we generated the data as R Markdown documents under BackEnd/modelData:
-* For Experiment 1: [`DataSim_Exp1.Rmd`](BackEnd/modelData/DataSim_IAZ_Exp1.Rmd) / [`DataSim_Exp1.pdf`](BackEnd/modelData/DataSim_IAZ_Exp1.pdf)
-* For Experiment 2: [`DataSim_Exp2.Rmd`](BackEnd/modelData/DataSim_IAZ_Exp2.Rmd) / [`DataSim_Exp2.pdf`](BackEnd/modelData/DataSim_IAZ_Exp2.pdf)
+* For Experiment 1: [`DataSim_IAZ_EXP1.Rmd`](BackEnd/modelData/DataSim_IAZ_EXP1.Rmd) / [`DataSim_IAZ_EXP1.pdf`](BackEnd/modelData/DataSim_IAZ_EXP1.pdf)
+* For Experiment 2: [`DataSim_IAZ_EXP2.Rmd`](BackEnd/modelData/DataSim_IAZ_EXP2.Rmd) / [`DataSim_IAZ_EXP2.pdf`](BackEnd/modelData/DataSim_IAZ_EXP2.pdf)
 
 ## How were models trained?
 We trained decision tree regression model for each experiment. Lines 44-80 in `BackEnd/models.py` show the code used for model training. Note that pre-trained models are already available, both [model_IAZ_EXP1.joblib](BackEnd/modelData/model_IAZ_EXP1.joblib) and [model_IAZ_EXP1.joblib](BackEnd/modelData/model_IAZ_EXP1.joblib).
