@@ -1,0 +1,179 @@
+---
+title: "Simulated data used for training ML models in the AlienZoo study series (IAZ, Experiment 1)"
+author: "Ulrike Kuhl"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This code simulates datasets with known dependencies between features for the AlienZoo study line.
+Written by Ulrike Kuhl; for comments, questions etc.: kuhl@techfak.uni-bielefeld.de.
+
+# Let's start simulating
+
+```{r results='asis'}
+# import required modules
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+
+```
+Define basic properties of features and variables.
+
+```{r}
+# minimal / maximal growth rates:
+GRneg.min=0.1
+GRneg.max=1.0
+GRpos.min=1.1
+GRpos.max=1.9
+
+# minimal / maximal possible feeding values
+F.min=0
+F.max=6
+```
+
+## Data set for Experiment 1: simple linear relationship between one feature and the outcome, depending on the value of a second and a third variable.
+
+* 1680700 data points (given by combinatoric nature of having 5 features that may take one of 7 values = 16807 combinations; each combination being repeated 100 times); 
+* there is a linear relationship between plant 2 and the growth rate, iff
+  + plant 4 has a value of 1 or 2 AND
+  + plant 5 is not smaller than 4
+  + this holds unless var2 = 6 (prevent overfeeding + selecting a very stupid strategy of "the more, the better")
+
+```{r}
+
+# define the possible values each feature might take
+featureVals.possible=c(F.min:F.max)
+# expand to have a set with 5 features and all possible combinations of features
+df.set4=expand.grid(featureVals.possible,featureVals.possible,
+                    featureVals.possible,featureVals.possible,
+                    featureVals.possible)
+
+# repeat to have each combination 100 times
+df.set4=df.set4[rep(seq_len(nrow(df.set4)), each = 100), ]
+
+# generate new field for growth rate values
+# growth rate values per default in a negative range
+set.seed(42)
+df.set4$GR=round(runif(nrow(df.set4), min=GRneg.min, max=GRneg.max),2)
+
+# transform GR values of deciding feature 'plant 2', 
+# depending on the values of 'plant 4' and 'plant 5': 
+df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3 ]=
+  df.set4$Var2[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3 ]
+
+# scale GR to range of positive growth rate + add jitter
+F.max_effect=5
+OldRange = (F.max_effect - F.min)  
+NewRange = (GRpos.max - GRpos.min)
+df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3] = 
+  jitter((((df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3] - F.min) * NewRange) / 
+            OldRange) + GRpos.min, factor=1)
+
+# make sure GR does not exceed 2!
+maxGR=max(df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3])
+# reduce GR values > 2:
+df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3][df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3]>2]=
+    df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3][df.set4$GR[(df.set4$Var4==1 | df.set4$Var4==2 ) & df.set4$Var5>3]>2]-(maxGR-2)
+
+# destroy relationship for variable values 6 (= 'overfeeding')
+OldRange = (F.max - F.min)
+NewRange = (GRneg.max - GRneg.min)
+df.set4$GR[df.set4$Var2==6]=
+  round(runif(length(df.set4$GR[df.set4$Var2==6]), min=GRneg.min, max=GRneg.max),2)
+
+# take subset of data frame for plotting so it does not take too long:
+df.set4.plot=df.set4
+rows=sample(nrow(df.set4.plot))
+df.set4.plot <- df.set4.plot[rows, ]
+df.set4.plot = df.set4.plot[seq(1, nrow(df.set4), 1000), ]
+names(df.set4.plot)=c("Plant 1","Plant 2","Plant 3","Plant 4","Plant 5","GrowthRate")
+
+p4 = df.set4.plot %>% tidyr::gather("id", "value", 1:5) %>% 
+  ggplot(., aes(GrowthRate, value))+
+  geom_point(shape=4, alpha=0.5, size=0.5)+
+  facet_wrap(~id,scales="free")
+
+p4
+
+# save data!
+# #write.csv(df.set4,'AlienZooDataSet_EXP1.csv', row.names = FALSE)
+
+```
+
+Visualize dependencies as a pretty plot, suitable for publication:
+
+```{r}
+
+library(GGally)
+library(ggpubr)
+
+set.seed(42)
+rows=sample(nrow(df.set4))
+tmp <- df.set4[rows, ]
+tmp = tmp[seq(1, nrow(df.set4), 500), ]
+names(tmp)=c("Plant 1","Plant 2","Plant 3","Plant 4","Plant 5","GrowthRate")
+
+# function 1: produce jittered scatter plots
+my_bin <- function(data, mapping) {
+  ggplot(data = data, mapping = mapping) +
+    geom_jitter(aes(colour=GrowthRate))+
+    scale_color_gradient2(low="#656464", high="#FF2500", midpoint = 1,
+                          space = "Lab",guide = "colourbar")+
+    theme_bw(base_size = 10)+
+    theme(strip.background=element_rect(fill="white"))
+}
+
+# function 2: make sure to only keep lower triangle facets in ggpairs
+gpairs_lower <- function(g){
+  g$plots <- g$plots[-(1:g$nrow)]
+  g$yAxisLabels <- g$yAxisLabels[-1]
+  g$nrow <- g$nrow -1
+  g$plots <- g$plots[-(seq(g$ncol, length(g$plots), by = g$ncol))]
+  g$xAxisLabels <- g$xAxisLabels[-g$ncol]
+  g$ncol <- g$ncol - 1
+  g
+}
+
+# re-order data frame; put all GRs > 1 at back so they are plotted last
+# (makes pattern in data more easily discernable)
+A=data.frame(rbind(tmp[tmp$GrowthRate<1,],tmp[tmp$GrowthRate>=1,]))
+names(A)=c("Plant 1","Plant 2","Plant 3","Plant 4","Plant 5","GrowthRate")
+
+# make pairs plot:
+pm <- ggpairs(
+  data=A, columns = c(1,2,3,4,5),
+  lower = list(
+    continuous = my_bin
+  ),
+  upper  = list(continuous = "blank"),
+  diag  = list(continuous = "blankDiag"),
+  #legend = 1,
+  switch="both"
+)
+
+pm=gpairs_lower(pm)
+
+# make auxplot to get legend:
+auxplot=ggplot(data = A) +
+    geom_jitter(aes(x=`Plant 1`,y=`Plant 1`,colour=GrowthRate))+
+    scale_color_gradient2(low="#656464", high="#FF2500",midpoint = 1,
+                          space = "Lab",guide = "colourbar")
+# grab legend:
+auxlegend=grab_legend(auxplot)
+
+# add legend:
+pm[2,4]=auxlegend
+
+# show
+pm
+
+# save
+ggsave("DataDist_IAZ_EXP1.pdf",width = 5, height = 5,)
+
+```
