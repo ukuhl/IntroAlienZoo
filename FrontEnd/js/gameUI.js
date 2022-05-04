@@ -103,7 +103,7 @@ window.onload = function(){
       let shubOldNo = [];
       let shubNewNo = [];
       // initialize and shuffle array of plant names
-      var plants = ['static/Leaf1_test.png', 'static/Leaf2_test.png', 'static/Leaf3_test.png', 'static/Leaf4_test.png', 'static/Leaf5_test.png'];
+      var plants = ['static/leaf1.png', 'static/leaf2.png', 'static/leaf3.png', 'static/leaf4.png', 'static/leaf5.png'];
       // randomize plant colors for this participant:
       plants = shuffle(plants);
 
