@@ -1,7 +1,7 @@
 # README
 
 This repository provides code, data, and analysis scripts for the Alien Zoo framework as used in the study:
-["Let's Go to the Alien Zoo: Introducing an Experimental Framework to Study Usability of Counterfactual Explanations for Machine Learning"](Publication/IAZ_arXiv_ukuhl.pdf)
+["Let's Go to the Alien Zoo: Introducing an Experimental Framework to Study Usability of Counterfactual Explanations for Machine Learning"](https://arxiv.org/pdf/2205.03398.pdf)
 
 Detailed motivation and rationale are explained in the paper. In short, we provide this framework as a utility to run user studies to perform human level evaluations of counterfactual explanations (CFEs) for machine learning (ML).
 
